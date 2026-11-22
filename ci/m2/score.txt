@@ -5,6 +5,6 @@ q_ca06 cost 4.9 oracle 0.0
 q_ca07 cost 4.0 oracle 0.0
 q_fx01 cost 2.8 oracle 0.0
 q_mu06 cost 7.3 oracle 0.0
-q_mx00 cost 2.5 oracle 2.0
-SIMULATED 98.4 MISSES 0
-usage_usec 11080055
+q_mx00 cost 2.8 oracle 2.0
+SIMULATED 98.8 MISSES 0
+usage_usec 8367374
