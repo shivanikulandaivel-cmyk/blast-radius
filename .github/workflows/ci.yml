@@ -36,6 +36,19 @@ jobs:
             python3 score.py sample sample/answers.json ci/output$i.jsonl > ci/score$i.txt 2>&1 || true
             cat ci/score$i.txt; tail -n 3 ci/stderr$i.log
           done
+      - name: Probe check on mutants (real environment)
+        if: hashFiles('tools/mutants.tar.gz') != ''
+        run: |
+          mkdir -p /tmp/mut/commits ci/probe && tar xzf tools/mutants.tar.gz -C /tmp/mut/commits
+          cp sample/tests.json /tmp/mut/tests.json
+          chmod -R a+rwX ci/probe
+          docker run --rm --network none --cpus 2 --memory 4096m --pids-limit 256 \
+            --tmpfs /tmp:rw,size=512m,mode=1777 --user 65534:65534 --env HOME=/tmp \
+            --env BR_BET_LOG=/out/bets.json \
+            --volume /tmp/mut/commits:/data/commits:ro --volume /tmp/mut/tests.json:/data/tests.json:ro \
+            --volume $PWD/ci/probe:/out --volume $PWD/tools:/tools:ro \
+            --entrypoint sh blast-radius-entry -c 'python /app/br/selector.py > /out/output.jsonl 2> /out/stderr.log; python /tools/check_bets.py /data/commits /out/bets.json /out/report.json > /out/check.log 2>&1' || true
+          tail -n 5 ci/probe/stderr.log; cat ci/probe/check.log | tail -n 60
       - name: Export the in-image map and cpu costs
         run: |
           docker run --rm --entrypoint cat blast-radius-entry /app/br/maps/map.json.gz > ci/map.json.gz

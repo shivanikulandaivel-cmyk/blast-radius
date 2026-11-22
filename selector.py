@@ -24,6 +24,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 
 from brlib import apply_hunks, parse_patch  # noqa: E402
+import brprobe  # noqa: E402
 
 DATA = os.environ.get("BR_DATA", "/data")
 REPO = os.environ.get("BR_REPO", "/app/sqlglot")
@@ -35,6 +36,9 @@ MAX_WORKERS = 8
 PARALLEL = int(os.environ.get("BR_PARALLEL", "2"))
 NO_RUN = os.environ.get("BR_NO_RUN") == "1"
 RISK = os.environ.get("BR_RISK", "0") == "1"
+PROBE = os.environ.get("BR_PROBE", "1") == "1"
+PROBE_MIN_HITS = int(os.environ.get("BR_PROBE_MIN_HITS", "3"))
+PROBE_MIN_EVIDENCE = int(os.environ.get("BR_PROBE_MIN_EVIDENCE", "3"))
 CPU_FACTOR = float(os.environ.get("BR_CPU_FACTOR", "2.5"))
 RISK_MS = int(os.environ.get("BR_RISK_MS", "5000"))
 RISK_MIN_EVIDENCE = int(os.environ.get("BR_RISK_MIN", "3"))
@@ -112,7 +116,9 @@ def build_overlay(root, changes):
 
 
 class Job:
-    def __init__(self, cid, changes, nodeids, timeout, hard, check_imports=(), collect_all=False, later=()):
+    def __init__(self, cid, changes, nodeids, timeout, hard, check_imports=(), collect_all=False, later=(),
+                 probe_sites=0):
+        self.probe_sites = probe_sites
         self.later = list(later)
         self.check_imports = check_imports if check_imports == "ALL" else list(check_imports)
         self.collect_all = collect_all
@@ -140,7 +146,8 @@ def start_job(job):
             import runner
 
             runner.run_tests(job.root, job.nodeids, job.out, job.timeout,
-                             job.check_imports, job.collect_all, job.later)
+                             job.check_imports, job.collect_all, job.later,
+                             probe=bool(job.probe_sites))
         except BaseException:  # noqa: BLE001
             import traceback
 
@@ -356,6 +363,51 @@ def main():
         j = best[1]
         out, run = order[:j], order[j:] + evidence
         plans[cid] = {"out": set(out), "run": run, "gamble": gamble}
+        probe_sites = 0
+        if PROBE and ok and out and not NO_RUN and "importlevel" not in flags and "addrm" not in flags \
+                and all(fd.path.startswith("sqlglot/") and fd.path.endswith(".py") for fd in fds):
+            probed = {}
+            for fd in fds:
+                if fd.old is None or changes.get(fd.new) is None:
+                    probed = None
+                    break
+                try:
+                    old_src = open(os.path.join(REPO, fd.old), encoding="utf-8", newline="").read()
+                except Exception:
+                    probed = None
+                    break
+                if old_src == changes[fd.new]:
+                    continue
+                sites = brprobe.plan(old_src, changes[fd.new])
+                text = brprobe.instrument(changes[fd.new], sites, base_id=probe_sites) if sites else None
+                if text is None:
+                    probed = None
+                    break
+                probed[fd.new] = text
+                probe_sites += len(sites)
+            if probed and probe_sites:
+                # bet: the tests we would hand over are left out if the probe
+                # shows the change never makes a difference while the cheap
+                # tests run; they must be enough to trust that
+                ev = sorted(run, key=lambda t: rc[t])
+                if len(ev) < PROBE_MIN_EVIDENCE:
+                    extra = sorted((t for t in out if rc[t] <= 1000), key=lambda t: rc[t])
+                    for t in extra:
+                        if len(ev) >= PROBE_MIN_EVIDENCE:
+                            break
+                        ev.append(t)
+                if len(ev) >= PROBE_MIN_EVIDENCE:
+                    run = [t for t in ev if rc[t] < 1000 or t in run]
+                    bet = set(out) - set(run)
+                    plans[cid] = {"out": set(), "run": run, "gamble": [], "bet": bet}
+                    out = []
+                    changes = dict(changes)
+                    changes.update(probed)
+                    log(cid, "probe", probe_sites, "sites; betting", len(bet), "tests on", len(run))
+                else:
+                    probe_sites = 0
+            else:
+                probe_sites = 0
         if gamble and not run:
             # nothing cheap to run means no evidence: hand them over
             plans[cid]["out"] |= set(gamble)
@@ -384,7 +436,8 @@ def main():
                 first, later = later, []
             jobs.append(Job(cid, changes, first, timeout, hard,
                             check_imports="ALL" if deep else mods,
-                            collect_all=deep or "importcheck" in flags, later=later))
+                            collect_all=deep or "importcheck" in flags, later=later,
+                            probe_sites=probe_sites))
 
     if jobs:
         # preload heavy third-party modules once; children inherit them
@@ -412,6 +465,7 @@ def main():
                 # no usable result: hand every planned test over
                 p["out"] |= set(num[i] for i in j.nodeids + j.later)
                 p["out"] |= set(p.get("gamble") or [])
+                p["out"] |= set(p.get("bet") or [])
                 continue
             if res.get("import_errors"):
                 # a module no longer imports: everything that uses it fails
@@ -429,6 +483,18 @@ def main():
                 log(j.cid, "import errors", res["import_errors"][:2], "-> +", len(to_nums(broad)))
             failed = set(res["failed"])
             seen = set(res["seen"])
+            bet = p.get("bet")
+            if bet:
+                pr = res.get("probe") or {}
+                clean = (not failed and not res.get("collect_errors") and not res.get("import_errors")
+                         and all(t in seen for t in j.nodeids + j.later))
+                hits_ok = all(pr.get(str(i), [0, 0])[0] >= PROBE_MIN_HITS for i in range(j.probe_sites))
+                div = sum(v[1] for v in pr.values())
+                if clean and hits_ok and div == 0:
+                    log(j.cid, "probe clean", pr, "-> leaving out", len(bet))
+                else:
+                    log(j.cid, "probe", pr, "clean" if clean else "fail", "-> handing over", len(bet))
+                    p["out"] |= set(bet)
             g = p.get("gamble") or []
             if g:
                 cheap_seen = [t for t in j.nodeids if t in seen]
@@ -448,6 +514,15 @@ def main():
                         p["out"].add(t["number"])
                 log(j.cid, "collect errors in", len(files), "files")
 
+    bet_log = os.environ.get("BR_BET_LOG")
+    if bet_log:
+        try:
+            with open(bet_log, "w") as f:
+                json.dump({cid: {"bet": sorted(ids[t] for t in (p.get("bet") or [])),
+                                 "left_out": bool(p.get("bet")) and not (set(p.get("bet")) & p["out"])}
+                           for cid, p in plans.items()}, f)
+        except Exception as e:  # noqa: BLE001
+            log("bet log failed", e)
     total = 0
     lines = []
     for cid in commits:
