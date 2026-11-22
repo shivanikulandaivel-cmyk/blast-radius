@@ -1,0 +1,54 @@
+name: sample
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  sample:
+    if: "!contains(github.event.head_commit.message, '[skip ci]')"
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - name: Unpack sample
+        run: tar xzf sample.tar.gz && ls sample
+      - name: Build image (timed)
+        run: |
+          mkdir -p ci
+          start=$(date +%s)
+          docker build --platform linux/amd64 -t blast-radius-entry . 2>&1 | tee ci/build.log | tail -n 60
+          echo "build seconds: $(( $(date +%s) - start ))" | tee -a ci/build.log
+      - name: Run like the scorer, 3 times
+        run: |
+          for i in 1 2 3; do
+            start=$(date +%s.%N)
+            docker run --rm --platform linux/amd64 --network none --cpus 2 \
+              --memory 4096m --memory-swap 4096m --pids-limit 256 --read-only \
+              --tmpfs /tmp:rw,size=64m,mode=1777 --cap-drop ALL \
+              --security-opt no-new-privileges --user 65534:65534 --env HOME=/tmp \
+              --volume $PWD/sample/commits:/data/commits:ro \
+              --volume $PWD/sample/tests.json:/data/tests.json:ro \
+              --entrypoint sh blast-radius-entry -c 'python /app/br/selector.py; echo "cgroup cpu: $(grep usage_usec /sys/fs/cgroup/cpu.stat)" >&2' \
+              > ci/output$i.jsonl 2> ci/stderr$i.log || echo "run failed $?" >> ci/stderr$i.log
+            echo "wall: $(echo "$(date +%s.%N) - $start" | bc)" >> ci/stderr$i.log
+            python3 score.py sample sample/answers.json ci/output$i.jsonl > ci/score$i.txt 2>&1 || true
+            cat ci/score$i.txt; tail -n 3 ci/stderr$i.log
+          done
+      - name: Export the in-image map and cpu costs
+        run: |
+          docker run --rm --entrypoint cat blast-radius-entry /app/br/maps/map.json.gz > ci/map.json.gz
+          docker run --rm --entrypoint cat blast-radius-entry /app/br/maps/cpu.json > ci/cpu.json
+      - name: Commit results back
+        run: |
+          rm -rf sample
+          git config user.name "ci"
+          git config user.email "ci@users.noreply.github.com"
+          mkdir -p maps
+          if [ ! -f maps/map.json.gz ]; then cp ci/map.json.gz maps/map.json.gz; fi
+          if [ ! -f maps/cpu.json ]; then cp ci/cpu.json maps/cpu.json; fi
+          rm -f ci/map.json.gz ci/cpu.json
+          git add ci maps
+          git commit -m "CI results [skip ci]" || exit 0
+          git push
