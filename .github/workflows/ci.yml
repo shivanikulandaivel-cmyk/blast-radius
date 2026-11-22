@@ -57,6 +57,28 @@ jobs:
           python3 tools/score_truth.py /tmp/mut/tests.json tools/truth.json ci/probe/output.jsonl > ci/probe/score.txt 2>&1 || true
           cpu=$(grep -o "cpu self [0-9.]*s children [0-9.]*s" ci/probe/stderr.log); echo "selector $cpu" >> ci/probe/score.txt
           cat ci/probe/score.txt
+      - name: Sweep settings on mutants (truth) and samples (only with [sweep])
+        if: contains(github.event.head_commit.message, '[sweep]')
+        run: |
+          mkdir -p /tmp/mut/commits ci/sweep && tar xzf tools/mutants.tar.gz -C /tmp/mut/commits
+          cp sample/tests.json /tmp/mut/tests.json
+          rm -f ci/sweep/summary.txt
+          while read name envs; do
+            for set in mut sample; do
+              if [ $set = mut ]; then D=/tmp/mut; T=tools/truth.json; else D=$PWD/sample; T=sample/answers.json; fi
+              eargs=""; for e in $envs; do eargs="$eargs --env $e"; done
+              docker run --rm --platform linux/amd64 --network none --cpus 2 \
+                --memory 4096m --memory-swap 4096m --pids-limit 256 --read-only \
+                --tmpfs /tmp:rw,size=64m,mode=1777 --cap-drop ALL \
+                --security-opt no-new-privileges --user 65534:65534 --env HOME=/tmp $eargs \
+                --volume $D/commits:/data/commits:ro --volume $D/tests.json:/data/tests.json:ro \
+                --entrypoint sh blast-radius-entry -c 'python /app/br/selector.py; echo "cgroup cpu: $(grep usage_usec /sys/fs/cgroup/cpu.stat)" >&2' \
+                > ci/sweep/out_${set}_$name.jsonl 2> ci/sweep/err_${set}_$name.log || true
+              cpu=$(grep -o "usage_usec [0-9]*" ci/sweep/err_${set}_$name.log | awk '{print $2/1000000}')
+              python3 tools/score_truth.py $D/tests.json $T ci/sweep/out_${set}_$name.jsonl > ci/sweep/score_${set}_$name.txt 2>&1
+              echo "$name $set: $(tail -n 1 ci/sweep/score_${set}_$name.txt) CPU $cpu" | tee -a ci/sweep/summary.txt
+            done
+          done < tools/sweep.txt
       - name: Calibrate on mutants with stored truth (only with [calib])
         if: contains(github.event.head_commit.message, '[calib]')
         run: |
