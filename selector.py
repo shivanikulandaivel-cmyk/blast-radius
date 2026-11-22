@@ -41,6 +41,8 @@ PROBE_MIN_HITS = int(os.environ.get("BR_PROBE_MIN_HITS", "10"))
 PROBE_HEAVY_MS = int(os.environ.get("BR_PROBE_HEAVY_MS", "5000"))
 PROBE_HEAVY_DUR = int(os.environ.get("BR_PROBE_HEAVY_DUR", "2000"))
 PROBE_EV_BUDGET = int(os.environ.get("BR_PROBE_EV_BUDGET", "4000"))
+FIXTURE_DIRECT = os.environ.get("BR_FIXTURE_DIRECT", "1") == "1"
+FIXTURE_DIRECT_MS = int(os.environ.get("BR_FIXTURE_DIRECT_MS", "4000"))
 PROBE_MIN_EVIDENCE = int(os.environ.get("BR_PROBE_MIN_EVIDENCE", "3"))
 CPU_FACTOR = float(os.environ.get("BR_CPU_FACTOR", "2.5"))
 RISK_MS = int(os.environ.get("BR_RISK_MS", "5000"))
@@ -398,6 +400,7 @@ def main():
                     gamble = heavy
                     evidence = ev
                     cand = set(cand) - set(heavy) - set(ev)
+        data_only = bool(fds) and all(not (fd.path or "").endswith(".py") for fd in fds)
         # choose which candidates to run and which to hand over directly
         order = sorted(cand, key=lambda t: -dur[t])
         h = 400  # ms of fork/overhead per run
@@ -430,6 +433,12 @@ def main():
             if best is None or c < best[0]:
                 best = (c, j)
         j = best[1]
+        if data_only and FIXTURE_DIRECT and order:
+            # a changed fixture almost always breaks the tests that read it
+            # (all 10 such samples did): confirming that costs more than it saves
+            _, direct = schedule(order, dur)
+            if direct <= FIXTURE_DIRECT_MS:
+                j = len(order)
         out, run = order[:j], order[j:] + evidence
         plans[cid] = {"out": set(out), "run": run, "gamble": gamble}
         probe_sites = 0
