@@ -3,71 +3,69 @@
 [sel 0.5s] 2haz probe 1 sites; betting 3 heavy tests on 25 (gain 19.2s, evidence 0.6s)
 [sel 0.5s] 2haz cand 86 out 58 run 25 est 25.5s ['func:sqlglot/dialects/dialect.py:1271-1283']
 [sel 0.5s] 2jrq slices: {'test_optimize': '28', 'test_execute_tpcds': '57', 'test_tpcds': '98', 'test_tpch': '20', 'test_eliminate_joins': '37'}
-[sel 0.5s] 2jrq big gamble: 4 tests (25.5s) on 25 evidence
-[sel 0.5s] 2jrq cand 29 out 0 run 25 est 25.5s ['func:sqlglot/optimizer/eliminate_joins.py:62-77']
+[sel 0.5s] 2jrq cand 29 out 29 run 0 est 25.5s ['func:sqlglot/optimizer/eliminate_joins.py:62-77']
 [sel 0.6s] 2qn5 slices: {'test_time': '1', 'test_ddl': '1', 'test_datetrunc': '1', 'test_week': '1', 'test_duckdb': '1', 'test_to_start_of': '7'}
 [sel 0.6s] 2qn5 cand 6 out 0 run 6 est 1.3s ['func:sqlglot/generators/clickhouse.py:809-813']
 [sel 0.6s] 2vdj cand 1 out 1 run 0 est 0.8s ['data:tests/fixtures/optimizer/pushdown_predicates.sql']
 [sel 0.6s] 3utz slices: {'test_qualify_tables': '81', 'test_quote_identifiers': '10', 'test_simplify': '651', 'test_tpcds': '99', 'test_canonicalize': '49', 'test_canonicalize_internal_names': '72', 'test_tpch': '22', 'test_eliminate_ctes': '6', 'test_eliminate_joins': '40', 'test_unnest_subqueries': '129', 'test_eliminate_subqueries': '28', 'test_isolate_table_selects': '8', 'test_merge_subqueries': '147', 'test_normalize': '17', 'test_normalize_identifiers': '32', 'test_optimize': '94', 'test_execute_tpcds': '99', 'test_execute_tpch': '22', 'test_optimize_joins': '21', 'test_pushdown_cte_alias_columns': '6', 'test_pushdown_predicates': '58', 'test_pushdown_projection': '86', 'test_qualify_columns': '397', 'test_qualify_columns__with_invisible': '9'}
 [sel 0.6s] 3utz probe 1 sites; betting 2 heavy tests on 23 (gain 18.4s, evidence 4.0s)
 [sel 0.6s] 3utz cand 37 out 12 run 23 est 25.5s ['func:sqlglot/serde.py:24-74']
-[sel 1.5s] 4d63 attrdiff changed: ['Snowflake.Tokenizer.NUMERIC_ESCAPES'] 1
-[sel 1.5s] 4d63 attrdiff: 355 -> 354 candidates
-[sel 1.5s] 4d63 cand 354 out 354 run 0 est 9.5s ['class:sqlglot/dialects/snowflake.py:Snowflake.Tokenizer', 'attr-refined']
-[sel 1.5s] 535z cand 7 out 7 run 0 est 2.9s ['class:sqlglot/dialects/tsql.py:TSQL', 'attr-refined']
-[sel 1.5s] 5y72 slices: {'test_optimize': '1', 'test_eliminate_subqueries': '3'}
-[sel 1.5s] 5y72 cand 3 out 3 run 0 est 2.5s ['func:sqlglot/optimizer/eliminate_subqueries.py:160-179']
-[sel 1.5s] 66ks slices: {'test_execute_tpcds': '57'}
-[sel 1.5s] 66ks probe 1 sites; betting 1 heavy tests on 25 (gain 21.6s, evidence 1.0s)
-[sel 1.5s] 66ks cand 51 out 25 run 25 est 24.8s ['func:sqlglot/executor/context.py:53-62']
-[sel 1.5s] 6vvp cand 1 out 1 run 0 est 0.6s ['data:tests/fixtures/optimizer/qualify_columns__invalid.sql']
-[sel 1.5s] 6ze8 cand 1 out 0 run 1 est 0.4s ['lambda:sqlglot/parsers/dremio.py:110-115']
-[sel 1.6s] 8y7j cand 0 out 0 run 0 est 0.0s ['func:sqlglot/generators/clickhouse.py:48-63']
-[sel 1.6s] 986c cand 1 out 0 run 1 est 1.5s ['same:sqlglot/dialects/singlestore.py', 'same:sqlglot/typing/snowflake.py', 'data:tests/fixtures/optimizer/unnest_subqueries.sql']
-[sel 1.6s] 9u5k cand 0 out 0 run 0 est 0.0s ['same:sqlglot/generators/sqlite.py']
-[sel 1.6s] ary6 slices: {'test_qualify_tables': '1', 'test_information_schema_roundtrip': '5', 'test_optimize': '1', 'test_quote_identifiers': '1', 'test_ml_functions': '9'}
-[sel 1.7s] ary6 cand 10 out 10 run 0 est 4.4s ['func:sqlglot/parsers/bigquery.py:464-543']
-[sel 1.7s] bap8 cand 0 out 0 run 0 est 0.0s ['same:sqlglot/transforms.py']
-[sel 1.7s] bj7g slices: {'test_clickhouse': '5', 'test_clickhouse_values': '9'}
-[sel 1.7s] bj7g cand 2 out 0 run 2 est 0.7s ['func:sqlglot/generators/clickhouse.py:785-806']
-[sel 1.7s] bvw2 cand 1 out 0 run 1 est 0.6s ['same:sqlglot/dialects/materialize.py', 'data:tests/fixtures/optimizer/annotate_types.sql']
-[sel 1.7s] egys cand 1 out 1 run 0 est 2.6s ['data:tests/fixtures/optimizer/simplify.sql']
-[sel 1.7s] f4bn cand 1 out 1 run 0 est 0.5s ['data:tests/fixtures/optimizer/pushdown_cte_alias_columns.sql']
-[sel 1.7s] f4xa cand 0 out 0 run 0 est 0.0s ['same:sqlglot/generators/drill.py']
-[sel 1.7s] fryt slices: {'test_time': '1', 'test_date_add': '3', 'test_date_sub': '3'}
-[sel 1.7s] fryt cand 3 out 0 run 3 est 0.9s ['func:sqlglot/parsers/dremio.py:36-57']
-[sel 1.7s] gbav cand 1 out 0 run 1 est 0.4s ['class:sqlglot/parsers/singlestore.py:SingleStoreParser', 'attr-refined']
-[sel 1.7s] gbhk cand 1 out 1 run 0 est 0.6s ['data:tests/fixtures/optimizer/annotate_types.sql']
-[sel 1.8s] j6uz slices: {'test_bigquery': '3', 'test_annotate_funcs': '1'}
-[sel 1.8s] j6uz cand 2 out 0 run 2 est 0.8s ['func:sqlglot/parsers/bigquery.py:645-662']
-[sel 1.8s] ktz3 cand 3 out 0 run 3 est 0.6s ['class:sqlglot/expressions/ddl.py:TriggerProperties', 'attr-refined']
-[sel 1.8s] mthh cand 1 out 1 run 0 est 3.0s ['data:tests/fixtures/optimizer/merge_subqueries.sql']
-[sel 1.8s] nwnx cand 1 out 1 run 0 est 1.1s ['data:tests/fixtures/optimizer/pushdown_projections.sql']
-[sel 1.8s] rszg cand 3 out 3 run 0 est 5.8s ['same:sqlglot/optimizer/scope.py', 'func:sqlglot/typing/snowflake.py:92-108', 'data:tests/fixtures/optimizer/qualify_columns_ddl.sql']
-[sel 1.8s] st8f cand 1 out 1 run 0 est 0.5s ['data:tests/fixtures/optimizer/isolate_table_selects.sql']
-[sel 3.8s] ran 2haz 25 tests cpu 1.61s failed 0 | raw 1.90s files 6 later 0 deep 0
-[sel 4.2s] ran 2qn5 6 tests cpu 0.40s failed 0 | raw 0.59s files 5 later 0 deep 0
-[sel 4.6s] ran 3utz 23 tests cpu 0.39s failed 1 | raw 2.52s files 6 later 0 deep 0
+[sel 1.4s] 4d63 attrdiff changed: ['Snowflake.Tokenizer.NUMERIC_ESCAPES'] 1
+[sel 1.4s] 4d63 attrdiff: 355 -> 354 candidates
+[sel 1.4s] 4d63 cand 354 out 354 run 0 est 9.5s ['class:sqlglot/dialects/snowflake.py:Snowflake.Tokenizer', 'attr-refined']
+[sel 1.4s] 535z cand 7 out 7 run 0 est 2.9s ['class:sqlglot/dialects/tsql.py:TSQL', 'attr-refined']
+[sel 1.4s] 5y72 slices: {'test_optimize': '1', 'test_eliminate_subqueries': '3'}
+[sel 1.4s] 5y72 cand 3 out 3 run 0 est 2.5s ['func:sqlglot/optimizer/eliminate_subqueries.py:160-179']
+[sel 1.4s] 66ks slices: {'test_execute_tpcds': '57'}
+[sel 1.4s] 66ks probe 1 sites; betting 1 heavy tests on 25 (gain 21.6s, evidence 1.0s)
+[sel 1.4s] 66ks cand 51 out 25 run 25 est 24.8s ['func:sqlglot/executor/context.py:53-62']
+[sel 1.4s] 6vvp cand 1 out 1 run 0 est 0.6s ['data:tests/fixtures/optimizer/qualify_columns__invalid.sql']
+[sel 1.4s] 6ze8 cand 1 out 0 run 1 est 0.4s ['lambda:sqlglot/parsers/dremio.py:110-115']
+[sel 1.5s] 8y7j cand 0 out 0 run 0 est 0.0s ['func:sqlglot/generators/clickhouse.py:48-63']
+[sel 1.5s] 986c cand 1 out 0 run 1 est 1.5s ['same:sqlglot/dialects/singlestore.py', 'same:sqlglot/typing/snowflake.py', 'data:tests/fixtures/optimizer/unnest_subqueries.sql']
+[sel 1.5s] 9u5k cand 0 out 0 run 0 est 0.0s ['same:sqlglot/generators/sqlite.py']
+[sel 1.5s] ary6 slices: {'test_qualify_tables': '1', 'test_information_schema_roundtrip': '5', 'test_optimize': '1', 'test_quote_identifiers': '1', 'test_ml_functions': '9'}
+[sel 1.6s] ary6 cand 10 out 10 run 0 est 4.4s ['func:sqlglot/parsers/bigquery.py:464-543']
+[sel 1.6s] bap8 cand 0 out 0 run 0 est 0.0s ['same:sqlglot/transforms.py']
+[sel 1.6s] bj7g slices: {'test_clickhouse': '5', 'test_clickhouse_values': '9'}
+[sel 1.6s] bj7g cand 2 out 0 run 2 est 0.7s ['func:sqlglot/generators/clickhouse.py:785-806']
+[sel 1.6s] bvw2 cand 1 out 0 run 1 est 0.6s ['same:sqlglot/dialects/materialize.py', 'data:tests/fixtures/optimizer/annotate_types.sql']
+[sel 1.6s] egys cand 1 out 1 run 0 est 2.6s ['data:tests/fixtures/optimizer/simplify.sql']
+[sel 1.6s] f4bn cand 1 out 1 run 0 est 0.5s ['data:tests/fixtures/optimizer/pushdown_cte_alias_columns.sql']
+[sel 1.6s] f4xa cand 0 out 0 run 0 est 0.0s ['same:sqlglot/generators/drill.py']
+[sel 1.6s] fryt slices: {'test_time': '1', 'test_date_add': '3', 'test_date_sub': '3'}
+[sel 1.6s] fryt cand 3 out 0 run 3 est 0.9s ['func:sqlglot/parsers/dremio.py:36-57']
+[sel 1.6s] gbav cand 1 out 0 run 1 est 0.4s ['class:sqlglot/parsers/singlestore.py:SingleStoreParser', 'attr-refined']
+[sel 1.6s] gbhk cand 1 out 1 run 0 est 0.6s ['data:tests/fixtures/optimizer/annotate_types.sql']
+[sel 1.6s] j6uz slices: {'test_bigquery': '3', 'test_annotate_funcs': '1'}
+[sel 1.6s] j6uz cand 2 out 0 run 2 est 0.8s ['func:sqlglot/parsers/bigquery.py:645-662']
+[sel 1.7s] ktz3 cand 3 out 0 run 3 est 0.6s ['class:sqlglot/expressions/ddl.py:TriggerProperties', 'attr-refined']
+[sel 1.7s] mthh cand 1 out 1 run 0 est 3.0s ['data:tests/fixtures/optimizer/merge_subqueries.sql']
+[sel 1.7s] nwnx cand 1 out 1 run 0 est 1.1s ['data:tests/fixtures/optimizer/pushdown_projections.sql']
+[sel 1.7s] rszg cand 3 out 3 run 0 est 5.8s ['same:sqlglot/optimizer/scope.py', 'func:sqlglot/typing/snowflake.py:92-108', 'data:tests/fixtures/optimizer/qualify_columns_ddl.sql']
+[sel 1.7s] st8f cand 1 out 1 run 0 est 0.5s ['data:tests/fixtures/optimizer/isolate_table_selects.sql']
+[sel 2.5s] ran 2qn5 6 tests cpu 0.41s failed 0 | raw 0.59s files 5 later 0 deep 0
+[sel 2.9s] ran 3utz 23 tests cpu 0.39s failed 1 | raw 2.52s files 6 later 0 deep 0
 Unable to set __version__, run `pip install -e .` or `python setup.py develop` first.
-[sel 4.7s] ran 4d63 0 tests cpu 0.06s failed 0 | raw 0.00s files 0 later 0 deep 0
+[sel 3.0s] ran 4d63 0 tests cpu 0.06s failed 0 | raw 0.00s files 0 later 0 deep 0
 Unable to set __version__, run `pip install -e .` or `python setup.py develop` first.
-[sel 4.8s] ran 535z 0 tests cpu 0.06s failed 0 | raw 0.00s files 0 later 0 deep 0
-[sel 6.4s] ran 66ks 25 tests cpu 1.57s failed 0 | raw 2.00s files 1 later 0 deep 0
-[sel 6.6s] ran 6ze8 1 tests cpu 0.19s failed 1 | raw 0.00s files 1 later 0 deep 0
-[sel 7.3s] ran 986c 1 tests cpu 0.63s failed 1 | raw 0.47s files 1 later 0 deep 0
-[sel 7.6s] ran bj7g 2 tests cpu 0.26s failed 1 | raw 0.20s files 1 later 0 deep 0
-[sel 7.9s] ran bvw2 1 tests cpu 0.37s failed 1 | raw 0.10s files 1 later 0 deep 0
-[sel 8.2s] ran fryt 3 tests cpu 0.24s failed 0 | raw 0.07s files 2 later 0 deep 0
+[sel 3.1s] ran 535z 0 tests cpu 0.06s failed 0 | raw 0.00s files 0 later 0 deep 0
+[sel 3.7s] ran 2haz 25 tests cpu 1.65s failed 0 | raw 1.90s files 6 later 0 deep 0
+[sel 3.9s] ran 6ze8 1 tests cpu 0.21s failed 1 | raw 0.00s files 1 later 0 deep 0
+[sel 4.6s] ran 986c 1 tests cpu 0.68s failed 1 | raw 0.47s files 1 later 0 deep 0
+[sel 4.7s] ran 66ks 25 tests cpu 1.62s failed 0 | raw 2.00s files 1 later 0 deep 0
+[sel 4.9s] ran bj7g 2 tests cpu 0.27s failed 1 | raw 0.20s files 1 later 0 deep 0
+[sel 5.1s] ran bvw2 1 tests cpu 0.38s failed 1 | raw 0.10s files 1 later 0 deep 0
 Unable to set __version__, run `pip install -e .` or `python setup.py develop` first.
-[sel 8.4s] ran gbav 1 tests cpu 0.21s failed 0 | raw 0.00s files 1 later 0 deep 0
-[sel 8.8s] ran j6uz 2 tests cpu 0.36s failed 2 | raw 2.56s files 2 later 0 deep 0
+[sel 5.2s] ran fryt 3 tests cpu 0.24s failed 0 | raw 0.07s files 2 later 0 deep 0
+[sel 5.3s] ran gbav 1 tests cpu 0.22s failed 0 | raw 0.00s files 1 later 0 deep 0
 Unable to set __version__, run `pip install -e .` or `python setup.py develop` first.
-[sel 9.2s] ran ktz3 3 tests cpu 0.37s failed 0 | raw 0.08s files 2 later 0 deep 0
-[sel 9.9s] ran 2jrq 23 tests cpu 7.70s failed 5 | raw 5.79s files 3 later 2 deep 0
-[sel 9.9s] 2haz probe clean {'0': [287, 0]} -> leaving out 3
-[sel 9.9s] 3utz probe {'0': [5, 5]} fail -> handing over 2
-[sel 9.9s] 66ks probe clean {'0': [229, 0]} -> leaving out 1
-[sel 9.9s] done: simulated 116.0s, cpu self 1.8s children 15.2s
+[sel 5.6s] ran j6uz 2 tests cpu 0.39s failed 2 | raw 2.56s files 2 later 0 deep 0
+[sel 5.7s] ran ktz3 3 tests cpu 0.38s failed 0 | raw 0.08s files 2 later 0 deep 0
+[sel 5.7s] 2haz probe clean {'0': [287, 0]} -> leaving out 3
+[sel 5.7s] 3utz probe {'0': [5, 5]} fail -> handing over 2
+[sel 5.7s] 66ks probe clean {'0': [229, 0]} -> leaving out 1
+[sel 5.7s] done: simulated 116.0s, cpu self 1.6s children 7.7s
 nanobind: leaked 27 instances!
 nanobind: leaked 15 types!
  - leaked type "_duckdb._sqltypes.DuckDBPyType"
@@ -82,17 +80,17 @@ nanobind: leaked 15 types!
  - leaked type "PythonUDFType"
  - ... skipped remainder
 nanobind: leaked 111 functions!
+ - leaked function "_register_collection"
+ - leaked function "register"
+ - leaked function "checkpoint"
+ - leaked function "row_type"
  - leaked function ""
- - leaked function "fetchone"
- - leaked function "rollback"
- - leaked function "get_table_names"
- - leaked function "appender"
- - leaked function ""
- - leaked function "fetchnumpy"
- - leaked function "union_type"
- - leaked function ""
- - leaked function "abort"
+ - leaked function "_table_kind"
+ - leaked function "close"
+ - leaked function "__repr__"
+ - leaked function "executemany"
+ - leaked function "flush"
  - ... skipped remainder
 nanobind: this is likely caused by a reference counting issue in the binding code.
-See https://nanobind.readthedocs.io/en/latest/refleaks.htmlcgroup cpu: usage_usec 17095239
-wall: 10.212528428
+See https://nanobind.readthedocs.io/en/latest/refleaks.htmlcgroup cpu: usage_usec 9412244
+wall: 6.024542967
