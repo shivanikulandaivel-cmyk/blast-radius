@@ -38,8 +38,8 @@ NO_RUN = os.environ.get("BR_NO_RUN") == "1"
 RISK = os.environ.get("BR_RISK", "0") == "1"
 PROBE = os.environ.get("BR_PROBE", "1") == "1"
 PROBE_MIN_HITS = int(os.environ.get("BR_PROBE_MIN_HITS", "10"))
-PROBE_HEAVY_MS = int(os.environ.get("BR_PROBE_HEAVY_MS", "2000"))
-PROBE_HEAVY_DUR = int(os.environ.get("BR_PROBE_HEAVY_DUR", "300"))
+PROBE_HEAVY_MS = int(os.environ.get("BR_PROBE_HEAVY_MS", "5000"))
+PROBE_HEAVY_DUR = int(os.environ.get("BR_PROBE_HEAVY_DUR", "2000"))
 PROBE_EV_BUDGET = int(os.environ.get("BR_PROBE_EV_BUDGET", "4000"))
 FIXTURE_DIRECT = os.environ.get("BR_FIXTURE_DIRECT", "1") == "1"
 FIXTURE_DIRECT_MS = int(os.environ.get("BR_FIXTURE_DIRECT_MS", "4000"))
@@ -48,7 +48,7 @@ CPU_FACTOR = float(os.environ.get("BR_CPU_FACTOR", "2.5"))
 PLAN_SCALE = float(os.environ.get("BR_PLAN_SCALE", "1.0"))
 RUN_CAP_MS = float(os.environ.get("BR_RUN_CAP_MS", "1e12"))
 NO_LATER = os.environ.get("BR_NO_LATER", "0") == "1"
-BIG_GAMBLE = os.environ.get("BR_BIG_GAMBLE", "1") == "1"
+BIG_GAMBLE = os.environ.get("BR_BIG_GAMBLE", "0") == "1"
 BIG_GAMBLE_MS = int(os.environ.get("BR_BIG_GAMBLE_MS", "2000"))
 BIG_GAMBLE_EV = int(os.environ.get("BR_BIG_GAMBLE_EV", "40"))
 BIG_GAMBLE_BUDGET = int(os.environ.get("BR_BIG_GAMBLE_BUDGET", "10000"))
