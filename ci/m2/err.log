@@ -1,81 +1,81 @@
-[sel 0.1s] loaded index 1621 tests; unmapped 0
-[sel 0.1s] q_ca00 cand 0 out 0 run 0 est 0.0s ['class:sqlglot/generators/dremio.py:DremioGenerator', 'attr-refined']
+[sel 0.2s] loaded index 1621 tests; unmapped 0
+[sel 0.2s] q_ca00 cand 0 out 0 run 0 est 0.0s ['class:sqlglot/generators/dremio.py:DremioGenerator', 'attr-refined']
 [sel 0.2s] q_ca01 cand 4 out 4 run 0 est 3.3s ['class:sqlglot/parsers/sqlite.py:SQLiteParser', 'attr-refined']
 [sel 0.2s] q_ca02 cand 0 out 0 run 0 est 0.0s ['class:sqlglot/generators/druid.py:DruidGenerator', 'attr-refined']
 [sel 0.2s] q_ca03 cand 4 out 0 run 4 est 0.5s ['class:sqlglot/dialects/solr.py:Solr', 'attr-refined']
 [sel 0.2s] q_ca04 cand 2 out 2 run 0 est 3.5s ['class:sqlglot/dialects/risingwave.py:RisingWave', 'attr-refined']
-[sel 1.0s] q_ca05 attrdiff changed: ['BaseParser.SUPPORTS_TABLE_QUERY'] 1
-[sel 1.0s] q_ca05 attrdiff: 707 -> 707 candidates
-[sel 1.0s] q_ca05 cand 707 out 707 run 0 est 36.0s ['class:sqlglot/parsers/base.py:BaseParser', 'attr-refined']
-[sel 1.8s] q_ca06 attrdiff changed: ['Hive.INITCAP_DEFAULT_DELIMITER_CHARS'] 1
-[sel 1.8s] q_ca06 attrdiff: 5 -> 5 candidates
-[sel 1.8s] q_ca06 cand 5 out 5 run 0 est 4.9s ['class:sqlglot/dialects/hive.py:Hive', 'attr-refined']
-[sel 1.8s] q_ca07 cand 23 out 23 run 0 est 4.0s ['class:sqlglot/generators/drill.py:DrillGenerator', 'attr-refined']
-[sel 1.8s] q_fc00 cand 0 out 0 run 0 est 0.0s ['fixture-comment:tests/fixtures/optimizer/quote_identifiers.sql']
-[sel 1.8s] q_fc01 cand 0 out 0 run 0 est 0.0s ['fixture-comment:tests/fixtures/optimizer/pushdown_projections.sql']
-[sel 1.8s] q_fc02 cand 0 out 0 run 0 est 0.0s ['fixture-comment:tests/fixtures/pretty.sql']
-[sel 1.8s] q_fc03 cand 0 out 0 run 0 est 0.0s ['fixture-comment:tests/fixtures/optimizer/eliminate_subqueries.sql']
-[sel 1.8s] q_fc04 cand 0 out 0 run 0 est 0.0s ['fixture-comment:tests/fixtures/optimizer/annotate_functions.sql']
-[sel 1.8s] q_fc05 cand 0 out 0 run 0 est 0.0s ['fixture-comment:tests/fixtures/optimizer/pushdown_projections.sql']
-[sel 1.8s] q_fx00 cand 1 out 1 run 0 est 0.5s ['data:tests/fixtures/optimizer/isolate_table_selects.sql']
-[sel 1.8s] q_fx01 cand 2 out 2 run 0 est 2.7s ['data:tests/fixtures/identity.sql']
-[sel 1.8s] q_fx02 cand 1 out 1 run 0 est 2.4s ['data:tests/fixtures/optimizer/optimizer.sql']
-[sel 1.8s] q_fx03 cand 1 out 1 run 0 est 0.5s ['data:tests/fixtures/optimizer/qualify_columns__with_invisible.sql']
-[sel 1.8s] q_fx04 cand 1 out 1 run 0 est 0.5s ['data:tests/fixtures/optimizer/pushdown_cte_alias_columns.sql']
-[sel 1.8s] q_fx05 cand 1 out 1 run 0 est 0.8s ['data:tests/fixtures/optimizer/pushdown_predicates.sql']
-[sel 1.8s] q_fx07 cand 1 out 1 run 0 est 2.6s ['data:tests/fixtures/optimizer/simplify.sql']
-[sel 1.8s] q_fx08 cand 1 out 1 run 0 est 2.4s ['data:tests/fixtures/optimizer/optimizer.sql']
-[sel 1.8s] q_fx09 cand 1 out 1 run 0 est 0.5s ['data:tests/fixtures/optimizer/eliminate_subqueries.sql']
-[sel 1.8s] q_mu00 slices: {'test_pushdown_projection': '1', 'test_canonicalize_internal_names': '2', 'test_annotate_funcs': '4'}
-[sel 1.8s] q_mu00 cand 6 out 0 run 6 est 1.0s ['func:sqlglot/expressions/json.py:125-125']
-[sel 1.8s] q_mu01 cand 0 out 0 run 0 est 0.0s ['func:sqlglot/expressions/builders.py:993-1054']
-[sel 1.8s] q_mu02 cand 3 out 0 run 3 est 1.0s ['func:sqlglot/parsers/tsql.py:746-755']
-[sel 1.9s] q_mu03 cand 1 out 0 run 1 est 0.4s ['func:sqlglot/parsers/doris.py:165-178']
-[sel 1.9s] q_mu04 cand 4 out 0 run 4 est 0.7s ['class:sqlglot/expressions/json.py:JSONTable', 'attr-refined']
-[sel 1.9s] q_mu05 cand 1 out 0 run 1 est 0.5s ['func:sqlglot/parsers/redshift.py:129-143']
-[sel 2.7s] q_mu06 attrdiff changed: ['Redshift.Tokenizer.NUMERIC_ESCAPES_ARE_BYTES'] 1
-[sel 2.7s] q_mu06 attrdiff: 66 -> 66 candidates
-[sel 2.7s] q_mu06 cand 66 out 66 run 0 est 7.3s ['class:sqlglot/dialects/redshift.py:Redshift.Tokenizer', 'attr-refined']
-[sel 2.7s] q_mu07 cand 0 out 0 run 0 est 0.0s ['func:sqlglot/parsers/bigquery.py:713-733']
-[sel 2.7s] q_mx00 cand 3 out 3 run 0 est 2.7s ['data:tests/fixtures/identity.sql', 'data:tests/fixtures/optimizer/isolate_table_selects.sql']
-[sel 2.7s] q_mx01 cand 4 out 0 run 4 est 0.5s ['class:sqlglot/dialects/solr.py:Solr', 'attr-refined', 'class:sqlglot/generators/druid.py:DruidGenerator', 'attr-refined']
-[sel 2.7s] q_mx02 cand 1 out 0 run 1 est 0.5s ['data:tests/fixtures/optimizer/eliminate_subqueries.sql', 'func:sqlglot/expressions/builders.py:993-1054']
-[sel 2.7s] q_mx03 cand 2 out 2 run 0 est 0.5s ['data:tests/fixtures/optimizer/qualify_columns__with_invisible.sql', 'data:tests/fixtures/optimizer/isolate_table_selects.sql']
-[sel 2.7s] q_pc00 cand 0 out 0 run 0 est 0.0s ['same:sqlglot/parsers/materialize.py']
-[sel 2.7s] q_pc01 cand 0 out 0 run 0 est 0.0s ['same:sqlglot/parsers/exasol.py']
-[sel 2.7s] q_pc02 cand 0 out 0 run 0 est 0.0s ['same:sqlglot/dialects/oracle.py']
-[sel 2.7s] q_pc04 cand 0 out 0 run 0 est 0.0s ['same:sqlglot/executor/python.py']
-[sel 2.7s] q_pc05 cand 0 out 0 run 0 est 0.0s ['same:sqlglot/optimizer/eliminate_joins.py']
-[sel 2.7s] q_pc06 cand 0 out 0 run 0 est 0.0s ['same:sqlglot/generators/druid.py']
-[sel 2.7s] q_pc07 cand 0 out 0 run 0 est 0.0s ['same:sqlglot/dialects/prql.py']
+[sel 1.3s] q_ca05 attrdiff changed: ['BaseParser.SUPPORTS_TABLE_QUERY'] 1
+[sel 1.3s] q_ca05 attrdiff: 707 -> 707 candidates
+[sel 1.3s] q_ca05 cand 707 out 707 run 0 est 36.0s ['class:sqlglot/parsers/base.py:BaseParser', 'attr-refined']
+[sel 2.4s] q_ca06 attrdiff changed: ['Hive.INITCAP_DEFAULT_DELIMITER_CHARS'] 1
+[sel 2.4s] q_ca06 attrdiff: 5 -> 5 candidates
+[sel 2.4s] q_ca06 cand 5 out 5 run 0 est 4.9s ['class:sqlglot/dialects/hive.py:Hive', 'attr-refined']
+[sel 2.4s] q_ca07 cand 23 out 23 run 0 est 4.0s ['class:sqlglot/generators/drill.py:DrillGenerator', 'attr-refined']
+[sel 2.4s] q_fc00 cand 0 out 0 run 0 est 0.0s ['fixture-comment:tests/fixtures/optimizer/quote_identifiers.sql']
+[sel 2.4s] q_fc01 cand 0 out 0 run 0 est 0.0s ['fixture-comment:tests/fixtures/optimizer/pushdown_projections.sql']
+[sel 2.4s] q_fc02 cand 0 out 0 run 0 est 0.0s ['fixture-comment:tests/fixtures/pretty.sql']
+[sel 2.4s] q_fc03 cand 0 out 0 run 0 est 0.0s ['fixture-comment:tests/fixtures/optimizer/eliminate_subqueries.sql']
+[sel 2.4s] q_fc04 cand 0 out 0 run 0 est 0.0s ['fixture-comment:tests/fixtures/optimizer/annotate_functions.sql']
+[sel 2.4s] q_fc05 cand 0 out 0 run 0 est 0.0s ['fixture-comment:tests/fixtures/optimizer/pushdown_projections.sql']
+[sel 2.4s] q_fx00 cand 1 out 1 run 0 est 0.5s ['data:tests/fixtures/optimizer/isolate_table_selects.sql']
+[sel 2.4s] q_fx01 cand 2 out 2 run 0 est 2.7s ['data:tests/fixtures/identity.sql']
+[sel 2.4s] q_fx02 cand 1 out 1 run 0 est 2.4s ['data:tests/fixtures/optimizer/optimizer.sql']
+[sel 2.4s] q_fx03 cand 1 out 1 run 0 est 0.5s ['data:tests/fixtures/optimizer/qualify_columns__with_invisible.sql']
+[sel 2.4s] q_fx04 cand 1 out 1 run 0 est 0.5s ['data:tests/fixtures/optimizer/pushdown_cte_alias_columns.sql']
+[sel 2.4s] q_fx05 cand 1 out 1 run 0 est 0.8s ['data:tests/fixtures/optimizer/pushdown_predicates.sql']
+[sel 2.4s] q_fx07 cand 1 out 1 run 0 est 2.6s ['data:tests/fixtures/optimizer/simplify.sql']
+[sel 2.4s] q_fx08 cand 1 out 1 run 0 est 2.4s ['data:tests/fixtures/optimizer/optimizer.sql']
+[sel 2.4s] q_fx09 cand 1 out 1 run 0 est 0.5s ['data:tests/fixtures/optimizer/eliminate_subqueries.sql']
+[sel 2.4s] q_mu00 slices: {'test_pushdown_projection': '1', 'test_canonicalize_internal_names': '2', 'test_annotate_funcs': '4'}
+[sel 2.4s] q_mu00 cand 6 out 0 run 6 est 1.0s ['func:sqlglot/expressions/json.py:125-125']
+[sel 2.4s] q_mu01 cand 0 out 0 run 0 est 0.0s ['func:sqlglot/expressions/builders.py:993-1054']
+[sel 2.5s] q_mu02 cand 3 out 0 run 3 est 1.0s ['func:sqlglot/parsers/tsql.py:746-755']
+[sel 2.5s] q_mu03 cand 1 out 0 run 1 est 0.4s ['func:sqlglot/parsers/doris.py:165-178']
+[sel 2.5s] q_mu04 cand 4 out 0 run 4 est 0.7s ['class:sqlglot/expressions/json.py:JSONTable', 'attr-refined']
+[sel 2.5s] q_mu05 cand 1 out 0 run 1 est 0.5s ['func:sqlglot/parsers/redshift.py:129-143']
+[sel 3.6s] q_mu06 attrdiff changed: ['Redshift.Tokenizer.NUMERIC_ESCAPES_ARE_BYTES'] 1
+[sel 3.6s] q_mu06 attrdiff: 66 -> 66 candidates
+[sel 3.6s] q_mu06 cand 66 out 66 run 0 est 7.3s ['class:sqlglot/dialects/redshift.py:Redshift.Tokenizer', 'attr-refined']
+[sel 3.6s] q_mu07 cand 0 out 0 run 0 est 0.0s ['func:sqlglot/parsers/bigquery.py:713-733']
+[sel 3.6s] q_mx00 cand 3 out 3 run 0 est 2.7s ['data:tests/fixtures/identity.sql', 'data:tests/fixtures/optimizer/isolate_table_selects.sql']
+[sel 3.6s] q_mx01 cand 4 out 0 run 4 est 0.5s ['class:sqlglot/dialects/solr.py:Solr', 'attr-refined', 'class:sqlglot/generators/druid.py:DruidGenerator', 'attr-refined']
+[sel 3.7s] q_mx02 cand 1 out 0 run 1 est 0.5s ['data:tests/fixtures/optimizer/eliminate_subqueries.sql', 'func:sqlglot/expressions/builders.py:993-1054']
+[sel 3.7s] q_mx03 cand 2 out 2 run 0 est 0.5s ['data:tests/fixtures/optimizer/qualify_columns__with_invisible.sql', 'data:tests/fixtures/optimizer/isolate_table_selects.sql']
+[sel 3.7s] q_pc00 cand 0 out 0 run 0 est 0.0s ['same:sqlglot/parsers/materialize.py']
+[sel 3.7s] q_pc01 cand 0 out 0 run 0 est 0.0s ['same:sqlglot/parsers/exasol.py']
+[sel 3.7s] q_pc02 cand 0 out 0 run 0 est 0.0s ['same:sqlglot/dialects/oracle.py']
+[sel 3.7s] q_pc04 cand 0 out 0 run 0 est 0.0s ['same:sqlglot/executor/python.py']
+[sel 3.7s] q_pc05 cand 0 out 0 run 0 est 0.0s ['same:sqlglot/optimizer/eliminate_joins.py']
+[sel 3.7s] q_pc06 cand 0 out 0 run 0 est 0.0s ['same:sqlglot/generators/druid.py']
+[sel 3.7s] q_pc07 cand 0 out 0 run 0 est 0.0s ['same:sqlglot/dialects/prql.py']
+Unable to set __version__, run `pip install -e .` or `python setup.py develop` first.
+[sel 4.2s] ran q_ca00 0 tests cpu 0.07s failed 0 | raw 0.00s files 0 later 0 deep 0
+Unable to set __version__, run `pip install -e .` or `python setup.py develop` first.
+[sel 4.2s] ran q_ca01 0 tests cpu 0.08s failed 0 | raw 0.00s files 0 later 0 deep 0
 Unable to set __version__, run `pip install -e .` or `python setup.py develop` first.
 Unable to set __version__, run `pip install -e .` or `python setup.py develop` first.
-[sel 3.1s] ran q_ca00 0 tests cpu 0.05s failed 0 | raw 0.00s files 0 later 0 deep 0
-[sel 3.1s] ran q_ca01 0 tests cpu 0.05s failed 0 | raw 0.00s files 0 later 0 deep 0
+[sel 4.3s] ran q_ca02 0 tests cpu 0.09s failed 0 | raw 0.00s files 0 later 0 deep 0
 Unable to set __version__, run `pip install -e .` or `python setup.py develop` first.
-[sel 3.2s] ran q_ca02 0 tests cpu 0.04s failed 0 | raw 0.00s files 0 later 0 deep 0
+[sel 4.5s] ran q_ca04 0 tests cpu 0.10s failed 0 | raw 0.00s files 0 later 0 deep 0
 Unable to set __version__, run `pip install -e .` or `python setup.py develop` first.
+[sel 4.8s] ran q_ca03 4 tests cpu 0.54s failed 1 | raw 0.04s files 4 later 0 deep 0
 Unable to set __version__, run `pip install -e .` or `python setup.py develop` first.
-[sel 3.2s] ran q_ca04 0 tests cpu 0.05s failed 0 | raw 0.00s files 0 later 0 deep 0
+[sel 4.9s] ran q_ca06 0 tests cpu 0.08s failed 0 | raw 0.00s files 0 later 0 deep 0
 Unable to set __version__, run `pip install -e .` or `python setup.py develop` first.
-[sel 3.5s] ran q_ca03 4 tests cpu 0.36s failed 1 | raw 0.04s files 4 later 0 deep 0
+[sel 5.0s] ran q_ca07 0 tests cpu 0.08s failed 0 | raw 0.00s files 0 later 0 deep 0
+[sel 5.6s] ran q_mu00 6 tests cpu 0.57s failed 4 | raw 2.70s files 2 later 0 deep 0
+[sel 6.0s] ran q_ca05 0 tests cpu 1.51s failed 0 | raw 0.00s files 0 later 0 deep 1
+[sel 6.2s] ran q_mu02 3 tests cpu 0.53s failed 3 | raw 0.22s files 2 later 0 deep 0
 Unable to set __version__, run `pip install -e .` or `python setup.py develop` first.
-[sel 3.6s] ran q_ca06 0 tests cpu 0.05s failed 0 | raw 0.00s files 0 later 0 deep 0
+[sel 6.3s] ran q_mu03 1 tests cpu 0.27s failed 1 | raw 0.00s files 1 later 0 deep 0
+[sel 6.6s] ran q_mu05 1 tests cpu 0.26s failed 1 | raw 0.04s files 1 later 0 deep 0
 Unable to set __version__, run `pip install -e .` or `python setup.py develop` first.
-[sel 3.6s] ran q_ca07 0 tests cpu 0.05s failed 0 | raw 0.00s files 0 later 0 deep 0
-[sel 4.0s] ran q_mu00 6 tests cpu 0.41s failed 4 | raw 2.70s files 2 later 0 deep 0
-[sel 4.3s] ran q_ca05 0 tests cpu 1.03s failed 0 | raw 0.00s files 0 later 0 deep 1
-[sel 4.5s] ran q_mu02 3 tests cpu 0.39s failed 3 | raw 0.22s files 2 later 0 deep 0
-[sel 4.5s] ran q_mu03 1 tests cpu 0.18s failed 1 | raw 0.00s files 1 later 0 deep 0
+[sel 6.7s] ran q_mu06 0 tests cpu 0.07s failed 0 | raw 0.00s files 0 later 0 deep 0
+[sel 6.8s] ran q_mu04 4 tests cpu 0.55s failed 0 | raw 0.14s files 3 later 0 deep 0
 Unable to set __version__, run `pip install -e .` or `python setup.py develop` first.
-[sel 4.7s] ran q_mu05 1 tests cpu 0.19s failed 1 | raw 0.04s files 1 later 0 deep 0
-Unable to set __version__, run `pip install -e .` or `python setup.py develop` first.
-[sel 4.7s] ran q_mu06 0 tests cpu 0.05s failed 0 | raw 0.00s files 0 later 0 deep 0
-Unable to set __version__, run `pip install -e .` or `python setup.py develop` first.
-[sel 4.9s] ran q_mu04 4 tests cpu 0.40s failed 0 | raw 0.14s files 3 later 0 deep 0
-[sel 5.1s] ran q_mx01 4 tests cpu 0.36s failed 1 | raw 0.04s files 4 later 0 deep 0
-[sel 5.2s] ran q_mx02 1 tests cpu 0.28s failed 1 | raw 0.08s files 1 later 0 deep 0
-[sel 5.2s] done: simulated 98.8s, cpu self 1.0s children 6.1s
+[sel 7.2s] ran q_mx02 1 tests cpu 0.39s failed 1 | raw 0.08s files 1 later 0 deep 0
+[sel 7.3s] ran q_mx01 4 tests cpu 0.50s failed 1 | raw 0.04s files 4 later 0 deep 0
+[sel 7.3s] done: simulated 98.8s, cpu self 1.6s children 8.7s
 nanobind: leaked 27 instances!
 nanobind: leaked 15 types!
  - leaked type "_duckdb._sqltypes.DuckDBPyType"
@@ -90,16 +90,16 @@ nanobind: leaked 15 types!
  - leaked type "PythonUDFType"
  - ... skipped remainder
 nanobind: leaked 111 functions!
- - leaked function "_register_filelike"
- - leaked function ""
- - leaked function "install_extension"
- - leaked function "__getitem__"
- - leaked function "append_rows"
- - leaked function ""
- - leaked function "get_profiling_information"
- - leaked function "remove_function"
- - leaked function "fetchnumpy"
  - leaked function "_name_scope"
+ - leaked function "_submit"
+ - leaked function "struct_type"
+ - leaked function "row_type"
+ - leaked function "enable_profiling"
+ - leaked function "__repr__"
+ - leaked function ""
+ - leaked function "query_progress"
+ - leaked function "_prepare_script"
+ - leaked function "drain"
  - ... skipped remainder
 nanobind: this is likely caused by a reference counting issue in the binding code.
-See https://nanobind.readthedocs.io/en/latest/refleaks.htmlcgroup cpu: usage_usec 7200597
+See https://nanobind.readthedocs.io/en/latest/refleaks.htmlcgroup cpu: usage_usec 10412200
