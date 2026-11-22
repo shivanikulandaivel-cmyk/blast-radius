@@ -327,6 +327,13 @@ class Index:
         flags = set()
         for fd in fds:
             path = fd.old or fd.new
+            if fd.old == fd.new and not fd.binary and path.startswith("tests/fixtures/") and path.endswith(".sql") \
+                    and fd.hunks and all(b[1:] == "" or b[1:].startswith("--")
+                                         for h in fd.hunks for b in h[4] if b[:1] in "+-"):
+                # the fixture helpers drop empty lines and lines starting with
+                # "--" before reading anything: nothing changes
+                notes.append("fixture-comment:" + path)
+                continue
             bits |= self.opens.get(path, 0)
             if fd.old is None or fd.new is None or fd.old != fd.new or fd.binary:
                 notes.append("addrm:" + path)

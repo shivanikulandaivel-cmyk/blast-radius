@@ -370,7 +370,8 @@ def main():
                     if extra_cost > 4000:
                         db = attr_diff_bits(cid, changes, idx)
                         if db is not None:
-                            newc = set(to_nums(base_bits | db)) | set(unmapped)
+                            # both answers are safe on their own: keep what both select
+                            newc = set(to_nums(base_bits | (db & imp_bits))) | set(unmapped)
                             log(cid, "attrdiff: %d -> %d candidates" % (len(cand), len(newc)))
                             cand = newc
             except Exception as e:  # noqa: BLE001
@@ -421,8 +422,8 @@ def main():
             # only edits of real content: comment or blank lines in a fixture
             # are usually harmless, and running the test is the cheap check
             def _content(line):
-                x = line.strip()
-                return x and not x.startswith("--") and not x.startswith("#")
+                # what the fixture helpers keep ("#" lines are settings)
+                return line != "" and not line.startswith("--")
 
             data_only = any(_content(b[1:]) for fd in fds for h in fd.hunks for b in h[4]
                             if b[:1] in "+-")
