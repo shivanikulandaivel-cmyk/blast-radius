@@ -36,11 +36,11 @@ MAX_WORKERS = 8
 PARALLEL = int(os.environ.get("BR_PARALLEL", "2"))
 NO_RUN = os.environ.get("BR_NO_RUN") == "1"
 RISK = os.environ.get("BR_RISK", "0") == "1"
-PROBE = os.environ.get("BR_PROBE", "1") == "1"
+PROBE = os.environ.get("BR_PROBE", "0") == "1"
 PROBE_MIN_HITS = int(os.environ.get("BR_PROBE_MIN_HITS", "10"))
 PROBE_HEAVY_MS = int(os.environ.get("BR_PROBE_HEAVY_MS", "5000"))
 PROBE_HEAVY_DUR = int(os.environ.get("BR_PROBE_HEAVY_DUR", "2000"))
-PROBE_ALL = os.environ.get("BR_PROBE_ALL", "1") == "1"
+PROBE_ALL = os.environ.get("BR_PROBE_ALL", "0") == "1"
 PROBE_MIN_EV = int(os.environ.get("BR_PROBE_MIN_EV", "3"))
 PROBE_EV_BUDGET = int(os.environ.get("BR_PROBE_EV_BUDGET", "4000"))
 FIXTURE_DIRECT = os.environ.get("BR_FIXTURE_DIRECT", "1") == "1"
