@@ -34,7 +34,7 @@ WORKER_COST = 2000  # ms
 MAX_WORKERS = 8
 PARALLEL = int(os.environ.get("BR_PARALLEL", "2"))
 NO_RUN = os.environ.get("BR_NO_RUN") == "1"
-RISK = os.environ.get("BR_RISK", "1") == "1"
+RISK = os.environ.get("BR_RISK", "0") == "1"
 CPU_FACTOR = float(os.environ.get("BR_CPU_FACTOR", "2.5"))
 RISK_MS = int(os.environ.get("BR_RISK_MS", "5000"))
 RISK_MIN_EVIDENCE = int(os.environ.get("BR_RISK_MIN", "3"))
