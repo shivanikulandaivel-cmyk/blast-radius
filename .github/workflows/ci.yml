@@ -52,6 +52,27 @@ jobs:
             --volume $PWD/ci/probe:/out --volume $PWD/tools:/tools:ro \
             --entrypoint sh blast-radius-entry -c 'python /app/br/selector.py > /out/output.jsonl 2> /out/stderr.log; python /tools/check_bets.py /data/commits /out/bets.json /out/report.json > /out/check.log 2>&1' || true
           tail -n 5 ci/probe/stderr.log; cat ci/probe/check.log | tail -n 60
+      - name: Calibrate on mutants with stored truth (only with [calib])
+        if: contains(github.event.head_commit.message, '[calib]')
+        run: |
+          mkdir -p /tmp/mut/commits ci/calib && tar xzf tools/mutants.tar.gz -C /tmp/mut/commits
+          cp sample/tests.json /tmp/mut/tests.json
+          for f in 1.0 1.5 2.0 2.5; do
+            for set in mut sample; do
+              if [ $set = mut ]; then D=/tmp/mut; T=tools/truth.json; else D=$PWD/sample; T=""; fi
+              docker run --rm --platform linux/amd64 --network none --cpus 2 \
+                --memory 4096m --memory-swap 4096m --pids-limit 256 --read-only \
+                --tmpfs /tmp:rw,size=64m,mode=1777 --cap-drop ALL \
+                --security-opt no-new-privileges --user 65534:65534 --env HOME=/tmp --env BR_CPU_FACTOR=$f \
+                --volume $D/commits:/data/commits:ro --volume $D/tests.json:/data/tests.json:ro \
+                --entrypoint sh blast-radius-entry -c 'python /app/br/selector.py; echo "cgroup cpu: $(grep usage_usec /sys/fs/cgroup/cpu.stat)" >&2' \
+                > ci/calib/out_${set}_$f.jsonl 2> ci/calib/err_${set}_$f.log || true
+              cpu=$(grep -o "usage_usec [0-9]*" ci/calib/err_${set}_$f.log | awk '{print $2/1000000}')
+              if [ $set = mut ]; then r=$(python3 tools/score_truth.py /tmp/mut/tests.json $T ci/calib/out_${set}_$f.jsonl | tail -n 1)
+              else r=$(python3 score.py sample sample/answers.json ci/calib/out_${set}_$f.jsonl | head -n 2 | tr '\n' ' '); fi
+              echo "factor $f $set: $r CPU $cpu" | tee -a ci/calib/summary.txt
+            done
+          done
       - name: Ground truth on mutants (only when the commit message has [truth])
         if: contains(github.event.head_commit.message, '[truth]')
         run: |

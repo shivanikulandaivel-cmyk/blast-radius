@@ -222,7 +222,9 @@ def run_jobs(jobs, deadline):
             pass
         reap(j, status, ru)
         log("ran", j.cid, len(j.nodeids), "tests cpu %.2fs" % j.cpu,
-            "failed", len(j.result["failed"]) if j.result else "?")
+            "failed", len(j.result["failed"]) if j.result else "?",
+            "| raw %.2fs files %d later %d deep %d" % (getattr(j, "raw", 0) / 1000, getattr(j, "nfiles", 0),
+                                                       len(j.later), int(getattr(j, "deep", False))))
 
 
 # ------------------------------------------------------------ main
@@ -434,10 +436,16 @@ def main():
             later = [ids[t] for t in run if rc[t] >= 1000]
             if not first:
                 first, later = later, []
+            raw = sum((idx.cpu.get(ids[t]) or dur[t]) for t in run) + \
+                sum(idx.class_setup.get(o, 0) for o in {owner[t] for t in run})
+            nfiles = len({ids[t].split("::")[0] for t in run})
             jobs.append(Job(cid, changes, first, timeout, hard,
                             check_imports="ALL" if deep else mods,
                             collect_all=deep or "importcheck" in flags, later=later,
                             probe_sites=probe_sites))
+            jobs[-1].raw = raw
+            jobs[-1].nfiles = nfiles
+            jobs[-1].deep = deep
 
     if jobs:
         # preload heavy third-party modules once; children inherit them
