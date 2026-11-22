@@ -40,6 +40,8 @@ PROBE = os.environ.get("BR_PROBE", "1") == "1"
 PROBE_MIN_HITS = int(os.environ.get("BR_PROBE_MIN_HITS", "10"))
 PROBE_HEAVY_MS = int(os.environ.get("BR_PROBE_HEAVY_MS", "5000"))
 PROBE_HEAVY_DUR = int(os.environ.get("BR_PROBE_HEAVY_DUR", "2000"))
+PROBE_ALL = os.environ.get("BR_PROBE_ALL", "0") == "1"
+PROBE_MIN_EV = int(os.environ.get("BR_PROBE_MIN_EV", "3"))
 PROBE_EV_BUDGET = int(os.environ.get("BR_PROBE_EV_BUDGET", "4000"))
 FIXTURE_DIRECT = os.environ.get("BR_FIXTURE_DIRECT", "1") == "1"
 FIXTURE_DIRECT_MS = int(os.environ.get("BR_FIXTURE_DIRECT_MS", "4000"))
@@ -521,24 +523,29 @@ def main():
                 # different value. Everything else keeps its normal plan.
                 allc = set(out) | set(run)
                 bet = {t for t in allc if rc[t] >= PROBE_HEAVY_MS and dur[t] >= PROBE_HEAVY_DUR}
+                if PROBE_ALL:
+                    # everything that would be handed over is part of the bet
+                    bet |= set(out)
                 if bet:
-                    pool = sorted((t for t in allc if t not in bet and rc[t] <= 2500), key=lambda t: rc[t])
+                    heavy_b = {t for t in bet if rc[t] >= PROBE_HEAVY_MS and dur[t] >= PROBE_HEAVY_DUR}
+                    pool = sorted((t for t in allc if t not in heavy_b and rc[t] <= 2500), key=lambda t: rc[t])
                     in_run = [t for t in pool if t in run]
                     ev_extra, tot = [], sum(rc[t] for t in in_run)
                     for t in pool:
                         if t in run:
                             continue
-                        if len(in_run) + len(ev_extra) >= 25 or (tot + rc[t] > PROBE_EV_BUDGET and len(in_run) + len(ev_extra) >= 3):
+                        if len(in_run) + len(ev_extra) >= 25 or (tot + rc[t] > PROBE_EV_BUDGET and len(in_run) + len(ev_extra) >= PROBE_MIN_EV):
                             break
                         ev_extra.append(t)
                         tot += rc[t]
+                    bet -= set(ev_extra)
                     new_out = set(out) - bet - set(ev_extra)
                     new_run = [t for t in run if t not in bet] + ev_extra
                     _, c_with = schedule(set(out), dur)
                     _, c_without = schedule(new_out, dur)
                     gain = c_with - c_without
                     cost_ev = sum(rc[t] for t in ev_extra) + (0 if [t for t in run if t not in bet] else h)
-                    if len(new_run) >= 3 and gain > cost_ev:
+                    if len(new_run) >= PROBE_MIN_EV and gain > cost_ev:
                         ev_stop = list(ev_extra)
                         out, run = sorted(new_out), new_run
                         plans[cid] = {"out": set(out), "run": run, "gamble": [], "bet": bet}

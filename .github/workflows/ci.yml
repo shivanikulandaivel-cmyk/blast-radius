@@ -84,11 +84,11 @@ jobs:
               --tmpfs /tmp:rw,size=4g,mode=1777 --user 65534:65534 --env HOME=/tmp \
               --env BR_BUDGET=1500 --env BR_RUN_LOG=/out/runs_$name.json --env BR_BET_LOG=/out/bets_$name.json $eargs \
               --volume /tmp/m3:/data:ro --volume $PWD/ci/audit:/out --volume $PWD/tools:/tools:ro \
-              --entrypoint sh blast-radius-entry -c "python /app/br/selector.py > /out/sel_$name.jsonl 2> /out/err_$name.log; python /tools/check_bets.py /data/commits /out/bets_$name.json /out/betrep_$name.json > /out/bets_$name.log 2>&1 & python /tools/audit.py /data /out/runs_$name.json /out/audit_$name.json > /out/audit_$name.log 2>&1; wait" || true
-            echo "== $name"; grep "done:" ci/audit/err_$name.log || true; grep -c MISMATCH ci/audit/audit_$name.log || true; tail -n 25 ci/audit/audit_$name.log || true; tail -n 3 ci/audit/bets_$name.log || true
+              --entrypoint sh blast-radius-entry -c "python /app/br/selector.py > /out/sel_$name.jsonl 2> /out/err_$name.log; python /tools/check_bets_par.py /data/commits /out/bets_$name.json /out/betrep_$name.json > /out/bets_$name.log 2>&1" || true
+            echo "== $name"; grep "done:" ci/audit/err_$name.log || true; grep -c "betting" ci/audit/err_$name.log || true; grep -v "'failed': \[\]" ci/audit/bets_$name.log | tail -n 30 || true
           done <<'EOF'
-          A BR_SLICE_KINDS=ykv BR_NO_LATER=1
-          C BR_SLICE_KINDS=yk BR_NO_LATER=1
+          P BR_PROBE_ALL=1
+          P5 BR_PROBE_ALL=1 BR_PROBE_MIN_EV=5 BR_PROBE_MIN_HITS=20
           EOF
       - name: Sweep settings on mutants (truth) and samples (only with [sweep])
         if: contains(github.event.head_commit.message, '[sweep]')
