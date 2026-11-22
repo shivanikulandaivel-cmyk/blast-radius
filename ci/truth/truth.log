@@ -1,0 +1,91 @@
+p00 {'failing': 0, 'secs': 145}
+p01 {'failing': 1, 'secs': 144}
+p02 {'failing': 0, 'secs': 143}
+p03 {'failing': 4, 'secs': 143}
+p04 {'failing': 0, 'secs': 144}
+p05 {'failing': 0, 'secs': 147}
+p06 {'failing': 0, 'secs': 146}
+p07 {'failing': 0, 'secs': 145}
+p08 {'failing': 1, 'secs': 141}
+p09 {'failing': 1, 'secs': 144}
+p10 {'failing': 10, 'secs': 142}
+p11 {'failing': 7, 'secs': 140}
+p12 {'failing': 1, 'secs': 142}
+p13 {'failing': 0, 'secs': 144}
+p14 {'failing': 6, 'secs': 145}
+p15 {'failing': 0, 'secs': 143}
+p16 {'failing': 2, 'secs': 147}
+p17 {'failing': 0, 'secs': 146}
+p18 {'failing': 3, 'secs': 147}
+p19 {'failing': 0, 'secs': 148}
+p20 {'failing': 0, 'secs': 139}
+p21 {'failing': 0, 'secs': 142}
+p22 {'failing': 176, 'secs': 139}
+p23 {'failing': 1, 'secs': 140}
+p24 {'failing': 2, 'secs': 135}
+p25 {'failing': 0, 'secs': 141}
+p26 {'failing': 1, 'secs': 137}
+p27 {'failing': 27, 'secs': 137}
+p28 {'failing': 1, 'secs': 138}
+p29 {'failing': 2, 'secs': 137}
+p30 {'failing': 51, 'secs': 102}
+p31 {'failing': 16, 'secs': 136}
+p32 {'failing': 1, 'secs': 138}
+p33 {'failing': 5, 'secs': 136}
+p34 {'failing': 1, 'secs': 140}
+p35 {'failing': 2, 'secs': 141}
+p36 {'failing': 1, 'secs': 134}
+p37 {'failing': 2, 'secs': 134}
+p38 {'failing': 128, 'secs': 86}
+p39 {'failing': 2, 'secs': 134}
+p40 {'failing': 15, 'secs': 91}
+p41 {'failing': 0, 'secs': 135}
+p42 {'failing': 1, 'secs': 137}
+p43 {'failing': 2, 'secs': 123}
+p44 {'failing': 0, 'secs': 113}
+p00 {'cost': 0.0, 'oracle': 0.0, 'miss': False, 'n_fail': 0, 'n_sel': 0}
+p01 {'cost': 2.041, 'oracle': 2.041, 'miss': False, 'n_fail': 1, 'n_sel': 1}
+p02 {'cost': 0.0, 'oracle': 0.0, 'miss': False, 'n_fail': 0, 'n_sel': 0}
+p03 {'cost': 2.037, 'oracle': 2.014, 'miss': False, 'n_fail': 4, 'n_sel': 4}
+p04 {'cost': 0.0, 'oracle': 0.0, 'miss': False, 'n_fail': 0, 'n_sel': 0}
+p05 {'cost': 0.0, 'oracle': 0.0, 'miss': False, 'n_fail': 0, 'n_sel': 0}
+p06 {'cost': 0.0, 'oracle': 0.0, 'miss': False, 'n_fail': 0, 'n_sel': 0}
+p07 {'cost': 25.454, 'oracle': 0.0, 'miss': False, 'n_fail': 0, 'n_sel': 178}
+p08 {'cost': 2.008, 'oracle': 2.008, 'miss': False, 'n_fail': 1, 'n_sel': 1}
+p09 {'cost': 2.004, 'oracle': 2.004, 'miss': False, 'n_fail': 1, 'n_sel': 1}
+p10 {'cost': 6.532, 'oracle': 3.406, 'miss': False, 'n_fail': 10, 'n_sel': 29}
+p11 {'cost': 5.357, 'oracle': 3.406, 'miss': False, 'n_fail': 7, 'n_sel': 38}
+p12 {'cost': 2.202, 'oracle': 2.169, 'miss': False, 'n_fail': 1, 'n_sel': 2}
+p13 {'cost': 0.0, 'oracle': 0.0, 'miss': False, 'n_fail': 0, 'n_sel': 0}
+p14 {'cost': 5.764, 'oracle': 4.232, 'miss': False, 'n_fail': 6, 'n_sel': 6}
+p15 {'cost': 0.0, 'oracle': 0.0, 'miss': False, 'n_fail': 0, 'n_sel': 0}
+p16 {'cost': 2.108, 'oracle': 2.096, 'miss': False, 'n_fail': 2, 'n_sel': 2}
+p17 {'cost': 0.0, 'oracle': 0.0, 'miss': False, 'n_fail': 0, 'n_sel': 0}
+p18 {'cost': 2.167, 'oracle': 2.155, 'miss': False, 'n_fail': 3, 'n_sel': 3}
+p19 {'cost': 0.0, 'oracle': 0.0, 'miss': False, 'n_fail': 0, 'n_sel': 0}
+p20 {'cost': 0.0, 'oracle': 0.0, 'miss': False, 'n_fail': 0, 'n_sel': 0}
+p21 {'cost': 0.0, 'oracle': 0.0, 'miss': False, 'n_fail': 0, 'n_sel': 0}
+p22 {'cost': 36.817, 'oracle': 3.406, 'miss': False, 'n_fail': 176, 'n_sel': 1592}
+p23 {'cost': 2.023, 'oracle': 2.023, 'miss': False, 'n_fail': 1, 'n_sel': 1}
+p24 {'cost': 2.011, 'oracle': 2.008, 'miss': False, 'n_fail': 2, 'n_sel': 2}
+p25 {'cost': 0.0, 'oracle': 0.0, 'miss': False, 'n_fail': 0, 'n_sel': 0}
+p26 {'cost': 2.006, 'oracle': 2.006, 'miss': False, 'n_fail': 1, 'n_sel': 1}
+p27 {'cost': 2.317, 'oracle': 2.096, 'miss': False, 'n_fail': 27, 'n_sel': 27}
+p28 {'cost': 2.067, 'oracle': 2.067, 'miss': False, 'n_fail': 1, 'n_sel': 1}
+p29 {'cost': 2.003, 'oracle': 2.002, 'miss': False, 'n_fail': 2, 'n_sel': 2}
+p30 {'cost': 24.787, 'oracle': 23.454, 'miss': False, 'n_fail': 51, 'n_sel': 51}
+p31 {'cost': 5.601, 'oracle': 3.963, 'miss': False, 'n_fail': 16, 'n_sel': 34}
+p32 {'cost': 2.213, 'oracle': 2.213, 'miss': False, 'n_fail': 1, 'n_sel': 1}
+p33 {'cost': 4.863, 'oracle': 2.034, 'miss': False, 'n_fail': 5, 'n_sel': 46}
+p34 {'cost': 3.406, 'oracle': 3.406, 'miss': False, 'n_fail': 1, 'n_sel': 1}
+p35 {'cost': 4.487, 'oracle': 2.329, 'miss': False, 'n_fail': 2, 'n_sel': 8}
+p36 {'cost': 2.005, 'oracle': 2.005, 'miss': False, 'n_fail': 1, 'n_sel': 1}
+p37 {'cost': 5.819, 'oracle': 3.006, 'miss': False, 'n_fail': 2, 'n_sel': 5}
+p38 {'cost': 25.454, 'oracle': 23.454, 'miss': False, 'n_fail': 128, 'n_sel': 178}
+p39 {'cost': 6.096, 'oracle': 3.016, 'miss': False, 'n_fail': 2, 'n_sel': 6}
+p40 {'cost': 25.454, 'oracle': 23.454, 'miss': False, 'n_fail': 15, 'n_sel': 177}
+p41 {'cost': 25.454, 'oracle': 0.0, 'miss': False, 'n_fail': 0, 'n_sel': 231}
+p42 {'cost': 2.017, 'oracle': 2.017, 'miss': False, 'n_fail': 1, 'n_sel': 1}
+p43 {'cost': 2.002, 'oracle': 2.001, 'miss': False, 'n_fail': 2, 'n_sel': 2}
+p44 {'cost': 0.0, 'oracle': 0.0, 'miss': False, 'n_fail': 0, 'n_sel': 0}
+TOTAL 246.6  ORACLE 137.5  MISSES 0
