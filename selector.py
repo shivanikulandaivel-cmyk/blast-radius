@@ -34,6 +34,9 @@ WORKER_COST = 2000  # ms
 MAX_WORKERS = 8
 PARALLEL = int(os.environ.get("BR_PARALLEL", "2"))
 NO_RUN = os.environ.get("BR_NO_RUN") == "1"
+RISK = os.environ.get("BR_RISK", "1") == "1"
+RISK_MS = int(os.environ.get("BR_RISK_MS", "5000"))
+RISK_MIN_EVIDENCE = int(os.environ.get("BR_RISK_MIN", "3"))
 
 T0 = time.monotonic()
 _printed = False
@@ -296,6 +299,16 @@ def main():
             plans[cid] = {"out": cand, "run": []}
             log(cid, "syntax error -> output", len(cand))
             continue
+        # very expensive tests (recorded >= RISK_MS): when enough cheaper
+        # candidates exist, run those first; if they all pass, leave the
+        # expensive ones out, otherwise hand them over
+        gamble = []
+        if RISK and ok:
+            heavy = [t for t in cand if dur[t] >= RISK_MS]
+            cheap_n = len(cand) - len(heavy)
+            if heavy and cheap_n >= RISK_MIN_EVIDENCE:
+                gamble = heavy
+                cand = set(cand) - set(heavy)
         # choose which candidates to run and which to hand over directly
         order = sorted(cand, key=lambda t: -dur[t])
         h = 300  # ms of fork/overhead per run
@@ -327,7 +340,11 @@ def main():
                 best = (c, j)
         j = best[1]
         out, run = order[:j], order[j:]
-        plans[cid] = {"out": set(out), "run": run}
+        plans[cid] = {"out": set(out), "run": run, "gamble": gamble}
+        if gamble and not run:
+            # nothing cheap to run means no evidence: hand them over
+            plans[cid]["out"] |= set(gamble)
+            plans[cid]["gamble"] = gamble = []
         log(cid, "cand", len(cand), "out", len(out), "run", len(run), "est %.1fs" % (best[0] / 1000), notes[:4])
         mods = []
         if "importlevel" in flags or "addrm" in flags:
@@ -353,7 +370,12 @@ def main():
     if jobs:
         # preload heavy third-party modules once; children inherit them
         os.environ["SKIP_INTEGRATION"] = "0"
-        for m in ("pytest", "pytest_timeout", "numpy", "pandas", "duckdb", "pytz", "dateutil"):
+        heavy_files = ("tests/test_executor.py", "tests/test_optimizer.py")
+        need_heavy = any(n.startswith(heavy_files) for jb in jobs for n in jb.nodeids + jb.later)
+        mods_pre = ["pytest", "pytest_timeout", "pytz", "dateutil"]
+        if need_heavy:
+            mods_pre += ["numpy", "pandas", "duckdb"]
+        for m in mods_pre:
             try:
                 __import__(m)
             except Exception:
@@ -370,6 +392,7 @@ def main():
             if res is None:
                 # no usable result: hand every planned test over
                 p["out"] |= set(num[i] for i in j.nodeids + j.later)
+                p["out"] |= set(p.get("gamble") or [])
                 continue
             if res.get("import_errors"):
                 # a module no longer imports: everything that uses it fails
@@ -387,6 +410,14 @@ def main():
                 log(j.cid, "import errors", res["import_errors"][:2], "-> +", len(to_nums(broad)))
             failed = set(res["failed"])
             seen = set(res["seen"])
+            g = p.get("gamble") or []
+            if g:
+                cheap_seen = [t for t in j.nodeids if t in seen]
+                if failed or res.get("collect_errors") or res.get("import_errors") \
+                        or len(cheap_seen) < len(j.nodeids):
+                    p["out"] |= set(g)
+                else:
+                    log(j.cid, "skipping", len(g), "expensive tests: all cheaper ones passed")
             for tid in j.nodeids + j.later:
                 if tid in failed or tid not in seen:
                     p["out"].add(num[tid])
