@@ -91,6 +91,21 @@ jobs:
             grep "MISMATCH\|AUDITED" ci/audit/audit_$set.log | tail -n 20 || true
             grep -v "'failed': \[\]" ci/audit/bets_$set.log | tail -n 10 || true
           done
+      - name: Profile the selector process (only with [profile])
+        if: contains(github.event.head_commit.message, '[profile]')
+        run: |
+          mkdir -p ci/prof && chmod -R a+rwX ci/prof
+          for set in sample m2; do
+            if [ $set = sample ]; then D=$PWD/sample; else D=/tmp/m2; fi
+            docker run --rm --platform linux/amd64 --network none --cpus 2 \
+              --memory 4096m --memory-swap 4096m --pids-limit 256 \
+              --tmpfs /tmp:rw,size=64m,mode=1777 --cap-drop ALL \
+              --security-opt no-new-privileges --user 65534:65534 --env HOME=/tmp \
+              --volume $D/commits:/data/commits:ro --volume $D/tests.json:/data/tests.json:ro \
+              --volume $PWD/ci/prof:/out --volume $PWD/tools:/tools:ro \
+              --entrypoint sh blast-radius-entry -c "python -m cProfile -o /out/prof_$set.out /app/br/selector.py > /dev/null 2> /out/err_$set.log; python /tools/prof_top.py /out/prof_$set.out" 2>&1 | grep -v "^$" | head -n 75 || true
+            grep "done:" ci/prof/err_$set.log || true
+          done
       - name: Sweep settings on mutants (truth) and samples (only with [sweep])
         if: contains(github.event.head_commit.message, '[sweep]')
         run: |
