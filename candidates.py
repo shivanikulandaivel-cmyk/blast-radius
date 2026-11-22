@@ -469,6 +469,8 @@ class Index:
             return None
         if kind == "y" and not tid.startswith("tests/test_optimizer.py::"):
             return None
+        if kind not in ("y", "k", "v"):
+            return None
         m = 0
         for path, a, b in ranges:
             com = sl["common"].get(path)
