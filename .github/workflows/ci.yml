@@ -82,10 +82,10 @@ jobs:
             eargs=""; for e in $envs; do eargs="$eargs --env $e"; done
             docker run --rm --network none --cpus 4 --memory 12g --pids-limit 1024 \
               --tmpfs /tmp:rw,size=4g,mode=1777 --user 65534:65534 --env HOME=/tmp \
-              --env BR_BUDGET=1500 --env BR_RUN_LOG=/out/runs_$name.json $eargs \
+              --env BR_BUDGET=1500 --env BR_RUN_LOG=/out/runs_$name.json --env BR_BET_LOG=/out/bets_$name.json $eargs \
               --volume /tmp/m3:/data:ro --volume $PWD/ci/audit:/out --volume $PWD/tools:/tools:ro \
-              --entrypoint sh blast-radius-entry -c "python /app/br/selector.py > /out/sel_$name.jsonl 2> /out/err_$name.log; python /tools/audit.py /data /out/runs_$name.json /out/audit_$name.json > /out/audit_$name.log 2>&1" || true
-            echo "== $name"; tail -n 1 ci/audit/err_$name.log; grep -c MISMATCH ci/audit/audit_$name.log; tail -n 25 ci/audit/audit_$name.log
+              --entrypoint sh blast-radius-entry -c "python /app/br/selector.py > /out/sel_$name.jsonl 2> /out/err_$name.log; python /tools/check_bets.py /data/commits /out/bets_$name.json /out/betrep_$name.json > /out/bets_$name.log 2>&1 & python /tools/audit.py /data /out/runs_$name.json /out/audit_$name.json > /out/audit_$name.log 2>&1; wait" || true
+            echo "== $name"; tail -n 1 ci/audit/err_$name.log; grep -c MISMATCH ci/audit/audit_$name.log; tail -n 25 ci/audit/audit_$name.log; tail -n 3 ci/audit/bets_$name.log
           done <<'EOF'
           A BR_SLICE_KINDS=ykv BR_NO_LATER=1
           C BR_SLICE_KINDS=yk BR_NO_LATER=1
