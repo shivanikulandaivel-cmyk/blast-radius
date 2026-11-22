@@ -57,6 +57,21 @@ jobs:
           python3 tools/score_truth.py /tmp/mut/tests.json tools/truth.json ci/probe/output.jsonl > ci/probe/score.txt 2>&1 || true
           cpu=$(grep -o "cpu self [0-9.]*s children [0-9.]*s" ci/probe/stderr.log); echo "selector $cpu" >> ci/probe/score.txt
           cat ci/probe/score.txt
+      - name: Check on the second patch set with stored truth
+        if: hashFiles('tools/truth2.json') != ''
+        run: |
+          rm -rf /tmp/m2 && mkdir -p /tmp/m2/commits ci/m2 && tar xzf tools/mutants2.tar.gz -C /tmp/m2/commits
+          cp sample/tests.json /tmp/m2/tests.json
+          docker run --rm --platform linux/amd64 --network none --cpus 2 \
+            --memory 4096m --memory-swap 4096m --pids-limit 256 --read-only \
+            --tmpfs /tmp:rw,size=64m,mode=1777 --cap-drop ALL \
+            --security-opt no-new-privileges --user 65534:65534 --env HOME=/tmp \
+            --volume /tmp/m2/commits:/data/commits:ro --volume /tmp/m2/tests.json:/data/tests.json:ro \
+            --entrypoint sh blast-radius-entry -c 'python /app/br/selector.py; echo "cgroup cpu: $(grep usage_usec /sys/fs/cgroup/cpu.stat)" >&2' \
+            > ci/m2/out.jsonl 2> ci/m2/err.log || true
+          python3 tools/score_truth.py /tmp/m2/tests.json tools/truth2.json ci/m2/out.jsonl > ci/m2/score.txt 2>&1 || true
+          grep -o "usage_usec [0-9]*" ci/m2/err.log >> ci/m2/score.txt || true
+          cat ci/m2/score.txt
       - name: Sweep settings on mutants (truth) and samples (only with [sweep])
         if: contains(github.event.head_commit.message, '[sweep]')
         run: |
