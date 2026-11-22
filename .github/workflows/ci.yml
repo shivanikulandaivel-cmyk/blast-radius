@@ -77,10 +77,11 @@ jobs:
         run: |
           mkdir -p /tmp/mut/commits ci/sweep && tar xzf tools/mutants.tar.gz -C /tmp/mut/commits
           cp sample/tests.json /tmp/mut/tests.json
+          mkdir -p /tmp/m2s/commits && tar xzf tools/mutants2.tar.gz -C /tmp/m2s/commits && cp sample/tests.json /tmp/m2s/tests.json
           rm -f ci/sweep/summary.txt
           while read name envs; do
-            for set in mut sample; do
-              if [ $set = mut ]; then D=/tmp/mut; T=tools/truth.json; else D=$PWD/sample; T=sample/answers.json; fi
+            for set in mut sample m2; do
+              if [ $set = mut ]; then D=/tmp/mut; T=tools/truth.json; elif [ $set = m2 ]; then D=/tmp/m2s; T=tools/truth2.json; else D=$PWD/sample; T=sample/answers.json; fi
               eargs=""; for e in $envs; do eargs="$eargs --env $e"; done
               docker run --rm --platform linux/amd64 --network none --cpus 2 \
                 --memory 4096m --memory-swap 4096m --pids-limit 256 --read-only \

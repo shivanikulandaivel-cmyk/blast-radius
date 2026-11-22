@@ -48,6 +48,10 @@ CPU_FACTOR = float(os.environ.get("BR_CPU_FACTOR", "2.5"))
 PLAN_SCALE = float(os.environ.get("BR_PLAN_SCALE", "1.0"))
 RUN_CAP_MS = float(os.environ.get("BR_RUN_CAP_MS", "1e12"))
 NO_LATER = os.environ.get("BR_NO_LATER", "0") == "1"
+BIG_GAMBLE = os.environ.get("BR_BIG_GAMBLE", "0") == "1"
+BIG_GAMBLE_MS = int(os.environ.get("BR_BIG_GAMBLE_MS", "8000"))
+BIG_GAMBLE_EV = int(os.environ.get("BR_BIG_GAMBLE_EV", "25"))
+BIG_GAMBLE_BUDGET = int(os.environ.get("BR_BIG_GAMBLE_BUDGET", "4000"))
 RISK_MS = int(os.environ.get("BR_RISK_MS", "5000"))
 RISK_MIN_EVIDENCE = int(os.environ.get("BR_RISK_MIN", "3"))
 
@@ -541,6 +545,28 @@ def main():
                     probe_sites = 0
             else:
                 probe_sites = 0
+        # Option B: when a lot would be handed over, run the cheapest of those
+        # tests as evidence; if every test that runs passes, leave the rest
+        # out. A bet: a failure among the rest would be a miss.
+        if BIG_GAMBLE and ok and not NO_RUN and out and not gamble and "syntax" not in flags:
+            _, out_cost = schedule(set(out), dur)
+            if out_cost >= BIG_GAMBLE_MS:
+                pool = sorted((t for t in out if rc[t] <= 2500), key=lambda t: rc[t])
+                ev2, tot = [], 0
+                for t in pool:
+                    if len(ev2) >= BIG_GAMBLE_EV or (tot + rc[t] > BIG_GAMBLE_BUDGET and len(ev2) >= 3):
+                        break
+                    ev2.append(t)
+                    tot += rc[t]
+                if len(ev2) + len([t for t in run]) >= 3 and ev2:
+                    gamble = [t for t in out if t not in set(ev2)]
+                    run = list(run) + ev2
+                    out = []
+                    p0 = plans[cid]
+                    p0["out"] = set()
+                    p0["run"] = run
+                    p0["gamble"] = gamble
+                    log(cid, "big gamble: %d tests (%.1fs) on %d evidence" % (len(gamble), out_cost / 1000, len(ev2)))
         if gamble and not run:
             # nothing cheap to run means no evidence: hand them over
             plans[cid]["out"] |= set(gamble)
