@@ -302,7 +302,8 @@ def main():
     cdir = os.path.join(DATA, "commits")
     commits = sorted(f[:-6] for f in os.listdir(cdir) if f.endswith(".patch"))
     budget = BUDGET or (180.0 if len(commits) <= 34 else 270.0) * (len(commits) / (30 if len(commits) <= 34 else 45))
-    budget = max(60.0, min(budget, 170.0 if len(commits) <= 34 else 255.0))
+    if not BUDGET:
+        budget = max(60.0, min(budget, 170.0 if len(commits) <= 34 else 255.0))
     run_deadline = T0 + budget * 0.55
 
     import candidates  # noqa: F401  (classes for unpickling)
@@ -713,6 +714,19 @@ def main():
                         p["out"].add(t["number"])
                 log(j.cid, "collect errors in", len(files), "files")
 
+    run_log = os.environ.get("BR_RUN_LOG")
+    if run_log:
+        try:
+            rl = {}
+            for j in jobs:
+                res = j.result or {}
+                rl[j.cid] = {"run": list(j.nodeids) + list(j.later), "slices": getattr(j, "slices", {}),
+                             "failed": res.get("failed", []), "seen": res.get("seen", []),
+                             "out": sorted(ids[t] for t in plans[j.cid]["out"])}
+            with open(run_log, "w") as f:
+                json.dump(rl, f)
+        except Exception as e:  # noqa: BLE001
+            log("run log failed", e)
     bet_log = os.environ.get("BR_BET_LOG")
     if bet_log:
         try:

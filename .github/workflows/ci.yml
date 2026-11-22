@@ -72,6 +72,24 @@ jobs:
           python3 tools/score_truth.py /tmp/m2/tests.json tools/truth2.json ci/m2/out.jsonl > ci/m2/score.txt 2>&1 || true
           grep -o "usage_usec [0-9]*" ci/m2/err.log >> ci/m2/score.txt || true
           cat ci/m2/score.txt
+      - name: Audit leave-out decisions on fresh body-only mutants (only with [audit])
+        if: contains(github.event.head_commit.message, '[audit]')
+        run: |
+          rm -rf /tmp/m3 && mkdir -p /tmp/m3/commits ci/audit && tar xzf tools/mutants3.tar.gz -C /tmp/m3/commits
+          cp sample/tests.json /tmp/m3/tests.json
+          chmod -R a+rwX ci/audit
+          while read name envs; do
+            eargs=""; for e in $envs; do eargs="$eargs --env $e"; done
+            docker run --rm --network none --cpus 4 --memory 12g --pids-limit 1024 \
+              --tmpfs /tmp:rw,size=4g,mode=1777 --user 65534:65534 --env HOME=/tmp \
+              --env BR_BUDGET=1500 --env BR_RUN_LOG=/out/runs_$name.json $eargs \
+              --volume /tmp/m3:/data:ro --volume $PWD/ci/audit:/out --volume $PWD/tools:/tools:ro \
+              --entrypoint sh blast-radius-entry -c "python /app/br/selector.py > /out/sel_$name.jsonl 2> /out/err_$name.log; python /tools/audit.py /data /out/runs_$name.json /out/audit_$name.json > /out/audit_$name.log 2>&1" || true
+            echo "== $name"; tail -n 1 ci/audit/err_$name.log; grep -c MISMATCH ci/audit/audit_$name.log; tail -n 25 ci/audit/audit_$name.log
+          done <<'EOF'
+          A BR_SLICE_KINDS=ykv BR_NO_LATER=1
+          C BR_SLICE_KINDS=yk BR_NO_LATER=1
+          EOF
       - name: Sweep settings on mutants (truth) and samples (only with [sweep])
         if: contains(github.event.head_commit.message, '[sweep]')
         run: |
