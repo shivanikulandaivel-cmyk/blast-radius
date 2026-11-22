@@ -35,6 +35,7 @@ MAX_WORKERS = 8
 PARALLEL = int(os.environ.get("BR_PARALLEL", "2"))
 NO_RUN = os.environ.get("BR_NO_RUN") == "1"
 RISK = os.environ.get("BR_RISK", "1") == "1"
+CPU_FACTOR = float(os.environ.get("BR_CPU_FACTOR", "2.5"))
 RISK_MS = int(os.environ.get("BR_RISK_MS", "5000"))
 RISK_MIN_EVIDENCE = int(os.environ.get("BR_RISK_MIN", "3"))
 
@@ -310,18 +311,26 @@ def main():
                 def _rc(t):
                     c = idx.cpu.get(ids[t])
                     return c if c is not None else dur[t] * 1.2 + 5
-                ev = sorted((t for t in cand if t not in heavy and _rc(t) <= 1000), key=_rc)
+                ev_all = sorted((t for t in cand if t not in heavy and _rc(t) <= 1000), key=_rc)
+                ev, tot = [], 0
+                for t in ev_all:
+                    if len(ev) >= 12 or (tot + _rc(t) > 1500 and len(ev) >= RISK_MIN_EVIDENCE):
+                        break
+                    ev.append(t)
+                    tot += _rc(t)
                 if len(ev) >= RISK_MIN_EVIDENCE:
                     gamble = heavy
                     evidence = ev
                     cand = set(cand) - set(heavy) - set(ev)
         # choose which candidates to run and which to hand over directly
         order = sorted(cand, key=lambda t: -dur[t])
-        h = 300  # ms of fork/overhead per run
+        h = 400  # ms of fork/overhead per run
 
         def runcost(t):
+            # build-time measurements run warm; a fresh child pays imports,
+            # lazy dialect setup and caches again: about 2.5x in practice
             c = idx.cpu.get(ids[t])
-            return c if c is not None else dur[t] * 1.2 + 5
+            return (c if c is not None else dur[t] * 1.2) * CPU_FACTOR + 5
 
         rc = {t: runcost(t) for t in list(order) + evidence}
         owner = {t: ids[t].rsplit("::", 1)[0] for t in list(order) + evidence}
