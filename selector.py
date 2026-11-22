@@ -38,8 +38,8 @@ NO_RUN = os.environ.get("BR_NO_RUN") == "1"
 RISK = os.environ.get("BR_RISK", "0") == "1"
 PROBE = os.environ.get("BR_PROBE", "1") == "1"
 PROBE_MIN_HITS = int(os.environ.get("BR_PROBE_MIN_HITS", "10"))
-PROBE_HEAVY_MS = int(os.environ.get("BR_PROBE_HEAVY_MS", "5000"))
-PROBE_HEAVY_DUR = int(os.environ.get("BR_PROBE_HEAVY_DUR", "2000"))
+PROBE_HEAVY_MS = int(os.environ.get("BR_PROBE_HEAVY_MS", "2000"))
+PROBE_HEAVY_DUR = int(os.environ.get("BR_PROBE_HEAVY_DUR", "300"))
 PROBE_EV_BUDGET = int(os.environ.get("BR_PROBE_EV_BUDGET", "4000"))
 FIXTURE_DIRECT = os.environ.get("BR_FIXTURE_DIRECT", "1") == "1"
 FIXTURE_DIRECT_MS = int(os.environ.get("BR_FIXTURE_DIRECT_MS", "4000"))
@@ -48,10 +48,10 @@ CPU_FACTOR = float(os.environ.get("BR_CPU_FACTOR", "2.5"))
 PLAN_SCALE = float(os.environ.get("BR_PLAN_SCALE", "1.0"))
 RUN_CAP_MS = float(os.environ.get("BR_RUN_CAP_MS", "1e12"))
 NO_LATER = os.environ.get("BR_NO_LATER", "0") == "1"
-BIG_GAMBLE = os.environ.get("BR_BIG_GAMBLE", "0") == "1"
-BIG_GAMBLE_MS = int(os.environ.get("BR_BIG_GAMBLE_MS", "8000"))
-BIG_GAMBLE_EV = int(os.environ.get("BR_BIG_GAMBLE_EV", "25"))
-BIG_GAMBLE_BUDGET = int(os.environ.get("BR_BIG_GAMBLE_BUDGET", "4000"))
+BIG_GAMBLE = os.environ.get("BR_BIG_GAMBLE", "1") == "1"
+BIG_GAMBLE_MS = int(os.environ.get("BR_BIG_GAMBLE_MS", "2000"))
+BIG_GAMBLE_EV = int(os.environ.get("BR_BIG_GAMBLE_EV", "40"))
+BIG_GAMBLE_BUDGET = int(os.environ.get("BR_BIG_GAMBLE_BUDGET", "10000"))
 RISK_MS = int(os.environ.get("BR_RISK_MS", "5000"))
 RISK_MIN_EVIDENCE = int(os.environ.get("BR_RISK_MIN", "3"))
 
@@ -551,7 +551,8 @@ def main():
         # Option B: when a lot would be handed over, run the cheapest of those
         # tests as evidence; if every test that runs passes, leave the rest
         # out. A bet: a failure among the rest would be a miss.
-        if BIG_GAMBLE and ok and not NO_RUN and out and not gamble and "syntax" not in flags:
+        if BIG_GAMBLE and ok and not NO_RUN and out and not gamble and "syntax" not in flags \
+                and "importlevel" not in flags and "addrm" not in flags:
             _, out_cost = schedule(set(out), dur)
             if out_cost >= BIG_GAMBLE_MS:
                 pool = sorted((t for t in out if rc[t] <= 2500), key=lambda t: rc[t])
