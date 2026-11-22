@@ -237,6 +237,14 @@ def _audit(event, args):
 
 
 def _wrap_init(cls):
+    # wrap the class that defines __init__: setting it on a class that only
+    # inherits one would skip mixins further along the MRO (e.g. TimeUnit)
+    for c in cls.__mro__:
+        if "__init__" in c.__dict__:
+            cls = c
+            break
+    if getattr(cls.__init__, "_br_wrapped", False):
+        return
     orig = cls.__init__
 
     def __init__(self, *a, **k):
@@ -246,6 +254,7 @@ def _wrap_init(cls):
         if d is not None:
             _types.add(type(d))
 
+    __init__._br_wrapped = True
     cls.__init__ = __init__
 
 
