@@ -11,4 +11,4 @@ p38 cost 25.5 oracle 23.5
 p40 cost 25.5 oracle 23.5
 p41 cost 25.5 oracle 0.0
 SIMULATED 213.0 MISSES 0
-selector cpu self 4.2s children 15.7s
+selector cpu self 5.6s children 21.6s
