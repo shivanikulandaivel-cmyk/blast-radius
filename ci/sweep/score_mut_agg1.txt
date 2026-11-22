@@ -1,0 +1,12 @@
+p11 cost 3.9 oracle 3.4
+p14 cost 5.8 oracle 4.2
+p22 cost 25.5 oracle 3.4
+p30 cost 24.8 oracle 23.5
+p31 cost 5.9 oracle 4.0
+p33 cost 4.0 oracle 2.0
+p35 cost 4.2 oracle 2.3
+p38 cost 25.5 oracle 23.5
+p39 cost 5.7 oracle 3.0
+p40 cost 25.5 oracle 23.5
+p41 cost 25.5 oracle 0.0
+SIMULATED 202.0 MISSES 0
