@@ -47,7 +47,7 @@ PROBE_MIN_EVIDENCE = int(os.environ.get("BR_PROBE_MIN_EVIDENCE", "3"))
 CPU_FACTOR = float(os.environ.get("BR_CPU_FACTOR", "2.5"))
 PLAN_SCALE = float(os.environ.get("BR_PLAN_SCALE", "1.0"))
 RUN_CAP_MS = float(os.environ.get("BR_RUN_CAP_MS", "1e12"))
-NO_LATER = os.environ.get("BR_NO_LATER", "0") == "1"
+NO_LATER = os.environ.get("BR_NO_LATER", "1") == "1"
 BIG_GAMBLE = os.environ.get("BR_BIG_GAMBLE", "0") == "1"
 BIG_GAMBLE_IMPORTLEVEL = os.environ.get("BR_BIG_GAMBLE_IMPORTLEVEL", "1") == "1"
 BIG_GAMBLE_MS = int(os.environ.get("BR_BIG_GAMBLE_MS", "15000"))
