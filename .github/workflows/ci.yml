@@ -1,7 +1,7 @@
 name: sample
 on:
   push:
-    branches: [main]
+    branches: [main, experimental]
   workflow_dispatch:
 permissions:
   contents: read
@@ -41,6 +41,8 @@ jobs:
           done
           python3 tools/score_truth.py sample/tests.json sample/answers.json ci/output1.jsonl > ci/breakdown.txt 2>&1 || true
           cat ci/breakdown.txt
+          for i in 1 2 3; do python3 tools/check_output.py sample/tests.json sample/commits ci/output$i.jsonl; done
+          grep -h "wall:\|cgroup cpu" ci/stderr*.log
       - name: Probe check on mutants (real environment)
         if: hashFiles('tools/mutants.tar.gz') != ''
         run: |
@@ -75,20 +77,20 @@ jobs:
       - name: Audit leave-out decisions on fresh body-only mutants (only with [audit])
         if: contains(github.event.head_commit.message, '[audit]')
         run: |
-          rm -rf /tmp/m3 && mkdir -p /tmp/m3/commits ci/audit && tar xzf tools/mutants3.tar.gz -C /tmp/m3/commits
-          cp sample/tests.json /tmp/m3/tests.json
-          chmod -R a+rwX ci/audit
-          while read name envs; do
-            eargs=""; for e in $envs; do eargs="$eargs --env $e"; done
+          mkdir -p ci/audit && chmod -R a+rwX ci/audit
+          for set in mutants3 mutants4; do
+            rm -rf /tmp/$set && mkdir -p /tmp/$set/commits && tar xzf tools/$set.tar.gz -C /tmp/$set/commits
+            cp sample/tests.json /tmp/$set/tests.json
             docker run --rm --network none --cpus 4 --memory 12g --pids-limit 1024 \
               --tmpfs /tmp:rw,size=4g,mode=1777 --user 65534:65534 --env HOME=/tmp \
-              --env BR_BUDGET=1500 --env BR_RUN_LOG=/out/runs_$name.json --env BR_BET_LOG=/out/bets_$name.json $eargs \
-              --volume /tmp/m3:/data:ro --volume $PWD/ci/audit:/out --volume $PWD/tools:/tools:ro \
-              --entrypoint sh blast-radius-entry -c "python /app/br/selector.py > /out/sel_$name.jsonl 2> /out/err_$name.log; python /tools/check_bets_par.py /data/commits /out/bets_$name.json /out/betrep_$name.json > /out/bets_$name.log 2>&1" || true
-            echo "== $name"; grep "done:" ci/audit/err_$name.log || true; grep -c "betting" ci/audit/err_$name.log || true; grep -v "'failed': \[\]" ci/audit/bets_$name.log | tail -n 30 || true
-          done <<'EOF'
-          H BR_HEAVY_GAMBLE=1
-          EOF
+              --env BR_BUDGET=1500 --env BR_RUN_LOG=/out/runs_$set.json --env BR_BET_LOG=/out/bets_$set.json \
+              --volume /tmp/$set:/data:ro --volume $PWD/ci/audit:/out --volume $PWD/tools:/tools:ro \
+              --entrypoint sh blast-radius-entry -c "python /app/br/selector.py > /out/sel_$set.jsonl 2> /out/err_$set.log; python /tools/check_bets_par.py /data/commits /out/bets_$set.json /out/betrep_$set.json > /out/bets_$set.log 2>&1; python /tools/audit.py /data /out/runs_$set.json /out/audit_$set.json > /out/audit_$set.log 2>&1" || true
+            echo "== $set"; grep "done:" ci/audit/err_$set.log || true
+            echo "split dialect commits: $(grep -c 'no bets on this commit' ci/audit/err_$set.log)"
+            grep "MISMATCH\|AUDITED" ci/audit/audit_$set.log | tail -n 20 || true
+            grep -v "'failed': \[\]" ci/audit/bets_$set.log | tail -n 10 || true
+          done
       - name: Sweep settings on mutants (truth) and samples (only with [sweep])
         if: contains(github.event.head_commit.message, '[sweep]')
         run: |

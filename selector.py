@@ -494,7 +494,10 @@ def main():
         plans[cid] = {"out": set(out), "run": run, "gamble": gamble}
         probe_sites = 0
         ev_stop = []
-        if PROBE and ok and out and not NO_RUN and "importlevel" not in flags and "addrm" not in flags \
+        v_sliced = any(v[0] == "v" for v in slice_f.values())
+        if v_sliced:
+            log(cid, "dialect calls split: no bets on this commit")
+        if PROBE and ok and out and not NO_RUN and not v_sliced and "importlevel" not in flags and "addrm" not in flags \
                 and all(fd.path.startswith("sqlglot/") and fd.path.endswith(".py") for fd in fds):
             probed = {}
             for fd in fds:
