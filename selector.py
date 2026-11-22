@@ -303,12 +303,18 @@ def main():
         # candidates exist, run those first; if they all pass, leave the
         # expensive ones out, otherwise hand them over
         gamble = []
-        if RISK and ok:
+        evidence = []
+        if RISK and ok and not NO_RUN:
             heavy = [t for t in cand if dur[t] >= RISK_MS]
-            cheap_n = len(cand) - len(heavy)
-            if heavy and cheap_n >= RISK_MIN_EVIDENCE:
-                gamble = heavy
-                cand = set(cand) - set(heavy)
+            if heavy:
+                def _rc(t):
+                    c = idx.cpu.get(ids[t])
+                    return c if c is not None else dur[t] * 1.2 + 5
+                ev = sorted((t for t in cand if t not in heavy and _rc(t) <= 1000), key=_rc)
+                if len(ev) >= RISK_MIN_EVIDENCE:
+                    gamble = heavy
+                    evidence = ev
+                    cand = set(cand) - set(heavy) - set(ev)
         # choose which candidates to run and which to hand over directly
         order = sorted(cand, key=lambda t: -dur[t])
         h = 300  # ms of fork/overhead per run
@@ -317,8 +323,8 @@ def main():
             c = idx.cpu.get(ids[t])
             return c if c is not None else dur[t] * 1.2 + 5
 
-        rc = {t: runcost(t) for t in order}
-        owner = {t: ids[t].rsplit("::", 1)[0] for t in order}
+        rc = {t: runcost(t) for t in list(order) + evidence}
+        owner = {t: ids[t].rsplit("::", 1)[0] for t in list(order) + evidence}
         best = None
         # splits: the first j (longest) tests are handed over, the rest run
         js = list(range(min(len(order), 60) + 1))
@@ -339,7 +345,7 @@ def main():
             if best is None or c < best[0]:
                 best = (c, j)
         j = best[1]
-        out, run = order[:j], order[j:]
+        out, run = order[:j], order[j:] + evidence
         plans[cid] = {"out": set(out), "run": run, "gamble": gamble}
         if gamble and not run:
             # nothing cheap to run means no evidence: hand them over
@@ -352,9 +358,13 @@ def main():
                     if p.startswith("sqlglot/") and p.endswith(".py") and changes[p] is not None]
         plans[cid]["fds"] = fds
         if ok and (run or mods):
-            maxc = max([rc[t] for t in run] or [0])
-            timeout = max(10.0, maxc / 1000 * 4 + 5)
-            hard = 40 + sum(rc[t] for t in run) / 1000 * 3
+            # a test that hangs fails (timeout) either way: stop it early and
+            # hand it over instead of burning CPU waiting
+            maxc = max([rc[t] + idx.class_setup.get(owner[t], 0) for t in run] or [0])
+            timeout = max(2.0, maxc / 1000 * 3 + 1)
+            hard = 4 + sum(rc[t] for t in run) / 1000 * 2.5
+            if "deepcheck" in flags or "addrm" in flags:
+                hard += 4
             deep = "deepcheck" in flags or "addrm" in flags
             # expensive tests run last, and only if the cheap ones all passed:
             # a cheap failure means the expensive ones likely fail too, and
