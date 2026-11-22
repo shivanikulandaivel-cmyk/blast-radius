@@ -40,6 +40,7 @@ PROBE = os.environ.get("BR_PROBE", "1") == "1"
 PROBE_MIN_HITS = int(os.environ.get("BR_PROBE_MIN_HITS", "10"))
 PROBE_HEAVY_MS = int(os.environ.get("BR_PROBE_HEAVY_MS", "5000"))
 PROBE_HEAVY_DUR = int(os.environ.get("BR_PROBE_HEAVY_DUR", "2000"))
+PROBE_EV_BUDGET = int(os.environ.get("BR_PROBE_EV_BUDGET", "4000"))
 PROBE_MIN_EVIDENCE = int(os.environ.get("BR_PROBE_MIN_EVIDENCE", "3"))
 CPU_FACTOR = float(os.environ.get("BR_CPU_FACTOR", "2.5"))
 RISK_MS = int(os.environ.get("BR_RISK_MS", "5000"))
@@ -454,24 +455,37 @@ def main():
                 probed[fd.new] = text
                 probe_sites += len(sites)
             if probed and probe_sites:
-                # bet only on tests that are very expensive to run AND to hand
-                # over; every other candidate runs on the probed code. The bet
-                # stands only if none of them fails and the changed code ran
-                # many times without ever computing a different value.
-                bet = {t for t in set(out) | set(run) if rc[t] >= PROBE_HEAVY_MS and dur[t] >= PROBE_HEAVY_DUR}
-                ev = [t for t in set(out) | set(run) if t not in bet]
-                ev_cost = sum(rc[t] for t in ev) + h
-                if bet and ev:
-                    _, keep_cost = schedule(set(out) | set(run), dur)
-                    _, bet_out_cost = schedule(bet, dur)
-                    # worth it only if the bet saves more than the extra runs cost
-                    if bet_out_cost > ev_cost * 0.5:
-                        run = sorted(ev, key=lambda t: rc[t])
-                        plans[cid] = {"out": set(), "run": run, "gamble": [], "bet": bet}
-                        out = []
+                # bet only on tests that are very expensive to run and to hand
+                # over. A small sample of the cheapest related tests runs on the
+                # probed code; the bet stands only if nothing fails and the
+                # changed code ran many times without ever computing a
+                # different value. Everything else keeps its normal plan.
+                allc = set(out) | set(run)
+                bet = {t for t in allc if rc[t] >= PROBE_HEAVY_MS and dur[t] >= PROBE_HEAVY_DUR}
+                if bet:
+                    pool = sorted((t for t in allc if t not in bet and rc[t] <= 2500), key=lambda t: rc[t])
+                    in_run = [t for t in pool if t in run]
+                    ev_extra, tot = [], sum(rc[t] for t in in_run)
+                    for t in pool:
+                        if t in run:
+                            continue
+                        if len(in_run) + len(ev_extra) >= 25 or (tot + rc[t] > PROBE_EV_BUDGET and len(in_run) + len(ev_extra) >= 3):
+                            break
+                        ev_extra.append(t)
+                        tot += rc[t]
+                    new_out = set(out) - bet - set(ev_extra)
+                    new_run = [t for t in run if t not in bet] + ev_extra
+                    _, c_with = schedule(set(out), dur)
+                    _, c_without = schedule(new_out, dur)
+                    gain = c_with - c_without
+                    cost_ev = sum(rc[t] for t in ev_extra) + (0 if [t for t in run if t not in bet] else h)
+                    if len(new_run) >= 3 and gain > cost_ev:
+                        out, run = sorted(new_out), new_run
+                        plans[cid] = {"out": set(out), "run": run, "gamble": [], "bet": bet}
                         changes = dict(changes)
                         changes.update(probed)
-                        log(cid, "probe", probe_sites, "sites; betting", len(bet), "heavy tests on", len(run))
+                        log(cid, "probe", probe_sites, "sites; betting", len(bet), "heavy tests on", len(run),
+                            "(gain %.1fs, evidence %.1fs)" % (gain / 1000, cost_ev / 1000))
                     else:
                         probe_sites = 0
                 else:
