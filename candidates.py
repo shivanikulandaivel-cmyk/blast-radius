@@ -308,6 +308,8 @@ class Index:
     def candidates(self, fds):
         """Returns (bits, notes, flags)."""
         bits = self.unmapped
+        imp = 0  # the part that comes from import-time (class/module) changes
+        self.last_body_only = set()  # files whose changes were function bodies only
         notes = []
         flags = set()
         for fd in fds:
@@ -357,7 +359,7 @@ class Index:
                             notes.append("import-exec:%s:%d" % (path, c[1][0]))
                             flags.add("importlevel")
                             flags.add("deepcheck")
-                            bits |= self.importtime_bits(path)
+                            imp |= self.importtime_bits(path)
                         notes.append("%s:%s:%d-%d" % (kind, path, c[1][0], c[1][1]))
                     elif kind == "class":
                         flags.add("importlevel")
@@ -372,7 +374,7 @@ class Index:
                             r = self.attr_refine(path, old_src, new_src, c[1])
                             if r is not None:
                                 notes.append("attr-refined")
-                                bits |= r
+                                imp |= r
                                 continue
                         cb = self.class_bits(path, c[1])
                         if c[2] is not None:
@@ -380,7 +382,7 @@ class Index:
                         if not self.class_bits(path, c[1]):
                             cb |= self.importtime_bits(path)
                             notes.append("untracked-class")
-                        bits |= cb
+                        imp |= cb
                     else:  # module or syntax
                         flags.add("importlevel")
                         flags.add("deepcheck")
@@ -395,14 +397,51 @@ class Index:
                             r = self.attr_refine(path, old_src, new_src, None)
                             if r is not None:
                                 notes.append("attr-refined")
-                                bits |= r
+                                imp |= r
                                 continue
-                        bits |= self.importtime_bits(path)
+                        imp |= self.importtime_bits(path)
                         if kind == "syntax":
                             flags.add("syntax")
+                if all(c[0] in ("func", "lambda", "same") for c in changes):
+                    self.last_body_only.add(path)
             else:
                 notes.append("data:" + path)
-        return bits, notes, flags
+        self.last_split = (bits, imp)
+        return bits | imp, notes, flags
+
+    def diff_bits(self, entries):
+        """Candidates from the values a change really altered at import time.
+        entries: [(kind, owner, attr, is_func)] from attrdiff. None = can't tell."""
+        bits = 0
+        comp = getattr(self, "component_owners", {}) or {}
+        for kind, owner, attr, is_func in entries:
+            if attr == "*" or attr == "<bases>":
+                return None
+            mod = owner.split(":")[0]
+            mpath = mod.replace(".", "/")
+            if is_func and (mpath + ".py" in self.last_body_only or mpath + "/__init__.py" in self.last_body_only):
+                continue  # a function whose body changed: the statement analysis has it
+            refs = self.refs_bits({attr})
+            if kind == "M" or attr in self.refs.strings or attr.startswith("__"):
+                if attr in self.refs.strings or attr.startswith("__"):
+                    # read by name or by Python itself: everyone using the owner
+                    if kind == "C" and self.uses.get(owner, 0):
+                        o = self.uses.get(owner, 0)
+                        for d in comp.get(owner, ()):
+                            o |= self.uses.get(d, 0)
+                        bits |= o
+                        continue
+                    return None
+                bits |= refs
+                continue
+            o = self.uses.get(owner, 0)
+            for d in comp.get(owner, ()):
+                o |= self.uses.get(d, 0)
+            if not o:
+                bits |= refs  # class not tracked: no owner filter
+            else:
+                bits |= refs & o
+        return bits
 
 
 def load_components(idx, root):
