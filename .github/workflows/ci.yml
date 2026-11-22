@@ -4,7 +4,7 @@ on:
     branches: [main]
   workflow_dispatch:
 permissions:
-  contents: write
+  contents: read
 concurrency:
   group: sample
   cancel-in-progress: true
@@ -150,15 +150,8 @@ jobs:
         run: |
           docker run --rm --entrypoint cat blast-radius-entry /app/br/maps/map.json.gz > ci/map.json.gz
           docker run --rm --entrypoint cat blast-radius-entry /app/br/maps/cpu.json > ci/cpu.json
-      - name: Commit results back
-        run: |
-          rm -rf sample
-          git config user.name "ci"
-          git config user.email "ci@users.noreply.github.com"
-          mkdir -p maps
-          if [ ! -f maps/map.json.gz ]; then cp ci/map.json.gz maps/map.json.gz; fi
-          if [ ! -f maps/cpu.json ]; then cp ci/cpu.json maps/cpu.json; fi
-          rm -f ci/map.json.gz ci/cpu.json
-          git add ci maps
-          git commit -m "CI results [skip ci]" || exit 0
-          for i in 1 2 3 4 5; do git pull --rebase -X theirs origin main && git push && break; sleep 5; done
+      - name: Keep results as a download (nothing is committed to the repo)
+        uses: actions/upload-artifact@v4
+        with:
+          name: results
+          path: ci
