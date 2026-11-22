@@ -6,94 +6,88 @@
 [sel 0.3s] p04 cand 1 out 0 run 1 est 1.1s ['func:sqlglot/optimizer/helpers.py:28-64']
 [sel 0.3s] p05 cand 5 out 0 run 5 est 0.5s ['func:sqlglot/parsers/trino.py:139-155']
 [sel 0.4s] p06 cand 13 out 0 run 13 est 0.6s ['func:sqlglot/diff.py:277-337']
-[sel 0.5s] p07 probe 1 sites; betting 3 heavy tests on 175
-[sel 0.5s] p07 cand 178 out 0 run 175 est 25.5s ['func:sqlglot/optimizer/resolver.py:321-332']
+[sel 0.5s] p07 probe 1 sites; betting 3 heavy tests on 25 (gain 16.4s, evidence 0.6s)
+[sel 0.5s] p07 cand 178 out 150 run 25 est 25.5s ['func:sqlglot/optimizer/resolver.py:321-332']
 [sel 0.5s] p08 cand 1 out 0 run 1 est 0.4s ['func:sqlglot/parsers/oracle.py:181-213']
-[sel 0.6s] p09 cand 1 out 0 run 1 est 0.4s ['func:sqlglot/generators/dremio.py:80-85']
-[sel 0.8s] p10 cand 29 out 29 run 0 est 6.5s ['func:sqlglot/optimizer/qualify_columns.py:1009-1114']
+[sel 0.5s] p09 cand 1 out 0 run 1 est 0.4s ['func:sqlglot/generators/dremio.py:80-85']
+[sel 0.7s] p10 cand 29 out 29 run 0 est 6.5s ['func:sqlglot/optimizer/qualify_columns.py:1009-1114']
 [sel 1.2s] p11 cand 38 out 38 run 0 est 5.4s ['func:sqlglot/expressions/core.py:1375-1394']
-[sel 1.3s] p12 cand 2 out 2 run 0 est 2.2s ['func:sqlglot/executor/env.py:150-179']
-[sel 1.3s] p13 cand 0 out 0 run 0 est 0.0s ['func:sqlglot/optimizer/optimizer.py:69-117']
-[sel 1.6s] p14 probe 1 sites; betting 1 heavy tests on 5
-[sel 1.6s] p14 cand 6 out 0 run 5 est 5.8s ['func:sqlglot/optimizer/simplify.py:489-512']
-[sel 1.7s] p15 cand 0 out 0 run 0 est 0.0s ['func:sqlglot/parsers/sqlite.py:158-181']
-[sel 1.8s] p16 cand 2 out 0 run 2 est 0.7s ['func:sqlglot/generators/exasol.py:32-38']
-[sel 1.8s] p17 cand 1 out 0 run 1 est 0.5s ['func:sqlglot/optimizer/journal.py:13-19']
-[sel 1.8s] p18 cand 5 out 0 run 5 est 0.6s ['func:sqlglot/time.py:66-85']
-[sel 1.8s] p19 cand 0 out 0 run 0 est 0.0s ['func:sqlglot/trie.py:15-41']
-[sel 1.9s] p20 cand 0 out 0 run 0 est 0.0s ['func:sqlglot/expressions/builders.py:279-320']
-[sel 1.9s] p21 cand 1 out 0 run 1 est 0.5s ['func:sqlglot/optimizer/journal.py:13-19']
-[sel 3.0s] p22 attrdiff changed: ['Athena.ESCAPED_SEQUENCES', 'BigQuery.ESCAPED_SEQUENCES', 'ClickHouse.ESCAPED_SEQUENCES', 'Databricks.ESCAPED_SEQUENCES', '_Dialect.__new__', 'Doris.ESCAPED_SEQUENCES'] 19
-[sel 3.0s] p22 attrdiff: 1592 -> 495 candidates
-[sel 3.0s] p22 cand 495 out 495 run 0 est 25.5s ['import-exec:sqlglot/dialects/dialect.py:307', 'func:sqlglot/dialects/dialect.py:307-432']
-[sel 3.1s] p23 cand 1 out 0 run 1 est 0.5s ['func:sqlglot/generators/exasol.py:117-149']
-[sel 3.1s] p24 cand 2 out 0 run 2 est 0.4s ['func:sqlglot/parsers/sqlite.py:18-24']
-[sel 3.2s] p25 cand 0 out 0 run 0 est 0.0s ['func:sqlglot/optimizer/scope.py:599-600']
-[sel 3.3s] p26 cand 3 out 0 run 3 est 0.5s ['func:sqlglot/generators/trino.py:58-88']
-[sel 3.3s] p27 cand 27 out 0 run 27 est 1.3s ['func:sqlglot/parsers/exasol.py:138-148']
-[sel 3.4s] p28 cand 5 out 0 run 5 est 0.7s ['func:sqlglot/parsers/mysql.py:509-510']
-[sel 3.4s] p29 cand 3 out 0 run 3 est 0.4s ['func:sqlglot/parsers/dremio.py:23-30']
-[sel 3.6s] p30 probe 1 sites; betting 1 heavy tests on 50
-[sel 3.6s] p30 cand 51 out 0 run 50 est 24.8s ['func:sqlglot/executor/python.py:41-86']
-[sel 3.6s] p31 cand 34 out 34 run 0 est 5.6s ['func:sqlglot/generators/databricks.py:151-157']
-[sel 3.6s] p32 cand 1 out 0 run 1 est 1.0s ['func:sqlglot/optimizer/canonicalize_internal_names.py:14-334']
-[sel 5.8s] p33 cand 46 out 46 run 0 est 4.9s ['func:sqlglot/generator.py:4655-4710']
-[sel 5.8s] p34 cand 1 out 1 run 0 est 3.4s ['func:sqlglot/dialects/clickhouse.py:63-83']
-[sel 5.9s] p35 cand 8 out 8 run 0 est 4.5s ['func:sqlglot/optimizer/unnest_subqueries.py:84-222']
-[sel 5.9s] p36 cand 2 out 0 run 2 est 0.4s ['func:sqlglot/parsers/fabric.py:9-27']
-[sel 6.0s] p37 probe 1 sites; betting 1 heavy tests on 4
-[sel 6.0s] p37 cand 5 out 0 run 4 est 5.8s ['func:sqlglot/optimizer/canonicalize.py:219-236']
-[sel 6.1s] p38 probe 1 sites; betting 3 heavy tests on 175
-[sel 6.1s] p38 cand 178 out 0 run 175 est 25.5s ['func:sqlglot/optimizer/resolver.py:321-332']
-[sel 6.2s] p39 probe 1 sites; betting 1 heavy tests on 5
-[sel 6.2s] p39 cand 6 out 0 run 5 est 6.1s ['func:sqlglot/optimizer/merge_subqueries.py:252-523']
-[sel 6.3s] p40 probe 1 sites; betting 3 heavy tests on 174
-[sel 6.3s] p40 cand 177 out 0 run 174 est 25.5s ['func:sqlglot/optimizer/resolver.py:422-474']
-[sel 6.3s] p41 probe 1 sites; betting 3 heavy tests on 228
-[sel 6.3s] p41 cand 231 out 0 run 228 est 25.5s ['func:sqlglot/optimizer/qualify_tables.py:24-257']
-[sel 6.3s] p42 cand 2 out 0 run 2 est 0.5s ['func:sqlglot/typing/postgres.py:19-31']
-[sel 6.4s] p43 cand 2 out 0 run 2 est 0.4s ['func:sqlglot/anonymize.py:232-256']
-[sel 6.5s] p44 cand 0 out 0 run 0 est 0.0s ['func:sqlglot/generators/bigquery.py:149-173']
-[sel 7.0s] ran p01 1 tests cpu 0.24s failed 1 | raw 0.04s files 1 later 0 deep 0
-[sel 7.1s] ran p03 16 tests cpu 0.26s failed 4 | raw 0.09s files 1 later 0 deep 0
-[sel 7.3s] ran p05 5 tests cpu 0.23s failed 0 | raw 0.04s files 1 later 0 deep 0
-[sel 7.5s] ran p04 1 tests cpu 0.45s failed 0 | raw 0.29s files 1 later 0 deep 0
-[sel 7.5s] ran p06 13 tests cpu 0.20s failed 0 | raw 0.05s files 1 later 0 deep 0
-[sel 7.7s] ran p08 1 tests cpu 0.19s failed 1 | raw 0.01s files 1 later 0 deep 0
-[sel 8.0s] ran p09 1 tests cpu 0.19s failed 1 | raw 0.00s files 1 later 0 deep 0
-[sel 9.5s] ran p14 2 tests cpu 1.52s failed 2 | raw 4.91s files 3 later 3 deep 0
-[sel 9.8s] ran p16 2 tests cpu 0.32s failed 2 | raw 0.10s files 2 later 0 deep 0
-[sel 10.1s] ran p17 1 tests cpu 0.30s failed 0 | raw 0.05s files 1 later 0 deep 0
-[sel 10.5s] ran p18 5 tests cpu 0.32s failed 3 | raw 0.08s files 3 later 0 deep 0
-[sel 10.8s] ran p21 1 tests cpu 0.30s failed 0 | raw 0.05s files 1 later 0 deep 0
+[sel 1.2s] p12 cand 2 out 2 run 0 est 2.2s ['func:sqlglot/executor/env.py:150-179']
+[sel 1.2s] p13 cand 0 out 0 run 0 est 0.0s ['func:sqlglot/optimizer/optimizer.py:69-117']
+[sel 1.6s] p14 cand 6 out 6 run 0 est 5.8s ['func:sqlglot/optimizer/simplify.py:489-512']
+[sel 1.6s] p15 cand 0 out 0 run 0 est 0.0s ['func:sqlglot/parsers/sqlite.py:158-181']
+[sel 1.7s] p16 cand 2 out 0 run 2 est 0.7s ['func:sqlglot/generators/exasol.py:32-38']
+[sel 1.7s] p17 cand 1 out 0 run 1 est 0.5s ['func:sqlglot/optimizer/journal.py:13-19']
+[sel 1.7s] p18 cand 5 out 0 run 5 est 0.6s ['func:sqlglot/time.py:66-85']
+[sel 1.7s] p19 cand 0 out 0 run 0 est 0.0s ['func:sqlglot/trie.py:15-41']
+[sel 1.8s] p20 cand 0 out 0 run 0 est 0.0s ['func:sqlglot/expressions/builders.py:279-320']
+[sel 1.8s] p21 cand 1 out 0 run 1 est 0.5s ['func:sqlglot/optimizer/journal.py:13-19']
+[sel 2.9s] p22 attrdiff changed: ['Athena.ESCAPED_SEQUENCES', 'BigQuery.ESCAPED_SEQUENCES', 'ClickHouse.ESCAPED_SEQUENCES', 'Databricks.ESCAPED_SEQUENCES', '_Dialect.__new__', 'Doris.ESCAPED_SEQUENCES'] 19
+[sel 2.9s] p22 attrdiff: 1592 -> 495 candidates
+[sel 2.9s] p22 cand 495 out 495 run 0 est 25.5s ['import-exec:sqlglot/dialects/dialect.py:307', 'func:sqlglot/dialects/dialect.py:307-432']
+[sel 2.9s] p23 cand 1 out 0 run 1 est 0.5s ['func:sqlglot/generators/exasol.py:117-149']
+[sel 3.0s] p24 cand 2 out 0 run 2 est 0.4s ['func:sqlglot/parsers/sqlite.py:18-24']
+[sel 3.1s] p25 cand 0 out 0 run 0 est 0.0s ['func:sqlglot/optimizer/scope.py:599-600']
+[sel 3.1s] p26 cand 3 out 0 run 3 est 0.5s ['func:sqlglot/generators/trino.py:58-88']
+[sel 3.1s] p27 cand 27 out 0 run 27 est 1.3s ['func:sqlglot/parsers/exasol.py:138-148']
+[sel 3.3s] p28 cand 5 out 0 run 5 est 0.7s ['func:sqlglot/parsers/mysql.py:509-510']
+[sel 3.3s] p29 cand 3 out 0 run 3 est 0.4s ['func:sqlglot/parsers/dremio.py:23-30']
+[sel 3.4s] p30 probe 1 sites; betting 1 heavy tests on 25 (gain 21.6s, evidence 1.0s)
+[sel 3.4s] p30 cand 51 out 25 run 25 est 24.8s ['func:sqlglot/executor/python.py:41-86']
+[sel 3.4s] p31 cand 34 out 34 run 0 est 5.6s ['func:sqlglot/generators/databricks.py:151-157']
+[sel 3.5s] p32 cand 1 out 0 run 1 est 1.0s ['func:sqlglot/optimizer/canonicalize_internal_names.py:14-334']
+[sel 5.6s] p33 cand 46 out 46 run 0 est 4.9s ['func:sqlglot/generator.py:4655-4710']
+[sel 5.7s] p34 cand 1 out 1 run 0 est 3.4s ['func:sqlglot/dialects/clickhouse.py:63-83']
+[sel 5.7s] p35 cand 8 out 8 run 0 est 4.5s ['func:sqlglot/optimizer/unnest_subqueries.py:84-222']
+[sel 5.7s] p36 cand 2 out 0 run 2 est 0.4s ['func:sqlglot/parsers/fabric.py:9-27']
+[sel 5.8s] p37 probe 1 sites; betting 1 heavy tests on 4 (gain 5.8s, evidence 3.4s)
+[sel 5.8s] p37 cand 5 out 0 run 4 est 5.8s ['func:sqlglot/optimizer/canonicalize.py:219-236']
+[sel 5.9s] p38 probe 1 sites; betting 3 heavy tests on 25 (gain 16.4s, evidence 0.6s)
+[sel 5.9s] p38 cand 178 out 150 run 25 est 25.5s ['func:sqlglot/optimizer/resolver.py:321-332']
+[sel 6.0s] p39 cand 6 out 6 run 0 est 6.1s ['func:sqlglot/optimizer/merge_subqueries.py:252-523']
+[sel 6.1s] p40 probe 1 sites; betting 3 heavy tests on 25 (gain 16.4s, evidence 0.6s)
+[sel 6.1s] p40 cand 177 out 149 run 25 est 25.5s ['func:sqlglot/optimizer/resolver.py:422-474']
+[sel 6.1s] p41 probe 1 sites; betting 3 heavy tests on 25 (gain 14.6s, evidence 0.6s)
+[sel 6.1s] p41 cand 231 out 203 run 25 est 25.5s ['func:sqlglot/optimizer/qualify_tables.py:24-257']
+[sel 6.1s] p42 cand 2 out 0 run 2 est 0.5s ['func:sqlglot/typing/postgres.py:19-31']
+[sel 6.1s] p43 cand 2 out 0 run 2 est 0.4s ['func:sqlglot/anonymize.py:232-256']
+[sel 6.2s] p44 cand 0 out 0 run 0 est 0.0s ['func:sqlglot/generators/bigquery.py:149-173']
+[sel 6.8s] ran p01 1 tests cpu 0.24s failed 1 | raw 0.04s files 1 later 0 deep 0
+[sel 6.9s] ran p03 16 tests cpu 0.27s failed 4 | raw 0.09s files 1 later 0 deep 0
+[sel 7.1s] ran p05 5 tests cpu 0.24s failed 0 | raw 0.04s files 1 later 0 deep 0
+[sel 7.3s] ran p04 1 tests cpu 0.45s failed 0 | raw 0.29s files 1 later 0 deep 0
+[sel 7.4s] ran p06 13 tests cpu 0.21s failed 0 | raw 0.05s files 1 later 0 deep 0
+[sel 7.6s] ran p08 1 tests cpu 0.21s failed 1 | raw 0.01s files 1 later 0 deep 0
+[sel 7.7s] ran p07 25 tests cpu 0.41s failed 0 | raw 0.08s files 5 later 0 deep 0
+[sel 7.8s] ran p09 1 tests cpu 0.20s failed 1 | raw 0.00s files 1 later 0 deep 0
+[sel 8.1s] ran p16 2 tests cpu 0.33s failed 2 | raw 0.10s files 2 later 0 deep 0
+[sel 8.2s] ran p17 1 tests cpu 0.32s failed 0 | raw 0.05s files 1 later 0 deep 0
+[sel 8.5s] ran p18 5 tests cpu 0.34s failed 3 | raw 0.08s files 3 later 0 deep 0
+[sel 8.5s] ran p21 1 tests cpu 0.31s failed 0 | raw 0.05s files 1 later 0 deep 0
 Unable to set __version__, run `pip install -e .` or `python setup.py develop` first.
-[sel 11.9s] ran p22 0 tests cpu 1.10s failed 0 | raw 0.00s files 0 later 0 deep 1
-[sel 12.2s] ran p23 1 tests cpu 0.25s failed 1 | raw 0.02s files 1 later 0 deep 0
-[sel 12.4s] ran p24 2 tests cpu 0.22s failed 2 | raw 0.01s files 1 later 0 deep 0
-[sel 12.7s] ran p26 3 tests cpu 0.23s failed 1 | raw 0.03s files 1 later 0 deep 0
-[sel 13.2s] ran p27 27 tests cpu 0.47s failed 27 | raw 0.31s files 4 later 0 deep 0
-[sel 13.6s] ran p28 5 tests cpu 0.38s failed 1 | raw 0.09s files 3 later 0 deep 0
-[sel 13.8s] ran p29 3 tests cpu 0.21s failed 2 | raw 0.01s files 2 later 0 deep 0
-[sel 16.2s] ran p30 50 tests cpu 2.36s failed 50 | raw 3.08s files 1 later 0 deep 0
-[sel 16.7s] ran p32 1 tests cpu 0.48s failed 1 | raw 0.28s files 1 later 0 deep 0
-[sel 16.9s] ran p36 2 tests cpu 0.20s failed 1 | raw 0.01s files 1 later 0 deep 0
-[sel 18.6s] ran p37 3 tests cpu 1.67s failed 1 | raw 3.06s files 3 later 1 deep 0
-[sel 39.6s] ran p07 170 tests cpu 32.07s failed 0 | raw 12.25s files 14 later 5 deep 0
-[sel 40.0s] ran p39 2 tests cpu 0.36s failed 1 | raw 2.98s files 2 later 3 deep 0
-[sel 45.5s] ran p38 170 tests cpu 26.77s failed 121 | raw 12.25s files 14 later 5 deep 0
-[sel 68.0s] ran p40 169 tests cpu 27.94s failed 9 | raw 12.25s files 14 later 5 deep 0
-[sel 68.3s] ran p42 2 tests cpu 0.24s failed 1 | raw 0.04s files 2 later 0 deep 0
-[sel 68.5s] ran p43 2 tests cpu 0.17s failed 2 | raw 0.00s files 1 later 0 deep 0
-[sel 87.9s] ran p41 218 tests cpu 42.50s failed 0 | raw 17.70s files 16 later 10 deep 0
-[sel 87.9s] p07 probe clean {'0': [3437, 0]} -> leaving out 3
-[sel 87.9s] p14 probe {'0': [8, 8]} fail -> handing over 1
-[sel 87.9s] p30 probe {'0': [300, 300]} fail -> handing over 1
-[sel 87.9s] p37 probe {'0': [15, 15]} fail -> handing over 1
-[sel 87.9s] p38 probe {'0': [1975, 1975]} fail -> handing over 3
-[sel 87.9s] p39 probe {'0': [17, 17]} fail -> handing over 1
-[sel 87.9s] p40 probe {'0': [1178, 1178]} fail -> handing over 3
-[sel 87.9s] p41 probe {'0': [2571, 183]} clean -> handing over 3
-[sel 87.9s] done: simulated 209.5s, cpu self 6.9s children 142.9s
+[sel 8.8s] ran p23 1 tests cpu 0.28s failed 1 | raw 0.02s files 1 later 0 deep 0
+[sel 9.1s] ran p24 2 tests cpu 0.24s failed 2 | raw 0.01s files 1 later 0 deep 0
+[sel 9.3s] ran p26 3 tests cpu 0.23s failed 1 | raw 0.03s files 1 later 0 deep 0
+[sel 9.7s] ran p22 0 tests cpu 1.19s failed 0 | raw 0.00s files 0 later 0 deep 1
+[sel 9.8s] ran p27 27 tests cpu 0.48s failed 27 | raw 0.31s files 4 later 0 deep 0
+[sel 10.1s] ran p29 3 tests cpu 0.21s failed 2 | raw 0.01s files 2 later 0 deep 0
+[sel 10.1s] ran p28 5 tests cpu 0.39s failed 1 | raw 0.09s files 3 later 0 deep 0
+[sel 10.6s] ran p32 1 tests cpu 0.51s failed 1 | raw 0.28s files 1 later 0 deep 0
+[sel 10.9s] ran p36 2 tests cpu 0.20s failed 1 | raw 0.01s files 1 later 0 deep 0
+[sel 11.7s] ran p30 25 tests cpu 1.55s failed 25 | raw 2.00s files 1 later 0 deep 0
+[sel 12.1s] ran p38 25 tests cpu 0.40s failed 6 | raw 0.08s files 5 later 0 deep 0
+[sel 12.6s] ran p40 25 tests cpu 0.43s failed 0 | raw 0.08s files 5 later 0 deep 0
+[sel 12.6s] ran p37 3 tests cpu 1.68s failed 1 | raw 3.06s files 3 later 1 deep 0
+[sel 12.9s] ran p42 2 tests cpu 0.25s failed 1 | raw 0.04s files 2 later 0 deep 0
+[sel 13.1s] ran p43 2 tests cpu 0.17s failed 2 | raw 0.00s files 1 later 0 deep 0
+[sel 14.1s] ran p41 25 tests cpu 1.51s failed 0 | raw 1.89s files 6 later 0 deep 0
+[sel 14.1s] p07 probe clean {'0': [58, 0]} -> leaving out 3
+[sel 14.1s] p30 probe {'0': [36, 36]} fail -> handing over 1
+[sel 14.1s] p37 probe {'0': [15, 15]} fail -> handing over 1
+[sel 14.1s] p38 probe {'0': [69, 69]} fail -> handing over 3
+[sel 14.1s] p40 probe {'0': [37, 37]} clean -> handing over 3
+[sel 14.1s] p41 probe {'0': [27, 1]} clean -> handing over 3
+[sel 14.1s] done: simulated 218.6s, cpu self 6.6s children 13.9s
 nanobind: leaked 27 instances!
 nanobind: leaked 15 types!
  - leaked type "_duckdb._sqltypes.DuckDBPyType"
@@ -108,16 +102,16 @@ nanobind: leaked 15 types!
  - leaked type "PythonUDFType"
  - ... skipped remainder
 nanobind: leaked 111 functions!
- - leaked function "row_type"
- - leaked function "arrow_table"
- - leaked function "_prepare_script"
- - leaked function "complete"
- - leaked function "_table_kind"
- - leaked function "enum_type"
- - leaked function "list_filesystems"
- - leaked function "_register_map"
  - leaked function "commit"
- - leaked function "interrupt"
+ - leaked function "list_type"
+ - leaked function ""
+ - leaked function "map_type"
+ - leaked function "_register_values"
+ - leaked function "fetchone"
+ - leaked function "__exit__"
+ - leaked function "row_type"
+ - leaked function "fetchnumpy"
+ - leaked function "arrow_table"
  - ... skipped remainder
 nanobind: this is likely caused by a reference counting issue in the binding code.
 See https://nanobind.readthedocs.io/en/latest/refleaks.html

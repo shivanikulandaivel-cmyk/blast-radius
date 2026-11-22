@@ -1,3 +1,4 @@
+p07 cost 9.1 oracle 0.0
 p10 cost 6.5 oracle 3.4
 p11 cost 5.4 oracle 3.4
 p14 cost 5.8 oracle 4.2
@@ -11,5 +12,5 @@ p38 cost 25.5 oracle 23.5
 p39 cost 6.1 oracle 3.0
 p40 cost 25.5 oracle 23.5
 p41 cost 25.5 oracle 0.0
-SIMULATED 209.5 MISSES 0
-selector cpu self 6.9s children 142.9s
+SIMULATED 218.6 MISSES 0
+selector cpu self 6.6s children 13.9s
