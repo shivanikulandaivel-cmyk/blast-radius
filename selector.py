@@ -417,6 +417,15 @@ def main():
                     evidence = ev
                     cand = set(cand) - set(heavy) - set(ev)
         data_only = bool(fds) and all(not (fd.path or "").endswith(".py") for fd in fds)
+        if data_only:
+            # only edits of real content: comment or blank lines in a fixture
+            # are usually harmless, and running the test is the cheap check
+            def _content(line):
+                x = line.strip()
+                return x and not x.startswith("--") and not x.startswith("#")
+
+            data_only = any(_content(b[1:]) for fd in fds for h in fd.hunks for b in h[4]
+                            if b[:1] in "+-")
         # choose which candidates to run and which to hand over directly
         order = sorted(cand, key=lambda t: -dur[t])
         h = 400  # ms of fork/overhead per run
