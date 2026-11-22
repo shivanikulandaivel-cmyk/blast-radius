@@ -29,6 +29,8 @@ class Index:
         for t, i in id2num.items():
             owner = t.rsplit("::", 1)[0]
             class_tests[owner] = class_tests.get(owner, 0) | (1 << i)
+        self.id2num = id2num
+        self.class_tests = class_tests
         self.lines = {}  # file -> {line: bits}
         self.uses = {}
         self.opens = {}
@@ -503,6 +505,12 @@ class Index:
             mpath = mod.replace(".", "/")
             if is_func and (mpath + ".py" in self.last_body_only or mpath + "/__init__.py" in self.last_body_only):
                 continue  # a function whose body changed: the statement analysis has it
+            rb_ = self.reads_bits(owner + "." + attr) if kind == "C" and READS else None
+            if rb_ is not None:
+                # recorded at build time: the tests that read this very
+                # definition (through any lookup), plus anything unsure
+                bits |= rb_
+                continue
             refs = self.refs_bits({attr})
             if kind == "M" or attr in self.refs.strings or attr.startswith("__"):
                 if attr in self.refs.strings or attr.startswith("__"):
@@ -524,6 +532,67 @@ class Index:
             else:
                 bits |= refs & o
         return bits
+
+
+READS = os.environ.get("BR_READS", "1") == "1"
+READS_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "maps", "reads.json.gz")
+
+
+def _reads_data(idx):
+    d = getattr(idx, "_reads", None)
+    if d is None:
+        d = False
+        try:
+            import gzip
+
+            raw = json.load(gzip.open(READS_PATH, "rt"))
+            inv = {}
+            for scope, ks in raw["reads"].items():
+                for k in ks:
+                    inv.setdefault(k, []).append(scope)
+            unsure = 0
+            for t in raw["failed"]:
+                if t.startswith("<collect>:"):
+                    unsure |= idx.file_tests.get(t[len("<collect>:"):], 0)
+                else:
+                    unsure |= idx.class_tests.get(t.rsplit("::", 1)[0], 0) if "<" in t else \
+                        (1 << idx.id2num[t] if t in idx.id2num else idx.file_tests.get(t.split("::")[0], 0))
+            # tests the build-time run never reached are unsure too
+            reached = set()
+            for scope in raw["reads"]:
+                reached.add(scope)
+            d = {"key": {k: i for i, k in enumerate(raw["keys"])}, "inv": inv, "unsure": unsure}
+        except Exception:  # noqa: BLE001
+            d = False
+        idx._reads = d
+    return d
+
+
+def _scope_bits(idx, scope):
+    if scope == "<session>":
+        return idx.all
+    if scope.startswith("<collect>:"):
+        return idx.file_tests.get(scope[len("<collect>:"):], idx.all)
+    if scope.startswith("<setup>:"):
+        return idx.class_tests.get(scope[len("<setup>:"):], idx.all)
+    i = idx.id2num.get(scope)
+    return idx.all if i is None else 1 << i
+
+
+def _reads_bits(self, key):
+    """Tests that read the class setting key ("module:Class.ATTR") in the
+    build-time run, plus tests whose run there was incomplete. None when the
+    setting was not instrumented (use the usual analysis)."""
+    d = _reads_data(self)
+    if not d or key not in d["key"]:
+        return None
+    bits = d["unsure"]
+    for scope in d["inv"].get(d["key"][key], ()):
+        bits |= _scope_bits(self, scope)
+    return bits
+
+
+Index.reads_bits = _reads_bits
 
 
 def load_components(idx, root):

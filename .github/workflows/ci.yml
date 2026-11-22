@@ -166,6 +166,11 @@ jobs:
         run: |
           docker run --rm --entrypoint cat blast-radius-entry /app/br/maps/map.json.gz > ci/map.json.gz
           docker run --rm --entrypoint cat blast-radius-entry /app/br/maps/cpu.json > ci/cpu.json
+      - name: Print the reads map (to commit it)
+        run: |
+          docker run --rm --entrypoint sh blast-radius-entry -c 'ls -la /app/br/maps' || true
+          docker run --rm --entrypoint sh blast-radius-entry -c 'base64 -w 0 /app/br/maps/reads.json.gz' > /tmp/reads.b64 || true
+          echo "READS_B64_BEGIN $(wc -c < /tmp/reads.b64)"; fold -w 20000 /tmp/reads.b64; echo; echo "READS_B64_END"
       - name: Keep results as a download (nothing is committed to the repo)
         if: always()
         uses: actions/upload-artifact@v4
