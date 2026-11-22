@@ -132,6 +132,30 @@ class Index:
             bits |= self.runtime_bits(ipath)
         return bits
 
+    def test_importers_bits(self, path):
+        """Tests in every test file that imports this test module (directly or
+        through another test module), plus the file's own tests."""
+        g = getattr(self, "_test_graph", None)
+        if g is None:
+            g = self._test_graph = import_graph(self.root, pkg="tests")
+        mod = module_name(path)
+        rev = {}
+        for m, ds in g.items():
+            for d in ds:
+                rev.setdefault(d, set()).add(m)
+        seen, stack = {mod}, [mod]
+        while stack:
+            x = stack.pop()
+            for y in rev.get(x, ()):
+                if y not in seen:
+                    seen.add(y)
+                    stack.append(y)
+        bits = 0
+        for m in seen:
+            f = m.replace(".", "/")
+            bits |= self.file_tests.get(f + ".py", 0)
+        return bits
+
     def class_bits(self, path, clspath):
         mod = module_name(path)
         q = mod + ":" + ".".join(clspath)
@@ -390,7 +414,9 @@ class Index:
                             flags.add("deepcheck")
                         notes.append("class:%s:%s" % (path, ".".join(c[1])))
                         if path.startswith("tests/"):
-                            bits |= self.file_tests.get(path, 0)
+                            # test classes are shared too (Validator is the base
+                            # of every dialect test)
+                            bits |= self.file_tests.get(path, 0) | self.test_importers_bits(path)
                             continue
                         if c[2] is not None and new_src is not None and self.class_bits(path, c[1]):
                             r = self.attr_refine(path, old_src, new_src, c[1])
@@ -411,7 +437,7 @@ class Index:
                         notes.append("%s:%s" % (kind, path))
                         flags.add("importcheck")
                         if path.startswith("tests/"):
-                            bits |= self.file_tests.get(path, 0)
+                            bits |= self.file_tests.get(path, 0) | self.test_importers_bits(path)
                             if path in ("tests/helpers.py", "tests/__init__.py"):
                                 bits |= self.all
                             continue
