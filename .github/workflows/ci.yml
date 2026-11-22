@@ -100,17 +100,18 @@ jobs:
               echo "factor $f $set: $r CPU $cpu" | tee -a ci/calib/summary.txt
             done
           done
-      - name: Ground truth on mutants (only when the commit message has [truth])
-        if: contains(github.event.head_commit.message, '[truth]')
+      - name: Ground truth on a patch set (only when the commit message has [truth] or [truth2])
+        if: contains(github.event.head_commit.message, '[truth')
         run: |
-          mkdir -p /tmp/mut/commits ci/truth && tar xzf tools/mutants.tar.gz -C /tmp/mut/commits
-          cp sample/tests.json /tmp/mut/tests.json
-          chmod -R a+rwX ci/truth
+          SET=mutants; if echo "${{ github.event.head_commit.message }}" | grep -q '\[truth2\]'; then SET=mutants2; fi
+          rm -rf /tmp/tset && mkdir -p /tmp/tset/commits ci/truth_$SET && tar xzf tools/$SET.tar.gz -C /tmp/tset/commits
+          cp sample/tests.json /tmp/tset/tests.json
+          chmod -R a+rwX ci/truth_$SET
           docker run --rm --network none --cpus 4 --memory 12g --pids-limit 1024 \
             --tmpfs /tmp:rw,size=4g,mode=1777 --user 65534:65534 --env HOME=/tmp \
-            --volume /tmp/mut:/data:ro --volume $PWD/ci/truth:/out --volume $PWD/tools:/tools:ro \
+            --volume /tmp/tset:/data:ro --volume $PWD/ci/truth_$SET:/out --volume $PWD/tools:/tools:ro \
             --entrypoint sh blast-radius-entry -c 'python /app/br/selector.py > /out/selected.jsonl 2> /out/stderr.log; python /tools/truth.py /data /out/selected.jsonl /out/truth.json > /out/truth.log 2>&1' || true
-          tail -n 60 ci/truth/truth.log
+          tail -n 60 ci/truth_$SET/truth.log
       - name: Export the in-image map and cpu costs
         run: |
           docker run --rm --entrypoint cat blast-radius-entry /app/br/maps/map.json.gz > ci/map.json.gz
