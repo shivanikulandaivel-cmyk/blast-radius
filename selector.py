@@ -404,13 +404,6 @@ def main():
                     slice_frac[t] = r[2]
             if slice_f:
                 log(cid, "slices:", {k.rsplit("::", 1)[-1]: "%d" % len(v[1]) for k, v in slice_f.items()})
-        # dialect validate_* cases are held back: the plan (and any bet) is
-        # first made exactly as without them; only a plan with no bet is then
-        # redone with them
-        slice_v = {k: v for k, v in slice_f.items() if v[0] == "v"}
-        vfrac = {t: slice_frac.pop(t) for t in list(slice_frac) if ids[t] in slice_v}
-        for k in slice_v:
-            slice_f.pop(k)
         if "syntax" in flags:
             # a module that cannot be compiled fails every test that imports it
             plans[cid] = {"out": cand, "run": []}
@@ -501,7 +494,10 @@ def main():
         plans[cid] = {"out": set(out), "run": run, "gamble": gamble}
         probe_sites = 0
         ev_stop = []
-        if PROBE and ok and out and not NO_RUN and "importlevel" not in flags and "addrm" not in flags \
+        v_sliced = any(v[0] == "v" for v in slice_f.values())
+        if v_sliced:
+            log(cid, "dialect calls split: no bets on this commit")
+        if PROBE and ok and out and not NO_RUN and not v_sliced and "importlevel" not in flags and "addrm" not in flags \
                 and all(fd.path.startswith("sqlglot/") and fd.path.endswith(".py") for fd in fds):
             probed = {}
             for fd in fds:
@@ -566,33 +562,6 @@ def main():
                     probe_sites = 0
             else:
                 probe_sites = 0
-        if slice_v and ok and not NO_RUN and not plans[cid].get("bet") and not plans[cid].get("gamble") \
-                and not data_only:
-            slice_f.update(slice_v)
-            slice_frac.update(vfrac)
-            for t in vfrac:
-                if t in rc:
-                    rc[t] = runcost(t)
-            best = None
-            for j in js:
-                head = order[:j]
-                tail = order[j:]
-                if tail:
-                    owners = {owner[t] for t in tail}
-                    run_cost = h * PLAN_SCALE + sum(plancost(t) for t in tail) + \
-                        sum(idx.class_setup.get(o, 0) for o in owners) * PLAN_SCALE
-                else:
-                    run_cost = 0
-                _, sc = schedule(head, dur)
-                c = run_cost + sc
-                if best is None or c < best[0]:
-                    best = (c, j)
-            j = best[1]
-            out, run = order[:j], order[j:] + evidence
-            plans[cid] = {"out": set(out), "run": run, "gamble": gamble}
-            ev_stop = []
-            probe_sites = 0
-            log(cid, "dialect calls split (no bet): out", len(out), "run", len(run))
         # Option B: when a lot would be handed over, run the cheapest of those
         # tests as evidence; if every test that runs passes, leave the rest
         # out. A bet: a failure among the rest would be a miss.
