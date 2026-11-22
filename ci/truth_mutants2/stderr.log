@@ -1,0 +1,110 @@
+[sel 0.2s] loaded index 1621 tests; unmapped 0
+[sel 0.2s] q_ca00 cand 0 out 0 run 0 est 0.0s ['class:sqlglot/generators/dremio.py:DremioGenerator', 'attr-refined']
+[sel 0.3s] q_ca01 cand 4 out 4 run 0 est 3.3s ['class:sqlglot/parsers/sqlite.py:SQLiteParser', 'attr-refined']
+[sel 0.3s] q_ca02 cand 0 out 0 run 0 est 0.0s ['class:sqlglot/generators/druid.py:DruidGenerator', 'attr-refined']
+[sel 0.3s] q_ca03 cand 4 out 0 run 4 est 0.5s ['class:sqlglot/dialects/solr.py:Solr', 'attr-refined']
+[sel 0.3s] q_ca04 cand 2 out 2 run 0 est 3.5s ['class:sqlglot/dialects/risingwave.py:RisingWave', 'attr-refined']
+[sel 1.4s] q_ca05 attrdiff changed: ['BaseParser.SUPPORTS_TABLE_QUERY'] 1
+[sel 1.4s] q_ca05 attrdiff: 707 -> 1334 candidates
+[sel 1.4s] q_ca05 cand 1334 out 1334 run 0 est 36.8s ['class:sqlglot/parsers/base.py:BaseParser', 'attr-refined']
+[sel 2.6s] q_ca06 attrdiff changed: ['Hive.INITCAP_DEFAULT_DELIMITER_CHARS'] 1
+[sel 2.6s] q_ca06 attrdiff: 5 -> 5 candidates
+[sel 2.6s] q_ca06 cand 5 out 5 run 0 est 4.9s ['class:sqlglot/dialects/hive.py:Hive', 'attr-refined']
+[sel 2.6s] q_ca07 cand 23 out 23 run 0 est 4.0s ['class:sqlglot/generators/drill.py:DrillGenerator', 'attr-refined']
+[sel 2.6s] q_fc00 cand 1 out 0 run 1 est 0.5s ['data:tests/fixtures/optimizer/quote_identifiers.sql']
+[sel 2.6s] q_fc01 cand 1 out 0 run 1 est 1.1s ['data:tests/fixtures/optimizer/pushdown_projections.sql']
+[sel 2.6s] q_fc02 cand 1 out 0 run 1 est 0.5s ['data:tests/fixtures/pretty.sql']
+[sel 2.6s] q_fc03 cand 1 out 0 run 1 est 0.5s ['data:tests/fixtures/optimizer/eliminate_subqueries.sql']
+[sel 2.6s] q_fc04 cand 1 out 1 run 0 est 4.0s ['data:tests/fixtures/optimizer/annotate_functions.sql']
+[sel 2.6s] q_fc05 cand 1 out 0 run 1 est 1.1s ['data:tests/fixtures/optimizer/pushdown_projections.sql']
+[sel 2.6s] q_fx00 cand 1 out 1 run 0 est 0.5s ['data:tests/fixtures/optimizer/isolate_table_selects.sql']
+[sel 2.6s] q_fx01 cand 2 out 2 run 0 est 2.7s ['data:tests/fixtures/identity.sql']
+[sel 2.6s] q_fx02 cand 1 out 1 run 0 est 2.4s ['data:tests/fixtures/optimizer/optimizer.sql']
+[sel 2.6s] q_fx03 cand 1 out 1 run 0 est 0.5s ['data:tests/fixtures/optimizer/qualify_columns__with_invisible.sql']
+[sel 2.6s] q_fx04 cand 1 out 1 run 0 est 0.5s ['data:tests/fixtures/optimizer/pushdown_cte_alias_columns.sql']
+[sel 2.6s] q_fx05 cand 1 out 1 run 0 est 0.8s ['data:tests/fixtures/optimizer/pushdown_predicates.sql']
+[sel 2.6s] q_fx07 cand 1 out 1 run 0 est 2.6s ['data:tests/fixtures/optimizer/simplify.sql']
+[sel 2.6s] q_fx08 cand 1 out 1 run 0 est 2.4s ['data:tests/fixtures/optimizer/optimizer.sql']
+[sel 2.6s] q_fx09 cand 1 out 1 run 0 est 0.5s ['data:tests/fixtures/optimizer/eliminate_subqueries.sql']
+[sel 2.6s] q_mu00 slices: {'test_pushdown_projection': '1', 'test_canonicalize_internal_names': '2', 'test_annotate_funcs': '4'}
+[sel 2.6s] q_mu00 cand 6 out 0 run 6 est 1.0s ['func:sqlglot/expressions/json.py:125-125']
+[sel 2.7s] q_mu01 cand 0 out 0 run 0 est 0.0s ['func:sqlglot/expressions/builders.py:993-1054']
+[sel 2.9s] q_mu02 cand 3 out 0 run 3 est 1.0s ['func:sqlglot/parsers/tsql.py:746-755']
+[sel 2.9s] q_mu03 cand 1 out 0 run 1 est 0.4s ['func:sqlglot/parsers/doris.py:165-178']
+[sel 3.0s] q_mu04 cand 4 out 0 run 4 est 0.7s ['class:sqlglot/expressions/json.py:JSONTable', 'attr-refined']
+[sel 3.0s] q_mu05 cand 1 out 0 run 1 est 0.5s ['func:sqlglot/parsers/redshift.py:129-143']
+[sel 4.1s] q_mu06 attrdiff changed: ['Redshift.Tokenizer.NUMERIC_ESCAPES_ARE_BYTES'] 1
+[sel 4.1s] q_mu06 attrdiff: 66 -> 104 candidates
+[sel 4.1s] q_mu06 cand 104 out 104 run 0 est 8.0s ['class:sqlglot/dialects/redshift.py:Redshift.Tokenizer', 'attr-refined']
+[sel 4.3s] q_mu07 cand 0 out 0 run 0 est 0.0s ['func:sqlglot/parsers/bigquery.py:713-733']
+[sel 4.3s] q_mx00 cand 3 out 3 run 0 est 2.7s ['data:tests/fixtures/identity.sql', 'data:tests/fixtures/optimizer/isolate_table_selects.sql']
+[sel 4.3s] q_mx01 cand 4 out 0 run 4 est 0.5s ['class:sqlglot/dialects/solr.py:Solr', 'attr-refined', 'class:sqlglot/generators/druid.py:DruidGenerator', 'attr-refined']
+[sel 4.4s] q_mx02 cand 1 out 0 run 1 est 0.5s ['data:tests/fixtures/optimizer/eliminate_subqueries.sql', 'func:sqlglot/expressions/builders.py:993-1054']
+[sel 4.4s] q_mx03 cand 2 out 2 run 0 est 0.5s ['data:tests/fixtures/optimizer/qualify_columns__with_invisible.sql', 'data:tests/fixtures/optimizer/isolate_table_selects.sql']
+[sel 4.4s] q_pc00 cand 0 out 0 run 0 est 0.0s ['same:sqlglot/parsers/materialize.py']
+[sel 4.4s] q_pc01 cand 0 out 0 run 0 est 0.0s ['same:sqlglot/parsers/exasol.py']
+[sel 4.4s] q_pc02 cand 0 out 0 run 0 est 0.0s ['same:sqlglot/dialects/oracle.py']
+[sel 4.4s] q_pc04 cand 0 out 0 run 0 est 0.0s ['same:sqlglot/executor/python.py']
+[sel 4.4s] q_pc05 cand 0 out 0 run 0 est 0.0s ['same:sqlglot/optimizer/eliminate_joins.py']
+[sel 4.4s] q_pc06 cand 0 out 0 run 0 est 0.0s ['same:sqlglot/generators/druid.py']
+[sel 4.4s] q_pc07 cand 0 out 0 run 0 est 0.0s ['same:sqlglot/dialects/prql.py']
+Unable to set __version__, run `pip install -e .` or `python setup.py develop` first.
+[sel 4.9s] ran q_ca00 0 tests cpu 0.07s failed 0 | raw 0.00s files 0 later 0 deep 0
+Unable to set __version__, run `pip install -e .` or `python setup.py develop` first.
+[sel 5.0s] ran q_ca01 0 tests cpu 0.08s failed 0 | raw 0.00s files 0 later 0 deep 0
+Unable to set __version__, run `pip install -e .` or `python setup.py develop` first.
+[sel 5.0s] ran q_ca02 0 tests cpu 0.07s failed 0 | raw 0.00s files 0 later 0 deep 0
+Unable to set __version__, run `pip install -e .` or `python setup.py develop` first.
+Unable to set __version__, run `pip install -e .` or `python setup.py develop` first.
+[sel 5.1s] ran q_ca04 0 tests cpu 0.07s failed 0 | raw 0.00s files 0 later 0 deep 0
+Unable to set __version__, run `pip install -e .` or `python setup.py develop` first.
+[sel 5.5s] ran q_ca03 4 tests cpu 0.51s failed 1 | raw 0.04s files 4 later 0 deep 0
+Unable to set __version__, run `pip install -e .` or `python setup.py develop` first.
+[sel 5.6s] ran q_ca06 0 tests cpu 0.07s failed 0 | raw 0.00s files 0 later 0 deep 0
+Unable to set __version__, run `pip install -e .` or `python setup.py develop` first.
+[sel 5.7s] ran q_ca07 0 tests cpu 0.07s failed 0 | raw 0.00s files 0 later 0 deep 0
+[sel 6.1s] ran q_fc00 1 tests cpu 0.39s failed 0 | raw 0.05s files 1 later 0 deep 0
+[sel 6.8s] ran q_ca05 0 tests cpu 1.58s failed 0 | raw 0.00s files 0 later 0 deep 1
+[sel 6.8s] ran q_fc01 1 tests cpu 0.62s failed 0 | raw 0.29s files 1 later 0 deep 0
+[sel 7.1s] ran q_fc02 1 tests cpu 0.35s failed 0 | raw 0.06s files 1 later 0 deep 0
+[sel 7.2s] ran q_fc03 1 tests cpu 0.39s failed 0 | raw 0.08s files 1 later 0 deep 0
+[sel 7.8s] ran q_fc05 1 tests cpu 0.64s failed 0 | raw 0.29s files 1 later 0 deep 0
+[sel 7.8s] ran q_mu00 6 tests cpu 0.62s failed 4 | raw 2.70s files 2 later 0 deep 0
+[sel 8.1s] ran q_mu03 1 tests cpu 0.27s failed 1 | raw 0.00s files 1 later 0 deep 0
+Unable to set __version__, run `pip install -e .` or `python setup.py develop` first.
+[sel 8.4s] ran q_mu02 3 tests cpu 0.55s failed 3 | raw 0.22s files 2 later 0 deep 0
+[sel 8.7s] ran q_mu05 1 tests cpu 0.28s failed 1 | raw 0.04s files 1 later 0 deep 0
+[sel 8.8s] ran q_mu04 4 tests cpu 0.59s failed 0 | raw 0.14s files 3 later 0 deep 0
+Unable to set __version__, run `pip install -e .` or `python setup.py develop` first.
+[sel 8.8s] ran q_mu06 0 tests cpu 0.08s failed 0 | raw 0.00s files 0 later 0 deep 0
+Unable to set __version__, run `pip install -e .` or `python setup.py develop` first.
+[sel 9.3s] ran q_mx02 1 tests cpu 0.41s failed 1 | raw 0.08s files 1 later 0 deep 0
+[sel 9.3s] ran q_mx01 4 tests cpu 0.53s failed 1 | raw 0.04s files 4 later 0 deep 0
+[sel 9.3s] done: simulated 104.3s, cpu self 2.3s children 11.3s
+nanobind: leaked 27 instances!
+nanobind: leaked 15 types!
+ - leaked type "_duckdb._sqltypes.DuckDBPyType"
+ - leaked type "token_type"
+ - leaked type "RenderMode"
+ - leaked type "CSVLineTerminator"
+ - leaked type "_duckdb.SourceHandle"
+ - leaked type "_duckdb.DuckDBPyConnection"
+ - leaked type "FunctionNullHandling"
+ - leaked type "StatementType"
+ - leaked type "ExpectedResultType"
+ - leaked type "PythonUDFType"
+ - ... skipped remainder
+nanobind: leaked 111 functions!
+ - leaked function "__eq__"
+ - leaked function ""
+ - leaked function "unregister_filesystem"
+ - leaked function "create_function"
+ - leaked function "install_extension"
+ - leaked function "_register_map"
+ - leaked function "extract_statements"
+ - leaked function "_catalog_version"
+ - leaked function "__exit__"
+ - leaked function ""
+ - ... skipped remainder
+nanobind: this is likely caused by a reference counting issue in the binding code.
+See https://nanobind.readthedocs.io/en/latest/refleaks.html
