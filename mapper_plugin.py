@@ -68,7 +68,9 @@ def _on_line(code, line):
 # change reaches. Lines outside any case are "common": touching those means
 # the whole test runs.
 
-_SL = {"on": False, "cur": None, "slices": {}, "common": {}, "y": 0, "k": 0, "titles": {}}
+_SL = {"on": False, "cur": None, "slices": {}, "common": {}, "y": 0, "k": 0, "v": 0, "titles": {}}
+_VALIDATOR = [None]
+VALIDATE_METHODS = ("validate_identity", "validate_all", "validate_transpile")
 SLICE_FILES = ("tests/test_optimizer.py", "tests/test_executor.py")
 
 
@@ -192,6 +194,38 @@ def _install_slicing():
         globals()["_SCHEMAS"] = weakref.WeakSet()
     except Exception as e:  # noqa: BLE001
         print("schema cache patch failed", e, file=sys.stderr)
+
+
+def _wrap_validator():
+    """Dialect tests are long lists of validate_* calls: record each call as a
+    case ("v" + running index within the test)."""
+    mod = sys.modules.get("tests.dialects.test_dialect")
+    V = getattr(mod, "Validator", None) if mod is not None else None
+    if V is None or getattr(V, "_br_wrapped", False):
+        return
+    _VALIDATOR[0] = V
+    for name in VALIDATE_METHODS:
+        orig = getattr(V, name, None)
+        if orig is None:
+            continue
+
+        def make(orig):
+            def w(self, *a, **k):
+                if not _SL["on"]:
+                    return orig(self, *a, **k)
+                key = "v%d" % _SL["v"]
+                _SL["v"] += 1
+                prev = _SL["cur"]
+                _slice_begin(key)
+                try:
+                    return orig(self, *a, **k)
+                finally:
+                    _slice_begin(prev)
+
+            return w
+
+        setattr(V, name, make(orig))
+    V._br_wrapped = True
 
 
 def _patch_fixture_loaders():
@@ -385,13 +419,18 @@ def pytest_collection_modifyitems(session, config, items):
     _install_slicing()
     mp_shim.patch_modules(mp_shim.SlicingExecutor)
     _patch_fixture_loaders()
+    _wrap_validator()
 
 
 @pytest.hookimpl(hookwrapper=True)
 def pytest_runtest_call(item):
     on = item.nodeid.split("::")[0] in SLICE_FILES
+    V = _VALIDATOR[0]
+    cls = getattr(item, "cls", None)
+    if not on and V is not None and cls is not None and isinstance(cls, type) and issubclass(cls, V):
+        on = True
     if on:
-        _SL.update(on=True, cur=None, slices={}, common={}, y=0, k=0, titles={})
+        _SL.update(on=True, cur=None, slices={}, common={}, y=0, k=0, v=0, titles={})
         mon.restart_events()
     try:
         yield

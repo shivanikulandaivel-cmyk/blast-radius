@@ -78,6 +78,33 @@ def _make_slicer(pytest, slices):
 
                         mod.load_sql_fixture_pairs = filtered
                         undo.append(lambda: setattr(mod, "load_sql_fixture_pairs", orig))
+                elif kind == "v":
+                    mod = sys.modules.get("tests.dialects.test_dialect")
+                    V = getattr(mod, "Validator", None) if mod is not None else None
+                    if V is not None:
+                        counter = [0]
+                        for name in ("validate_identity", "validate_all", "validate_transpile"):
+                            orig = V.__dict__.get(name)
+                            if orig is None:
+                                continue
+
+                            def make(orig, name):
+                                def w(self, *a, **k):
+                                    i = counter[0]
+                                    counter[0] += 1
+                                    if i in allowed:
+                                        return orig(self, *a, **k)
+                                    if name == "validate_all":
+                                        return None
+                                    # a call the change can't reach: keep its
+                                    # result for the caller, skip the checks
+                                    sql = a[0] if a else k.get("sql")
+                                    return self.parse_one(sql)
+
+                                return w
+
+                            setattr(V, name, make(orig, name))
+                            undo.append(lambda name=name, orig=orig: setattr(V, name, orig))
                 elif kind == "k":
                     inst = getattr(item, "_testcase", None) or getattr(item, "instance", None)
                     name = "tpcds_sqls" if "tpcds" in item.name else "tpch_sqls"
