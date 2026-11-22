@@ -1,0 +1,66 @@
+{
+ "p07": {
+  "left_out": 175,
+  "failed": [],
+  "unseen": [],
+  "secs": 55.7
+ },
+ "p10": {
+  "left_out": 26,
+  "failed": [
+   "tests/test_lineage.py::TestLineage::test_chained_pivots_consuming_alias_columns",
+   "tests/test_optimizer.py::TestOptimizer::test_canonicalize_internal_names",
+   "tests/test_optimizer.py::TestOptimizer::test_correlated_subqueries_annotation",
+   "tests/test_optimizer.py::TestOptimizer::test_correlated_unnest_projection_types",
+   "tests/test_optimizer.py::TestOptimizer::test_pushdown_projection",
+   "tests/test_optimizer.py::TestOptimizer::test_qualify_columns",
+   "tests/test_optimizer.py::TestOptimizer::test_qualify_columns__invalid",
+   "tests/test_optimizer.py::TestOptimizer::test_qualify_parquet_alias_collision",
+   "tests/test_optimizer.py::TestOptimizer::test_qualify_unknown_tvf_table_reference",
+   "tests/test_optimizer.py::TestOptimizer::test_resolver_column_context"
+  ],
+  "unseen": [],
+  "secs": 11.0
+ },
+ "p31": {
+  "left_out": 31,
+  "failed": [
+   "tests/dialects/test_bigquery.py::TestBigQuery::test_bigquery",
+   "tests/dialects/test_databricks.py::TestDatabricks::test_databricks",
+   "tests/dialects/test_databricks.py::TestDatabricks::test_streaming_tables",
+   "tests/dialects/test_dialect.py::TestDialect::test_decimal_literals",
+   "tests/dialects/test_dialect.py::TestDialect::test_time",
+   "tests/dialects/test_duckdb.py::TestDuckDB::test_time",
+   "tests/dialects/test_exasol.py::TestExasol::test_datetime_functions",
+   "tests/dialects/test_postgres.py::TestPostgres::test_generate_series_decimal_steps",
+   "tests/dialects/test_postgres.py::TestPostgres::test_generate_series_steps",
+   "tests/dialects/test_postgres.py::TestPostgres::test_postgres",
+   "tests/dialects/test_presto.py::TestPresto::test_cast",
+   "tests/dialects/test_spark.py::TestSpark::test_spark",
+   "tests/dialects/test_trino.py::TestTrino::test_trino",
+   "tests/dialects/test_tsql.py::TestTSQL::test_date_diff",
+   "tests/dialects/test_tsql.py::TestTSQL::test_tsql",
+   "tests/test_optimizer.py::TestOptimizer::test_annotate_funcs"
+  ],
+  "unseen": [],
+  "secs": 4.6
+ },
+ "p33": {
+  "left_out": 43,
+  "failed": [
+   "tests/dialects/test_athena.py::TestAthena::test_ddl",
+   "tests/dialects/test_hive.py::TestHive::test_add_columns",
+   "tests/dialects/test_hive.py::TestHive::test_ddl",
+   "tests/dialects/test_spark.py::TestSpark::test_ddl",
+   "tests/test_parser.py::TestParser::test_alter_set"
+  ],
+  "unseen": [],
+  "secs": 3.8
+ },
+ "p41": {
+  "left_out": 228,
+  "failed": [],
+  "unseen": [],
+  "secs": 60.2
+ }
+}
