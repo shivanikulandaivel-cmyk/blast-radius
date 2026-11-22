@@ -3,7 +3,8 @@ import json, sys
 tests_path, truth_path, out_path = sys.argv[1], sys.argv[2], sys.argv[3]
 tests = json.load(open(tests_path))["tests"]
 dur = {t["number"]: round(t["seconds"] * 1000) for t in tests}
-truth = json.load(open(truth_path))["truth"]
+_t = json.load(open(truth_path))
+truth = _t["truth"] if "truth" in _t else _t["commits"]
 sel = {}
 for line in open(out_path):
     r = json.loads(line)

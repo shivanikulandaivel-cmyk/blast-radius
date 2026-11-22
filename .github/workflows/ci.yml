@@ -39,6 +39,8 @@ jobs:
             python3 score.py sample sample/answers.json ci/output$i.jsonl > ci/score$i.txt 2>&1 || true
             cat ci/score$i.txt; tail -n 3 ci/stderr$i.log
           done
+          python3 tools/score_truth.py sample/tests.json sample/answers.json ci/output1.jsonl > ci/breakdown.txt 2>&1 || true
+          cat ci/breakdown.txt
       - name: Probe check on mutants (real environment)
         if: hashFiles('tools/mutants.tar.gz') != ''
         run: |

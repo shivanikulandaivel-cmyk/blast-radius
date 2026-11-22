@@ -363,7 +363,7 @@ def main():
                 extra = set(to_nums(imp_bits & ~base_bits))
                 if extra:
                     _, extra_cost = schedule(extra, dur)
-                    if extra_cost > 1000:
+                    if extra_cost > 4000:
                         db = attr_diff_bits(cid, changes, idx)
                         if db is not None:
                             newc = set(to_nums(base_bits | db)) | set(unmapped)
