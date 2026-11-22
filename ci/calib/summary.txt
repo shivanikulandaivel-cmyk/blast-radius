@@ -1,0 +1,8 @@
+factor 1.0 mut: SIMULATED 242.1 MISSES 0 CPU 21.1389
+factor 1.0 sample: Simulated: 159.744 s Misses:    0 (0.000 s of the simulated time)  CPU 13.6741
+factor 1.5 mut: SIMULATED 246.6 MISSES 0 CPU 13.1457
+factor 1.5 sample: Simulated: 159.744 s Misses:    0 (0.000 s of the simulated time)  CPU 11.6392
+factor 2.0 mut: SIMULATED 246.6 MISSES 0 CPU 13.1684
+factor 2.0 sample: Simulated: 160.003 s Misses:    0 (0.000 s of the simulated time)  CPU 7.62318
+factor 2.5 mut: SIMULATED 246.6 MISSES 0 CPU 13.2001
+factor 2.5 sample: Simulated: 160.003 s Misses:    0 (0.000 s of the simulated time)  CPU 7.61998
