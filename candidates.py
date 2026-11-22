@@ -309,7 +309,7 @@ class Index:
             new = apply_hunks(old, fd)
         except Exception:
             return [("module",)], None
-        ch = ast_changes(old, new)
+        ch = ast_changes(old, new, fd)
         # an encoding cookie in the first two lines changes how bytes decode
         for h in fd.hunks:
             if h[0] <= 2 and any("coding" in b for b in h[4] if b[:1] in "+-"):
