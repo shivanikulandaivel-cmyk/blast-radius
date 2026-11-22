@@ -36,8 +36,10 @@ MAX_WORKERS = 8
 PARALLEL = int(os.environ.get("BR_PARALLEL", "2"))
 NO_RUN = os.environ.get("BR_NO_RUN") == "1"
 RISK = os.environ.get("BR_RISK", "0") == "1"
-PROBE = os.environ.get("BR_PROBE", "0") == "1"
-PROBE_MIN_HITS = int(os.environ.get("BR_PROBE_MIN_HITS", "3"))
+PROBE = os.environ.get("BR_PROBE", "1") == "1"
+PROBE_MIN_HITS = int(os.environ.get("BR_PROBE_MIN_HITS", "10"))
+PROBE_HEAVY_MS = int(os.environ.get("BR_PROBE_HEAVY_MS", "5000"))
+PROBE_HEAVY_DUR = int(os.environ.get("BR_PROBE_HEAVY_DUR", "2000"))
 PROBE_MIN_EVIDENCE = int(os.environ.get("BR_PROBE_MIN_EVIDENCE", "3"))
 CPU_FACTOR = float(os.environ.get("BR_CPU_FACTOR", "2.5"))
 RISK_MS = int(os.environ.get("BR_RISK_MS", "5000"))
@@ -227,6 +229,52 @@ def run_jobs(jobs, deadline):
                                                        len(j.later), int(getattr(j, "deep", False))))
 
 
+# ------------------------------------------------------------ attribute diff
+
+ATTRDIFF = os.environ.get("BR_ATTRDIFF", "1") == "1"
+_ATTR_BASE = None
+
+
+def attr_diff_bits(cid, changes, idx):
+    """Import the patched code in a fresh process and diff its fingerprints
+    against the original's. Bits of affected tests, or None when unsure."""
+    global _ATTR_BASE
+    import subprocess
+
+    import attrdiff
+
+    if _ATTR_BASE is None:
+        with open(os.path.join(HERE, "maps", "attrfp.json")) as f:
+            _ATTR_BASE = json.load(f)["fp"]
+    root = os.path.join(WORK, "ad_" + cid)
+    shutil.rmtree(root, ignore_errors=True)
+    os.makedirs(WORK, exist_ok=True)
+    build_overlay(root, changes)
+    out = root + ".json"
+    try:
+        subprocess.run([sys.executable, os.path.join(HERE, "attrdiff.py"), root, out],
+                       env=dict(os.environ, PYTHONHASHSEED="0", SKIP_INTEGRATION="0"),
+                       stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, timeout=30, cwd=WORK)
+        with open(out) as f:
+            res = json.load(f)
+    except Exception as e:  # noqa: BLE001
+        log(cid, "attrdiff run failed", repr(e))
+        return None
+    finally:
+        shutil.rmtree(root, ignore_errors=True)
+        try:
+            os.remove(out)
+        except OSError:
+            pass
+    if res.get("errors"):
+        return None
+    entries = attrdiff.diff(_ATTR_BASE, res["fp"])
+    if not entries:
+        return None  # nothing visible changed: keep the broad answer
+    log(cid, "attrdiff changed:", [e[1].split(":")[-1] + "." + e[2] for e in entries[:6]], len(entries))
+    return idx.diff_bits(entries)
+
+
 # ------------------------------------------------------------ main
 
 
@@ -304,6 +352,24 @@ def main():
             log(cid, "analysis failed", repr(e))
             cand = set(dur)
             changes, ok, notes, flags = {}, False, ["error"], set()
+        # import-time changes: compare what the patched code actually builds
+        # (class attributes, module globals) with the original, and keep only
+        # tests that read a value that really changed
+        if ATTRDIFF and ok and "importlevel" in flags and "syntax" not in flags and "addrm" not in flags \
+                and all(fd.path.startswith("sqlglot/") and fd.path.endswith(".py") for fd in fds):
+            try:
+                base_bits, imp_bits = idx.last_split
+                extra = set(to_nums(imp_bits & ~base_bits))
+                if extra:
+                    _, extra_cost = schedule(extra, dur)
+                    if extra_cost > 1000:
+                        db = attr_diff_bits(cid, changes, idx)
+                        if db is not None:
+                            newc = set(to_nums(base_bits | db)) | set(unmapped)
+                            log(cid, "attrdiff: %d -> %d candidates" % (len(cand), len(newc)))
+                            cand = newc
+            except Exception as e:  # noqa: BLE001
+                log(cid, "attrdiff failed", repr(e))
         if "syntax" in flags:
             # a module that cannot be compiled fails every test that imports it
             plans[cid] = {"out": cand, "run": []}
@@ -388,24 +454,26 @@ def main():
                 probed[fd.new] = text
                 probe_sites += len(sites)
             if probed and probe_sites:
-                # bet: the tests we would hand over are left out if the probe
-                # shows the change never makes a difference while the cheap
-                # tests run; they must be enough to trust that
-                ev = sorted(run, key=lambda t: rc[t])
-                if len(ev) < PROBE_MIN_EVIDENCE:
-                    extra = sorted((t for t in out if rc[t] <= 1000), key=lambda t: rc[t])
-                    for t in extra:
-                        if len(ev) >= PROBE_MIN_EVIDENCE:
-                            break
-                        ev.append(t)
-                if len(ev) >= PROBE_MIN_EVIDENCE:
-                    run = [t for t in ev if rc[t] < 1000 or t in run]
-                    bet = set(out) - set(run)
-                    plans[cid] = {"out": set(), "run": run, "gamble": [], "bet": bet}
-                    out = []
-                    changes = dict(changes)
-                    changes.update(probed)
-                    log(cid, "probe", probe_sites, "sites; betting", len(bet), "tests on", len(run))
+                # bet only on tests that are very expensive to run AND to hand
+                # over; every other candidate runs on the probed code. The bet
+                # stands only if none of them fails and the changed code ran
+                # many times without ever computing a different value.
+                bet = {t for t in set(out) | set(run) if rc[t] >= PROBE_HEAVY_MS and dur[t] >= PROBE_HEAVY_DUR}
+                ev = [t for t in set(out) | set(run) if t not in bet]
+                ev_cost = sum(rc[t] for t in ev) + h
+                if bet and ev:
+                    _, keep_cost = schedule(set(out) | set(run), dur)
+                    _, bet_out_cost = schedule(bet, dur)
+                    # worth it only if the bet saves more than the extra runs cost
+                    if bet_out_cost > ev_cost * 0.5:
+                        run = sorted(ev, key=lambda t: rc[t])
+                        plans[cid] = {"out": set(), "run": run, "gamble": [], "bet": bet}
+                        out = []
+                        changes = dict(changes)
+                        changes.update(probed)
+                        log(cid, "probe", probe_sites, "sites; betting", len(bet), "heavy tests on", len(run))
+                    else:
+                        probe_sites = 0
                 else:
                     probe_sites = 0
             else:

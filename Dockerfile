@@ -25,6 +25,7 @@ RUN mkdir -p /app/br/maps \
 RUN python -m compileall -q -j 4 /app/sqlglot/sqlglot /app/sqlglot/tests /app/br \
  && python /app/br/build_map.py /app/sqlglot \
  && python /app/br/build_index.py /app/br/maps/map.json.gz /app/sqlglot /app/br/index.pkl \
+ && (cd /tmp && PYTHONHASHSEED=0 SKIP_INTEGRATION=0 python /app/br/attrdiff.py /app/sqlglot /app/br/maps/attrfp.json) \
  && python -m compileall -q -j 4 /app/sqlglot/sqlglot /app/sqlglot/tests \
  && chmod -R a+rX /app
 
