@@ -8,7 +8,7 @@ from brlib import RefIndex, Scopes, body_attr_changes, changed_old_lines, find_c
 
 # which recorded case kinds may be run alone: y fixture pairs, k TPC queries,
 # v dialect validate_* calls
-SLICE_KINDS = tuple(os.environ.get("BR_SLICE_KINDS", "ykv"))
+SLICE_KINDS = tuple(os.environ.get("BR_SLICE_KINDS", "yk"))
 
 class Index:
     """Built once from the map (build time), pickled, loaded at run time.
