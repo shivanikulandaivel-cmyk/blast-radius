@@ -368,7 +368,7 @@ class Index:
                             bits |= self.range_bits(path, c[1][0], c[1][1])
                             rngs = [(c[1][0], c[1][1])]
                         self.last_ranges.extend((path, a, b) for a, b in rngs)
-                        ie = self.import_exec.get(path, ())
+                        ie = self.import_exec.get(path, ()) if kind == "func" else ()
                         if any(a <= ln <= b for ln in ie for a, b in rngs):
                             # this code also runs while modules import
                             notes.append("import-exec:%s:%d" % (path, c[1][0]))
