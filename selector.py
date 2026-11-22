@@ -51,7 +51,7 @@ PLAN_SCALE = float(os.environ.get("BR_PLAN_SCALE", "1.0"))
 RUN_CAP_MS = float(os.environ.get("BR_RUN_CAP_MS", "1e12"))
 NO_LATER = os.environ.get("BR_NO_LATER", "1") == "1"
 BIG_GAMBLE = os.environ.get("BR_BIG_GAMBLE", "0") == "1"
-HEAVY_GAMBLE = os.environ.get("BR_HEAVY_GAMBLE", "0") == "1"
+HEAVY_GAMBLE = os.environ.get("BR_HEAVY_GAMBLE", "1") == "1"
 HEAVY_GAMBLE_MS = int(os.environ.get("BR_HEAVY_GAMBLE_MS", "20000"))
 BIG_GAMBLE_IMPORTLEVEL = os.environ.get("BR_BIG_GAMBLE_IMPORTLEVEL", "1") == "1"
 BIG_GAMBLE_MS = int(os.environ.get("BR_BIG_GAMBLE_MS", "15000"))
@@ -738,9 +738,11 @@ def main():
     if bet_log:
         try:
             with open(bet_log, "w") as f:
-                json.dump({cid: {"bet": sorted(ids[t] for t in (p.get("bet") or [])),
-                                 "left_out": bool(p.get("bet")) and not (set(p.get("bet")) & p["out"])}
-                           for cid, p in plans.items()}, f)
+                bl = {}
+                for cid, p in plans.items():
+                    bt = set(p.get("bet") or []) | set(p.get("gamble") or [])
+                    bl[cid] = {"bet": sorted(ids[t] for t in bt), "left_out": bool(bt) and not (bt & p["out"])}
+                json.dump(bl, f)
         except Exception as e:  # noqa: BLE001
             log("bet log failed", e)
     total = 0

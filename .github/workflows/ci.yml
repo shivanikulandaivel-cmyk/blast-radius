@@ -87,8 +87,7 @@ jobs:
               --entrypoint sh blast-radius-entry -c "python /app/br/selector.py > /out/sel_$name.jsonl 2> /out/err_$name.log; python /tools/check_bets_par.py /data/commits /out/bets_$name.json /out/betrep_$name.json > /out/bets_$name.log 2>&1" || true
             echo "== $name"; grep "done:" ci/audit/err_$name.log || true; grep -c "betting" ci/audit/err_$name.log || true; grep -v "'failed': \[\]" ci/audit/bets_$name.log | tail -n 30 || true
           done <<'EOF'
-          P BR_PROBE_ALL=1
-          P5 BR_PROBE_ALL=1 BR_PROBE_MIN_EV=5 BR_PROBE_MIN_HITS=20
+          H BR_HEAVY_GAMBLE=1
           EOF
       - name: Sweep settings on mutants (truth) and samples (only with [sweep])
         if: contains(github.event.head_commit.message, '[sweep]')
