@@ -1,0 +1,6 @@
+q_ca01 cost 2.7 oracle 2.1
+q_ca05 cost 36.0 oracle 2.1
+q_fx01 cost 2.8 oracle 0.0
+q_mu06 cost 7.3 oracle 0.0
+q_mx00 cost 2.8 oracle 2.0
+SIMULATED 85.8 MISSES 0

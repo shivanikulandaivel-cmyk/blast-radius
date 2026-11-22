@@ -4,4 +4,4 @@ q_fx01 cost 2.8 oracle 0.0
 q_mu06 cost 7.3 oracle 0.0
 q_mx00 cost 2.8 oracle 2.0
 SIMULATED 85.8 MISSES 0
-usage_usec 10559956
+usage_usec 21328027
