@@ -49,6 +49,8 @@ PLAN_SCALE = float(os.environ.get("BR_PLAN_SCALE", "1.0"))
 RUN_CAP_MS = float(os.environ.get("BR_RUN_CAP_MS", "1e12"))
 NO_LATER = os.environ.get("BR_NO_LATER", "1") == "1"
 BIG_GAMBLE = os.environ.get("BR_BIG_GAMBLE", "0") == "1"
+HEAVY_GAMBLE = os.environ.get("BR_HEAVY_GAMBLE", "1") == "1"
+HEAVY_GAMBLE_MS = int(os.environ.get("BR_HEAVY_GAMBLE_MS", "20000"))
 BIG_GAMBLE_IMPORTLEVEL = os.environ.get("BR_BIG_GAMBLE_IMPORTLEVEL", "1") == "1"
 BIG_GAMBLE_MS = int(os.environ.get("BR_BIG_GAMBLE_MS", "15000"))
 BIG_GAMBLE_EV = int(os.environ.get("BR_BIG_GAMBLE_EV", "40"))
@@ -572,6 +574,27 @@ def main():
                     p0["run"] = run
                     p0["gamble"] = gamble
                     log(cid, "big gamble: %d tests (%.1fs) on %d evidence" % (len(gamble), out_cost / 1000, len(ev2)))
+        # Experiment B: bet only on the giant tests, with strong evidence
+        if HEAVY_GAMBLE and ok and not NO_RUN and out and not gamble and "syntax" not in flags:
+            heavy = [t for t in out if dur[t] >= HEAVY_GAMBLE_MS]
+            if heavy:
+                pool = sorted((t for t in cand if t not in heavy and t not in set(run) and rc[t] <= 2500),
+                              key=lambda t: rc[t])
+                ev3, tot = [], 0
+                for t in pool:
+                    if len(ev3) + len(run) >= 40 or (tot + rc[t] > 10000 and len(ev3) + len(run) >= 3):
+                        break
+                    ev3.append(t)
+                    tot += rc[t]
+                if len(ev3) + len(run) >= 10:
+                    gamble = heavy
+                    out = [t for t in out if t not in set(heavy) and t not in set(ev3)]
+                    run = list(run) + ev3
+                    p0 = plans[cid]
+                    p0["out"] = set(out)
+                    p0["run"] = run
+                    p0["gamble"] = gamble
+                    log(cid, "heavy gamble: %d giant tests on %d evidence" % (len(heavy), len(run)))
         if gamble and not run:
             # nothing cheap to run means no evidence: hand them over
             plans[cid]["out"] |= set(gamble)
