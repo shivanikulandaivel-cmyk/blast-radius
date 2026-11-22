@@ -6,6 +6,10 @@ import os
 from brlib import RefIndex, Scopes, body_attr_changes, changed_old_lines, find_class, import_graph, module_name, parse_patch
 
 
+# which recorded case kinds may be run alone: y fixture pairs, k TPC queries,
+# v dialect validate_* calls
+SLICE_KINDS = tuple(os.environ.get("BR_SLICE_KINDS", "yk"))
+
 class Index:
     """Built once from the map (build time), pickled, loaded at run time.
     Bit i stands for self.ids[i]."""
@@ -469,7 +473,7 @@ class Index:
             return None
         if kind == "y" and not tid.startswith("tests/test_optimizer.py::"):
             return None
-        if kind not in ("y", "k", "v"):
+        if kind not in SLICE_KINDS:
             return None
         m = 0
         for path, a, b in ranges:
