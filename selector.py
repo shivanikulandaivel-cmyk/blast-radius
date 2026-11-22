@@ -45,6 +45,9 @@ FIXTURE_DIRECT = os.environ.get("BR_FIXTURE_DIRECT", "1") == "1"
 FIXTURE_DIRECT_MS = int(os.environ.get("BR_FIXTURE_DIRECT_MS", "4000"))
 PROBE_MIN_EVIDENCE = int(os.environ.get("BR_PROBE_MIN_EVIDENCE", "3"))
 CPU_FACTOR = float(os.environ.get("BR_CPU_FACTOR", "2.5"))
+PLAN_SCALE = float(os.environ.get("BR_PLAN_SCALE", "1.0"))
+RUN_CAP_MS = float(os.environ.get("BR_RUN_CAP_MS", "1e12"))
+NO_LATER = os.environ.get("BR_NO_LATER", "0") == "1"
 RISK_MS = int(os.environ.get("BR_RISK_MS", "5000"))
 RISK_MIN_EVIDENCE = int(os.environ.get("BR_RISK_MIN", "3"))
 
@@ -441,6 +444,13 @@ def main():
             return c
 
         rc = {t: runcost(t) for t in list(order) + evidence}
+        # planning view of the run cost: PLAN_SCALE < 1 favours running over
+        # handing over; tests above RUN_CAP_MS (measured CPU) are never run
+        def plancost(t):
+            raw = idx.cpu.get(ids[t])
+            if raw is not None and raw > RUN_CAP_MS and t not in slice_frac:
+                return float("inf")
+            return rc[t] * PLAN_SCALE
         owner = {t: ids[t].rsplit("::", 1)[0] for t in list(order) + evidence}
         best = None
         # splits: the first j (longest) tests are handed over, the rest run
@@ -454,7 +464,8 @@ def main():
                 if NO_RUN or not ok:
                     continue
                 owners = {owner[t] for t in tail}
-                run_cost = h + sum(rc[t] for t in tail) + sum(idx.class_setup.get(o, 0) for o in owners)
+                run_cost = h * PLAN_SCALE + sum(plancost(t) for t in tail) + \
+                    sum(idx.class_setup.get(o, 0) for o in owners) * PLAN_SCALE
             else:
                 run_cost = 0
             _, sc = schedule(head, dur)
@@ -552,8 +563,8 @@ def main():
             # expensive tests run last, and only if the cheap ones all passed:
             # a cheap failure means the expensive ones likely fail too, and
             # handing them over is cheaper than running them to find out
-            first = [ids[t] for t in run if rc[t] < 1000]
-            later = [ids[t] for t in run if rc[t] >= 1000]
+            first = [ids[t] for t in run if rc[t] < 1000 or NO_LATER]
+            later = [ids[t] for t in run if rc[t] >= 1000 and not NO_LATER]
             if not first:
                 first, later = later, []
             raw = sum((idx.cpu.get(ids[t]) or dur[t]) for t in run) + \
