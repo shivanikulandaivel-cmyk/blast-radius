@@ -32,7 +32,51 @@ class _Collector:
             self.collect_errors.append(report.nodeid)
 
 
-def run_tests(root, nodeids, out_path, timeout, check_imports=(), collect_all=False, later=(), probe=False):
+def _make_slicer(pytest, slices):
+    """Plugin that runs only some cases of big tests: fixture pairs read
+    through load_sql_fixture_pairs ("y" + running index), or TPC-H / TPC-DS
+    queries ("k" + index into the query list)."""
+
+    class _Slicer:
+        @pytest.hookimpl(hookwrapper=True)
+        def pytest_runtest_call(self, item):
+            f = slices.get(item.nodeid)
+            undo = []
+            if f:
+                kind, allowed = f[0], set(f[1])
+                if kind == "y":
+                    mod = item.module
+                    orig = getattr(mod, "load_sql_fixture_pairs", None)
+                    if orig is not None:
+                        counter = [0]
+
+                        def filtered(filename, _orig=orig):
+                            for it in _orig(filename):
+                                y = counter[0]
+                                counter[0] += 1
+                                if y in allowed:
+                                    yield it
+
+                        mod.load_sql_fixture_pairs = filtered
+                        undo.append(lambda: setattr(mod, "load_sql_fixture_pairs", orig))
+                elif kind == "k":
+                    inst = getattr(item, "_testcase", None) or getattr(item, "instance", None)
+                    name = "tpcds_sqls" if "tpcds" in item.name else "tpch_sqls"
+                    lst = getattr(inst, name, None) if inst is not None else None
+                    if lst is not None:
+                        setattr(inst, name, [x for i, x in enumerate(lst) if i in allowed])
+                        undo.append(lambda: inst.__dict__.pop(name, None))
+            try:
+                yield
+            finally:
+                for u in undo:
+                    u()
+
+    return _Slicer()
+
+
+def run_tests(root, nodeids, out_path, timeout, check_imports=(), collect_all=False, later=(), probe=False,
+              slices=None):
     """Run nodeids; then, only if none of them failed, run the (expensive)
     tests in later. Tests not run are left out of "seen"."""
     os.environ["SKIP_INTEGRATION"] = "0"
@@ -96,11 +140,14 @@ def run_tests(root, nodeids, out_path, timeout, check_imports=(), collect_all=Fa
     saved = os.dup(1)
     os.dup2(devnull, 1)  # keep stdout clean: it is the answer channel
     try:
-        rc = pytest.main(args, plugins=[col]) if nodeids else "skipped"
+        plugins = [col]
+        if slices:
+            plugins.append(_make_slicer(pytest, slices))
+        rc = pytest.main(args, plugins=plugins) if nodeids else "skipped"
         if later and not col.failed and not col.collect_errors:
             with open(argfile, "w") as f:
                 f.write("\n".join(later))
-            rc = (rc, pytest.main(args, plugins=[col]))
+            rc = (rc, pytest.main(args, plugins=plugins))
     except BaseException as e:  # noqa: BLE001
         rc = "exc:%r" % (e,)
     finally:

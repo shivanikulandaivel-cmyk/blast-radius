@@ -152,6 +152,7 @@ def start_job(job):
 
             runner.run_tests(job.root, job.nodeids, job.out, job.timeout,
                              job.check_imports, job.collect_all, job.later,
+                             slices=getattr(job, "slices", None) or {},
                              probe=bool(job.probe_sites))
         except BaseException:  # noqa: BLE001
             import traceback
@@ -235,6 +236,7 @@ def run_jobs(jobs, deadline):
 # ------------------------------------------------------------ attribute diff
 
 ATTRDIFF = os.environ.get("BR_ATTRDIFF", "1") == "1"
+SLICING = os.environ.get("BR_SLICING", "1") == "1"
 _ATTR_BASE = None
 
 
@@ -373,6 +375,20 @@ def main():
                             cand = newc
             except Exception as e:  # noqa: BLE001
                 log(cid, "attrdiff failed", repr(e))
+        # big tests recorded case by case: when the change only reaches some
+        # cases, run just those (exact: the other cases run no changed code)
+        slice_f = {}
+        slice_frac = {}
+        if SLICING and ok and "importlevel" not in flags and "addrm" not in flags and "syntax" not in flags \
+                and fds and all(fd.path.startswith("sqlglot/") and fd.path.endswith(".py")
+                                and fd.path in idx.last_body_only for fd in fds):
+            for t in cand:
+                r = idx.slice_select(ids[t], idx.last_ranges)
+                if r is not None:
+                    slice_f[ids[t]] = [r[0], r[1]]
+                    slice_frac[t] = r[2]
+            if slice_f:
+                log(cid, "slices:", {k.rsplit("::", 1)[-1]: "%d" % len(v[1]) for k, v in slice_f.items()})
         if "syntax" in flags:
             # a module that cannot be compiled fails every test that imports it
             plans[cid] = {"out": cand, "run": []}
@@ -409,7 +425,10 @@ def main():
             # build-time measurements run warm; a fresh child pays imports,
             # lazy dialect setup and caches again: about 2.5x in practice
             c = idx.cpu.get(ids[t])
-            return (c if c is not None else dur[t] * 1.2) * CPU_FACTOR + 5
+            c = (c if c is not None else dur[t] * 1.2) * CPU_FACTOR + 5
+            if t in slice_frac:
+                c = c * slice_frac[t] + 150
+            return c
 
         rc = {t: runcost(t) for t in list(order) + evidence}
         owner = {t: ids[t].rsplit("::", 1)[0] for t in list(order) + evidence}
@@ -534,6 +553,7 @@ def main():
                             check_imports="ALL" if deep else mods,
                             collect_all=deep or "importcheck" in flags, later=later,
                             probe_sites=probe_sites))
+            jobs[-1].slices = {k: v for k, v in slice_f.items() if k in set(first) | set(later)}
             jobs[-1].raw = raw
             jobs[-1].nfiles = nfiles
             jobs[-1].deep = deep

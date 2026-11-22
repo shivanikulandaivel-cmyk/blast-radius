@@ -28,10 +28,21 @@ class Index:
         self.lines = {}  # file -> {line: bits}
         self.uses = {}
         self.opens = {}
+        self.slices = {}
         self.import_exec = {f: set(ls) for f, ls in mapdata.get("<import>", {}).get("lines", {}).items()}
         self.import_uses = set(mapdata.get("<import>", {}).get("uses", []))
         for key, rec in mapdata.items():
             if key == "<import>":
+                continue
+            if key.startswith("<slices>:"):
+                tid = key[len("<slices>:"):]
+                kinds = {k[0] for k in rec["keys"]}
+                if len(kinds) == 1:
+                    self.slices[tid] = {
+                        "keys": rec["keys"],
+                        "common": {f: set(ls) for f, ls in rec["common"].items()},
+                        "mask": {f: {int(ln): int(m, 16) for ln, m in d.items()} for f, d in rec["mask"].items()},
+                    }
                 continue
             if key.startswith("<collect>:"):
                 bits = self.file_tests.get(key[len("<collect>:"):], 0)
@@ -310,6 +321,8 @@ class Index:
         bits = self.unmapped
         imp = 0  # the part that comes from import-time (class/module) changes
         self.last_body_only = set()  # files whose changes were function bodies only
+        self.last_ranges = []  # (path, a, b) statement ranges a change touches
+        self.last_sliceable = True  # every change is inside function bodies of sqlglot
         notes = []
         flags = set()
         for fd in fds:
@@ -353,6 +366,8 @@ class Index:
                             bits |= self.func_stmt_bits(path, fd, c[1][0], c[1][1], rngs)
                         else:
                             bits |= self.range_bits(path, c[1][0], c[1][1])
+                            rngs = [(c[1][0], c[1][1])]
+                        self.last_ranges.extend((path, a, b) for a, b in rngs)
                         ie = self.import_exec.get(path, ())
                         if any(a <= ln <= b for ln in ie for a, b in rngs):
                             # this code also runs while modules import
@@ -408,6 +423,34 @@ class Index:
                 notes.append("data:" + path)
         self.last_split = (bits, imp)
         return bits | imp, notes, flags
+
+    def slice_select(self, tid, ranges):
+        """For a big test recorded case by case: the cases a change reaches.
+        Returns (kind, [case numbers], share of cases) or None (run it all)."""
+        sl = self.slices.get(tid)
+        if not sl or not ranges:
+            return None
+        name = tid.rsplit("::", 1)[-1]
+        kind = sl["keys"][0][0]
+        if kind == "k" and name not in ("test_execute_tpch", "test_execute_tpcds"):
+            return None
+        if kind == "y" and not tid.startswith("tests/test_optimizer.py::"):
+            return None
+        m = 0
+        for path, a, b in ranges:
+            com = sl["common"].get(path)
+            if com and any(a <= ln <= b for ln in com):
+                return None
+            d = sl["mask"].get(path)
+            if d:
+                for ln, v in d.items():
+                    if a <= ln <= b:
+                        m |= v
+        if not m:
+            return None
+        idxs = bits_to_list(m)
+        keys = sl["keys"]
+        return kind, sorted(int(keys[i][1:]) for i in idxs), len(idxs) / len(keys)
 
     def diff_bits(self, entries):
         """Candidates from the values a change really altered at import time.

@@ -52,7 +52,155 @@ def _on_line(code, line):
     if s is None:
         s = _lines[rel] = set()
     s.add(line)
+    if _SL["on"]:
+        tgt = _SL["slices"].setdefault(_SL["cur"], {}) if _SL["cur"] is not None else _SL["common"]
+        ss = tgt.get(rel)
+        if ss is None:
+            ss = tgt[rel] = set()
+        ss.add(line)
     return mon.DISABLE
+
+
+# ---------------------------------------------------------------- slices
+# Big tests run many independent cases: fixture pairs (check_file and the
+# annotate tests) and the TPC-H / TPC-DS queries. While such a test runs, the
+# lines are also recorded per case, so the selector can run only the cases a
+# change reaches. Lines outside any case are "common": touching those means
+# the whole test runs.
+
+_SL = {"on": False, "cur": None, "slices": {}, "common": {}, "y": 0, "k": 0, "titles": {}}
+SLICE_FILES = ("tests/test_optimizer.py", "tests/test_executor.py")
+
+
+_SCHEMAS = ()
+
+
+def _clear_caches():
+    """Caches would hide work from every case but the first that needs it."""
+    try:
+        g = sys.modules.get("sqlglot.generator")
+        if g is not None and hasattr(g, "_DISPATCH_CACHE"):
+            g._DISPATCH_CACHE.clear()
+    except Exception:
+        pass
+    try:
+        for sc in list(_SCHEMAS):
+            for name, val in vars(sc).items():
+                if name.endswith("_cache") and isinstance(val, dict):
+                    val.clear()
+    except Exception:
+        pass
+
+
+def _slice_begin(key):
+    _SL["cur"] = key
+    _clear_caches()
+    mon.restart_events()
+
+
+def _wrap_fixture_pairs(orig):
+    def load_sql_fixture_pairs(filename):
+        i = 0
+        for item in orig(filename):
+            i += 1
+            if _SL["on"]:
+                key = "y%d" % _SL["y"]
+                _SL["y"] += 1
+                try:
+                    meta, sql = item[0], item[1]
+                    _SL["titles"][meta.get("title") or f"{i}, {sql}"] = key
+                except Exception:
+                    pass
+                _slice_begin(key)
+            yield item
+        if _SL["on"]:
+            _slice_begin(None)
+
+    load_sql_fixture_pairs._br_wrapped = True
+    return load_sql_fixture_pairs
+
+
+def _install_slicing():
+    import contextlib
+    import re
+    import unittest
+    import unittest.case
+
+    import mp_shim
+
+    if getattr(unittest.TestCase.subTest, "_br_wrapped", False):
+        return
+    orig_sub = unittest.TestCase.subTest
+    sentinel = unittest.case._subtest_msg_sentinel
+    tpc = re.compile(r"^tpc-(?:h|ds) (\d+)$")
+
+    @contextlib.contextmanager
+    def subTest(self, msg=sentinel, **params):
+        key = None
+        if _SL["on"] and isinstance(msg, str):
+            m = msg[len("(execute) "):] if msg.startswith("(execute) ") else msg
+            key = _SL["titles"].get(m)
+            if key is None:
+                mm = tpc.match(m)
+                if mm:
+                    key = "k%d" % (int(mm.group(1)) - 1)
+        prev = _SL["cur"]
+        if key is not None:
+            _slice_begin(key)
+        try:
+            with orig_sub(self, msg, **params):
+                yield
+        finally:
+            if key is not None:
+                _slice_begin(prev)
+
+    subTest._br_wrapped = True
+    unittest.TestCase.subTest = subTest
+
+    class SlicingExecutor(mp_shim.SyncExecutor):
+        def submit(self, fn, *args, **kwargs):
+            if _SL["on"] and not (_SL["cur"] or "").startswith("y"):
+                key = "k%d" % _SL["k"]
+                _SL["k"] += 1
+                prev = _SL["cur"]
+                _slice_begin(key)
+                try:
+                    return super().submit(fn, *args, **kwargs)
+                finally:
+                    _slice_begin(prev)
+            return super().submit(fn, *args, **kwargs)
+
+    mp_shim.SlicingExecutor = SlicingExecutor
+
+    # schema lookups are cached per MappingSchema; with the cache on, only the
+    # first case to need a value would run the code computing it
+    try:
+        import weakref
+
+        from sqlglot.schema import MappingSchema
+
+        orig_init = MappingSchema.__init__
+
+        def __init__(self, *a, **k):
+            orig_init(self, *a, **k)
+            try:
+                _SCHEMAS.add(self)
+            except Exception:
+                pass
+
+        MappingSchema.__init__ = __init__
+        globals()["_SCHEMAS"] = weakref.WeakSet()
+    except Exception as e:  # noqa: BLE001
+        print("schema cache patch failed", e, file=sys.stderr)
+
+
+def _patch_fixture_loaders():
+    for name, mod in list(sys.modules.items()):
+        if not (name == "tests" or name.startswith("tests.")) or mod is None:
+            continue
+        f = getattr(mod, "load_sql_fixture_pairs", None)
+        if f is not None and not getattr(f, "_br_wrapped", False):
+            mod.load_sql_fixture_pairs = _wrap_fixture_pairs(f)
 
 
 def _audit(event, args):
@@ -129,6 +277,7 @@ def _reset():
     _lines.clear()
     _types.clear()
     _opens.clear()
+    _clear_caches()
     mon.restart_events()
 
 
@@ -224,7 +373,37 @@ def pytest_make_collect_report(collector):
 def pytest_collection_modifyitems(session, config, items):
     import mp_shim
 
-    mp_shim.patch_modules(mp_shim.SyncExecutor)
+    _install_slicing()
+    mp_shim.patch_modules(mp_shim.SlicingExecutor)
+    _patch_fixture_loaders()
+
+
+@pytest.hookimpl(hookwrapper=True)
+def pytest_runtest_call(item):
+    on = item.nodeid.split("::")[0] in SLICE_FILES
+    if on:
+        _SL.update(on=True, cur=None, slices={}, common={}, y=0, k=0, titles={})
+        mon.restart_events()
+    try:
+        yield
+    finally:
+        if on:
+            _SL["on"] = False
+            if len(_SL["slices"]) >= 2:
+                keys = sorted(_SL["slices"], key=lambda k: (k[0], int(k[1:])))
+                masks = {}
+                for i, k in enumerate(keys):
+                    bit = 1 << i
+                    for f, ls in _SL["slices"][k].items():
+                        mf = masks.setdefault(f, {})
+                        for ln in ls:
+                            mf[ln] = mf.get(ln, 0) | bit
+                _results["<slices>:" + item.nodeid] = {
+                    "keys": keys,
+                    "common": {f: sorted(v) for f, v in _SL["common"].items()},
+                    "mask": {f: {str(ln): format(m, "x") for ln, m in d.items()} for f, d in masks.items()},
+                }
+            _SL.update(slices={}, common={}, titles={})
 
 
 @pytest.hookimpl(hookwrapper=True)
