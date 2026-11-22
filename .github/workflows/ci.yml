@@ -9,7 +9,7 @@ jobs:
   sample:
     if: "!contains(github.event.head_commit.message, '[skip ci]')"
     runs-on: ubuntu-latest
-    timeout-minutes: 40
+    timeout-minutes: 90
     steps:
       - uses: actions/checkout@v4
       - name: Unpack sample
@@ -49,6 +49,17 @@ jobs:
             --volume $PWD/ci/probe:/out --volume $PWD/tools:/tools:ro \
             --entrypoint sh blast-radius-entry -c 'python /app/br/selector.py > /out/output.jsonl 2> /out/stderr.log; python /tools/check_bets.py /data/commits /out/bets.json /out/report.json > /out/check.log 2>&1' || true
           tail -n 5 ci/probe/stderr.log; cat ci/probe/check.log | tail -n 60
+      - name: Ground truth on mutants (only when the commit message has [truth])
+        if: contains(github.event.head_commit.message, '[truth]')
+        run: |
+          mkdir -p /tmp/mut/commits ci/truth && tar xzf tools/mutants.tar.gz -C /tmp/mut/commits
+          cp sample/tests.json /tmp/mut/tests.json
+          chmod -R a+rwX ci/truth
+          docker run --rm --network none --cpus 4 --memory 12g --pids-limit 1024 \
+            --tmpfs /tmp:rw,size=4g,mode=1777 --user 65534:65534 --env HOME=/tmp \
+            --volume /tmp/mut:/data:ro --volume $PWD/ci/truth:/out --volume $PWD/tools:/tools:ro \
+            --entrypoint sh blast-radius-entry -c 'python /app/br/selector.py > /out/selected.jsonl 2> /out/stderr.log; python /tools/truth.py /data /out/selected.jsonl /out/truth.json > /out/truth.log 2>&1' || true
+          tail -n 60 ci/truth/truth.log
       - name: Export the in-image map and cpu costs
         run: |
           docker run --rm --entrypoint cat blast-radius-entry /app/br/maps/map.json.gz > ci/map.json.gz
