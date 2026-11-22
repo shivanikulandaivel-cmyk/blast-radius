@@ -16,16 +16,17 @@
 
 #5 [1/9] FROM docker.io/library/python:3.13-slim@sha256:e48f59cdba69a3cbd9ed2cf0f348d90d45a8d350d98134cf1070bc106ee9ed90
 #5 resolve docker.io/library/python:3.13-slim@sha256:e48f59cdba69a3cbd9ed2cf0f348d90d45a8d350d98134cf1070bc106ee9ed90 0.0s done
+#5 sha256:f7a79299dedd5c817d47e3f61cf6eecae73b92cb193a1ef52180a46b0161c50a 248B / 248B 0.0s done
 #5 ...
 
 #6 [internal] load build context
-#6 transferring context: 7.95MB 0.1s done
+#6 transferring context: 7.96MB 0.1s done
 #6 DONE 0.1s
 
 #5 [1/9] FROM docker.io/library/python:3.13-slim@sha256:e48f59cdba69a3cbd9ed2cf0f348d90d45a8d350d98134cf1070bc106ee9ed90
-#5 sha256:f7a79299dedd5c817d47e3f61cf6eecae73b92cb193a1ef52180a46b0161c50a 248B / 248B 0.0s done
 #5 sha256:0069ea31add00b9f63dbb3f0bcee44990654c5e2c17ccfeaeae47e74edf44498 1.29MB / 1.29MB 0.1s done
 #5 sha256:faa890a31e98e11bc3138d9549c86441024fdb24bd555bb0bca17dc9a6c5b565 11.92MB / 11.92MB 0.1s done
+#5 sha256:37fb86c2a767b88d500c6872195f88078f64765fe0d2f9cc375cc2efbd4c0a41 19.92MB / 29.86MB 0.2s
 #5 sha256:37fb86c2a767b88d500c6872195f88078f64765fe0d2f9cc375cc2efbd4c0a41 29.86MB / 29.86MB 0.2s done
 #5 extracting sha256:37fb86c2a767b88d500c6872195f88078f64765fe0d2f9cc375cc2efbd4c0a41
 #5 extracting sha256:37fb86c2a767b88d500c6872195f88078f64765fe0d2f9cc375cc2efbd4c0a41 0.7s done
@@ -42,161 +43,161 @@
 #5 DONE 1.4s
 
 #7 [2/9] COPY requirements.lock /app/requirements.lock
-#7 DONE 0.1s
+#7 DONE 0.3s
 
 #8 [3/9] RUN pip install -r /app/requirements.lock
-#8 1.499 Collecting ast_serialize==0.13.1 (from -r /app/requirements.lock (line 1))
-#8 1.532   Downloading ast_serialize-0.13.1-cp39-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (1.4 kB)
-#8 1.542 Collecting cfgv==3.5.0 (from -r /app/requirements.lock (line 2))
-#8 1.546   Downloading cfgv-3.5.0-py2.py3-none-any.whl.metadata (8.9 kB)
-#8 1.553 Collecting distlib==0.4.4 (from -r /app/requirements.lock (line 3))
-#8 1.556   Downloading distlib-0.4.4-py2.py3-none-any.whl.metadata (5.3 kB)
-#8 1.786 Collecting duckdb==2.0.0 (from -r /app/requirements.lock (line 4))
-#8 1.790   Downloading duckdb-2.0.0-cp312-abi3-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl.metadata (4.1 kB)
-#8 1.800 Collecting execnet==2.1.2 (from -r /app/requirements.lock (line 5))
-#8 1.803   Downloading execnet-2.1.2-py3-none-any.whl.metadata (2.9 kB)
-#8 1.824 Collecting filelock==4.2.12 (from -r /app/requirements.lock (line 6))
-#8 1.827   Downloading filelock-4.2.12-py3-none-any.whl.metadata (2.3 kB)
-#8 1.848 Collecting identify==2.6.20 (from -r /app/requirements.lock (line 7))
-#8 1.852   Downloading identify-2.6.20-py2.py3-none-any.whl.metadata (4.4 kB)
-#8 1.858 Collecting iniconfig==2.3.1 (from -r /app/requirements.lock (line 8))
-#8 1.861   Downloading iniconfig-2.3.1-py3-none-any.whl.metadata (2.8 kB)
-#8 1.871 Collecting Jinja2==3.1.6 (from -r /app/requirements.lock (line 9))
-#8 1.874   Downloading jinja2-3.1.6-py3-none-any.whl.metadata (2.9 kB)
-#8 1.995 Collecting librt==0.17.0 (from -r /app/requirements.lock (line 10))
-#8 1.999   Downloading librt-0.17.0-cp313-cp313-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (1.3 kB)
-#8 2.009 Collecting markdown2==2.5.5 (from -r /app/requirements.lock (line 11))
-#8 2.013   Downloading markdown2-2.5.5-py3-none-any.whl.metadata (2.1 kB)
-#8 2.062 Collecting MarkupSafe==3.0.4 (from -r /app/requirements.lock (line 12))
-#8 2.065   Downloading markupsafe-3.0.4-cp313-cp313-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (2.7 kB)
-#8 2.160 Collecting mypy==2.4.1 (from -r /app/requirements.lock (line 13))
-#8 2.164   Downloading mypy-2.4.1-cp313-cp313-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (2.4 kB)
-#8 2.171 Collecting mypy_extensions==1.2.0 (from -r /app/requirements.lock (line 14))
-#8 2.175   Downloading mypy_extensions-1.2.0-py3-none-any.whl.metadata (1.1 kB)
-#8 2.183 Collecting nodeenv==1.12.0 (from -r /app/requirements.lock (line 15))
-#8 2.187   Downloading nodeenv-1.12.0-py3-none-any.whl.metadata (49 kB)
-#8 2.369 Collecting numpy==2.5.5 (from -r /app/requirements.lock (line 16))
-#8 2.373   Downloading numpy-2.5.5-cp313-cp313-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl.metadata (6.6 kB)
-#8 2.383 Collecting packaging==26.3 (from -r /app/requirements.lock (line 17))
-#8 2.386   Downloading packaging-26.3-py3-none-any.whl.metadata (3.5 kB)
-#8 2.489 Collecting pandas==3.1.1 (from -r /app/requirements.lock (line 18))
-#8 2.493   Downloading pandas-3.1.1-cp313-cp313-manylinux_2_24_x86_64.manylinux_2_28_x86_64.whl.metadata (16 kB)
-#8 2.517 Collecting pandas-stubs==3.1.0.261029 (from -r /app/requirements.lock (line 19))
-#8 2.522   Downloading pandas_stubs-3.1.0.261029-py3-none-any.whl.metadata (11 kB)
-#8 2.530 Collecting pathspec==1.1.1 (from -r /app/requirements.lock (line 20))
-#8 2.533   Downloading pathspec-1.1.1-py3-none-any.whl.metadata (14 kB)
-#8 2.545 Collecting pdoc==16.0.0 (from -r /app/requirements.lock (line 21))
-#8 2.548   Downloading pdoc-16.0.0-py3-none-any.whl.metadata (8.6 kB)
-#8 2.562 Collecting platformdirs==4.14.7 (from -r /app/requirements.lock (line 22))
-#8 2.565   Downloading platformdirs-4.14.7-py3-none-any.whl.metadata (5.7 kB)
-#8 2.572 Collecting pluggy==1.7.0 (from -r /app/requirements.lock (line 23))
-#8 2.576   Downloading pluggy-1.7.0-py3-none-any.whl.metadata (5.0 kB)
-#8 2.595 Collecting pre_commit==4.7.0 (from -r /app/requirements.lock (line 24))
-#8 2.598   Downloading pre_commit-4.7.0-py2.py3-none-any.whl.metadata (1.2 kB)
-#8 2.654 Collecting psutil==7.2.2 (from -r /app/requirements.lock (line 25))
-#8 2.658   Downloading psutil-7.2.2-cp36-abi3-manylinux2010_x86_64.manylinux_2_12_x86_64.manylinux_2_28_x86_64.whl.metadata (22 kB)
-#8 2.674 Collecting Pygments==2.21.0 (from -r /app/requirements.lock (line 26))
-#8 2.677   Downloading pygments-2.21.0-py3-none-any.whl.metadata (2.5 kB)
-#8 2.686 Collecting pyperf==2.11.0 (from -r /app/requirements.lock (line 27))
-#8 2.690   Downloading pyperf-2.11.0-py3-none-any.whl.metadata (6.0 kB)
-#8 2.709 Collecting pytest==9.2.0 (from -r /app/requirements.lock (line 28))
-#8 2.712   Downloading pytest-9.2.0-py3-none-any.whl.metadata (7.9 kB)
-#8 2.721 Collecting pytest-timeout==2.4.0 (from -r /app/requirements.lock (line 29))
-#8 2.724   Downloading pytest_timeout-2.4.0-py3-none-any.whl.metadata (20 kB)
-#8 2.735 Collecting pytest-xdist==3.8.0 (from -r /app/requirements.lock (line 30))
-#8 2.739   Downloading pytest_xdist-3.8.0-py3-none-any.whl.metadata (3.0 kB)
-#8 2.747 Collecting python-dateutil==4.0.0 (from -r /app/requirements.lock (line 31))
-#8 2.750   Downloading python_dateutil-4.0.0-py3-none-any.whl.metadata (7.3 kB)
-#8 2.759 Collecting python-discovery==1.9.6 (from -r /app/requirements.lock (line 32))
-#8 2.762   Downloading python_discovery-1.9.6-py3-none-any.whl.metadata (4.2 kB)
-#8 2.789 Collecting pytz==2026.6 (from -r /app/requirements.lock (line 33))
-#8 2.792   Downloading pytz-2026.6-py2.py3-none-any.whl.metadata (22 kB)
-#8 2.825 Collecting PyYAML==6.0.3 (from -r /app/requirements.lock (line 34))
-#8 2.828   Downloading pyyaml-6.0.3-cp313-cp313-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (2.4 kB)
-#8 3.156 Collecting ruff==0.15.6 (from -r /app/requirements.lock (line 35))
-#8 3.160   Downloading ruff-0.15.6-py3-none-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (26 kB)
-#8 3.221 Collecting setuptools==84.2.1 (from -r /app/requirements.lock (line 36))
-#8 3.225   Downloading setuptools-84.2.1-py3-none-any.whl.metadata (6.6 kB)
-#8 3.248 Collecting setuptools-scm==10.3.4 (from -r /app/requirements.lock (line 37))
-#8 3.252   Downloading setuptools_scm-10.3.4-py3-none-any.whl.metadata (6.7 kB)
-#8 3.264 Collecting types-python-dateutil==2.9.0.20261116 (from -r /app/requirements.lock (line 38))
-#8 3.268   Downloading types_python_dateutil-2.9.0.20261116-py3-none-any.whl.metadata (1.9 kB)
-#8 3.277 Collecting types-pytz==2026.6.0.20261031 (from -r /app/requirements.lock (line 39))
-#8 3.282   Downloading types_pytz-2026.6.0.20261031-py3-none-any.whl.metadata (1.8 kB)
-#8 3.292 Collecting typing_extensions==4.16.0 (from -r /app/requirements.lock (line 40))
-#8 3.295   Downloading typing_extensions-4.16.0-py3-none-any.whl.metadata (3.3 kB)
-#8 3.303 Collecting tzdata==2026.6 (from -r /app/requirements.lock (line 41))
-#8 3.307   Downloading tzdata-2026.6-py2.py3-none-any.whl.metadata (1.4 kB)
-#8 3.313 Collecting vcs-versioning==2.6.0 (from -r /app/requirements.lock (line 42))
-#8 3.317   Downloading vcs_versioning-2.6.0-py3-none-any.whl.metadata (1.7 kB)
-#8 3.347 Collecting virtualenv==21.15.9 (from -r /app/requirements.lock (line 43))
-#8 3.350   Downloading virtualenv-21.15.9-py3-none-any.whl.metadata (4.1 kB)
-#8 3.396 Downloading ast_serialize-0.13.1-cp39-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (1.3 MB)
-#8 3.404    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.3/1.3 MB 281.8 MB/s  0:00:00
-#8 3.408 Downloading cfgv-3.5.0-py2.py3-none-any.whl (7.4 kB)
-#8 3.411 Downloading distlib-0.4.4-py2.py3-none-any.whl (472 kB)
-#8 3.415 Downloading duckdb-2.0.0-cp312-abi3-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl (24.4 MB)
-#8 3.461    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 24.4/24.4 MB 564.8 MB/s  0:00:00
-#8 3.465 Downloading execnet-2.1.2-py3-none-any.whl (40 kB)
-#8 3.468 Downloading filelock-4.2.12-py3-none-any.whl (222 kB)
-#8 3.471 Downloading identify-2.6.20-py2.py3-none-any.whl (99 kB)
-#8 3.475 Downloading iniconfig-2.3.1-py3-none-any.whl (7.6 kB)
-#8 3.478 Downloading jinja2-3.1.6-py3-none-any.whl (134 kB)
-#8 3.481 Downloading librt-0.17.0-cp313-cp313-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (622 kB)
-#8 3.484    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 622.8/622.8 kB 723.5 MB/s  0:00:00
-#8 3.487 Downloading markdown2-2.5.5-py3-none-any.whl (56 kB)
-#8 3.491 Downloading markupsafe-3.0.4-cp313-cp313-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (23 kB)
-#8 3.495 Downloading mypy-2.4.1-cp313-cp313-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (15.5 MB)
-#8 3.523    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 15.5/15.5 MB 569.1 MB/s  0:00:00
-#8 3.527 Downloading mypy_extensions-1.2.0-py3-none-any.whl (5.1 kB)
-#8 3.531 Downloading nodeenv-1.12.0-py3-none-any.whl (39 kB)
-#8 3.534 Downloading numpy-2.5.5-cp313-cp313-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl (15.7 MB)
-#8 3.558    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 15.7/15.7 MB 719.7 MB/s  0:00:00
-#8 3.562 Downloading packaging-26.3-py3-none-any.whl (129 kB)
-#8 3.566 Downloading pandas-3.1.1-cp313-cp313-manylinux_2_24_x86_64.manylinux_2_28_x86_64.whl (12.0 MB)
-#8 3.594    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 12.0/12.0 MB 451.7 MB/s  0:00:00
-#8 3.598 Downloading pandas_stubs-3.1.0.261029-py3-none-any.whl (179 kB)
-#8 3.602 Downloading pathspec-1.1.1-py3-none-any.whl (57 kB)
-#8 3.605 Downloading pdoc-16.0.0-py3-none-any.whl (100 kB)
-#8 3.609 Downloading platformdirs-4.14.7-py3-none-any.whl (89 kB)
-#8 3.612 Downloading pluggy-1.7.0-py3-none-any.whl (27 kB)
-#8 3.615 Downloading pre_commit-4.7.0-py2.py3-none-any.whl (226 kB)
-#8 3.619 Downloading psutil-7.2.2-cp36-abi3-manylinux2010_x86_64.manylinux_2_12_x86_64.manylinux_2_28_x86_64.whl (155 kB)
-#8 3.622 Downloading pygments-2.21.0-py3-none-any.whl (1.3 MB)
-#8 3.626    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.3/1.3 MB 770.9 MB/s  0:00:00
-#8 3.630 Downloading pyperf-2.11.0-py3-none-any.whl (149 kB)
-#8 3.634 Downloading pytest-9.2.0-py3-none-any.whl (411 kB)
-#8 3.638 Downloading pytest_timeout-2.4.0-py3-none-any.whl (14 kB)
-#8 3.641 Downloading pytest_xdist-3.8.0-py3-none-any.whl (46 kB)
-#8 3.644 Downloading python_dateutil-4.0.0-py3-none-any.whl (92 kB)
-#8 3.648 Downloading python_discovery-1.9.6-py3-none-any.whl (98 kB)
-#8 3.651 Downloading pytz-2026.6-py2.py3-none-any.whl (506 kB)
-#8 3.655 Downloading pyyaml-6.0.3-cp313-cp313-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (801 kB)
-#8 3.658    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 801.6/801.6 kB 782.1 MB/s  0:00:00
-#8 3.663 Downloading ruff-0.15.6-py3-none-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (11.3 MB)
-#8 3.695    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 11.3/11.3 MB 368.2 MB/s  0:00:00
-#8 3.699 Downloading setuptools-84.2.1-py3-none-any.whl (876 kB)
-#8 3.702    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 876.3/876.3 kB 784.8 MB/s  0:00:00
-#8 3.705 Downloading setuptools_scm-10.3.4-py3-none-any.whl (33 kB)
-#8 3.709 Downloading vcs_versioning-2.6.0-py3-none-any.whl (123 kB)
-#8 3.712 Downloading types_python_dateutil-2.9.0.20261116-py3-none-any.whl (18 kB)
-#8 3.716 Downloading types_pytz-2026.6.0.20261031-py3-none-any.whl (10 kB)
-#8 3.719 Downloading typing_extensions-4.16.0-py3-none-any.whl (45 kB)
-#8 3.723 Downloading tzdata-2026.6-py2.py3-none-any.whl (348 kB)
-#8 3.727 Downloading virtualenv-21.15.9-py3-none-any.whl (5.7 MB)
-#8 3.748    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 5.7/5.7 MB 280.7 MB/s  0:00:00
-#8 4.094 Installing collected packages: pytz, distlib, tzdata, typing_extensions, types-pytz, types-python-dateutil, setuptools, ruff, PyYAML, Pygments, psutil, pluggy, platformdirs, pathspec, packaging, numpy, nodeenv, mypy_extensions, MarkupSafe, markdown2, iniconfig, identify, filelock, execnet, duckdb, cfgv, ast_serialize, vcs-versioning, python-discovery, python-dateutil, pytest, pyperf, pandas-stubs, librt, Jinja2, virtualenv, setuptools-scm, pytest-xdist, pytest-timeout, pdoc, pandas, mypy, pre_commit
-#8 15.61 
-#8 15.62 Successfully installed Jinja2-3.1.6 MarkupSafe-3.0.4 PyYAML-6.0.3 Pygments-2.21.0 ast_serialize-0.13.1 cfgv-3.5.0 distlib-0.4.4 duckdb-2.0.0 execnet-2.1.2 filelock-4.2.12 identify-2.6.20 iniconfig-2.3.1 librt-0.17.0 markdown2-2.5.5 mypy-2.4.1 mypy_extensions-1.2.0 nodeenv-1.12.0 numpy-2.5.5 packaging-26.3 pandas-3.1.1 pandas-stubs-3.1.0.261029 pathspec-1.1.1 pdoc-16.0.0 platformdirs-4.14.7 pluggy-1.7.0 pre_commit-4.7.0 psutil-7.2.2 pyperf-2.11.0 pytest-9.2.0 pytest-timeout-2.4.0 pytest-xdist-3.8.0 python-dateutil-4.0.0 python-discovery-1.9.6 pytz-2026.6 ruff-0.15.6 setuptools-84.2.1 setuptools-scm-10.3.4 types-python-dateutil-2.9.0.20261116 types-pytz-2026.6.0.20261031 typing_extensions-4.16.0 tzdata-2026.6 vcs-versioning-2.6.0 virtualenv-21.15.9
-#8 15.62 WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.
-#8 DONE 15.9s
+#8 1.479 Collecting ast_serialize==0.13.1 (from -r /app/requirements.lock (line 1))
+#8 1.505   Downloading ast_serialize-0.13.1-cp39-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (1.4 kB)
+#8 1.514 Collecting cfgv==3.5.0 (from -r /app/requirements.lock (line 2))
+#8 1.517   Downloading cfgv-3.5.0-py2.py3-none-any.whl.metadata (8.9 kB)
+#8 1.525 Collecting distlib==0.4.4 (from -r /app/requirements.lock (line 3))
+#8 1.528   Downloading distlib-0.4.4-py2.py3-none-any.whl.metadata (5.3 kB)
+#8 1.755 Collecting duckdb==2.0.0 (from -r /app/requirements.lock (line 4))
+#8 1.760   Downloading duckdb-2.0.0-cp312-abi3-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl.metadata (4.1 kB)
+#8 1.768 Collecting execnet==2.1.2 (from -r /app/requirements.lock (line 5))
+#8 1.771   Downloading execnet-2.1.2-py3-none-any.whl.metadata (2.9 kB)
+#8 1.787 Collecting filelock==4.2.12 (from -r /app/requirements.lock (line 6))
+#8 1.790   Downloading filelock-4.2.12-py3-none-any.whl.metadata (2.3 kB)
+#8 1.809 Collecting identify==2.6.20 (from -r /app/requirements.lock (line 7))
+#8 1.812   Downloading identify-2.6.20-py2.py3-none-any.whl.metadata (4.4 kB)
+#8 1.818 Collecting iniconfig==2.3.1 (from -r /app/requirements.lock (line 8))
+#8 1.821   Downloading iniconfig-2.3.1-py3-none-any.whl.metadata (2.8 kB)
+#8 1.830 Collecting Jinja2==3.1.6 (from -r /app/requirements.lock (line 9))
+#8 1.833   Downloading jinja2-3.1.6-py3-none-any.whl.metadata (2.9 kB)
+#8 1.948 Collecting librt==0.17.0 (from -r /app/requirements.lock (line 10))
+#8 1.951   Downloading librt-0.17.0-cp313-cp313-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (1.3 kB)
+#8 1.960 Collecting markdown2==2.5.5 (from -r /app/requirements.lock (line 11))
+#8 1.963   Downloading markdown2-2.5.5-py3-none-any.whl.metadata (2.1 kB)
+#8 2.011 Collecting MarkupSafe==3.0.4 (from -r /app/requirements.lock (line 12))
+#8 2.014   Downloading markupsafe-3.0.4-cp313-cp313-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (2.7 kB)
+#8 2.104 Collecting mypy==2.4.1 (from -r /app/requirements.lock (line 13))
+#8 2.108   Downloading mypy-2.4.1-cp313-cp313-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (2.4 kB)
+#8 2.115 Collecting mypy_extensions==1.2.0 (from -r /app/requirements.lock (line 14))
+#8 2.118   Downloading mypy_extensions-1.2.0-py3-none-any.whl.metadata (1.1 kB)
+#8 2.126 Collecting nodeenv==1.12.0 (from -r /app/requirements.lock (line 15))
+#8 2.129   Downloading nodeenv-1.12.0-py3-none-any.whl.metadata (49 kB)
+#8 2.310 Collecting numpy==2.5.5 (from -r /app/requirements.lock (line 16))
+#8 2.314   Downloading numpy-2.5.5-cp313-cp313-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl.metadata (6.6 kB)
+#8 2.324 Collecting packaging==26.3 (from -r /app/requirements.lock (line 17))
+#8 2.327   Downloading packaging-26.3-py3-none-any.whl.metadata (3.5 kB)
+#8 2.429 Collecting pandas==3.1.1 (from -r /app/requirements.lock (line 18))
+#8 2.433   Downloading pandas-3.1.1-cp313-cp313-manylinux_2_24_x86_64.manylinux_2_28_x86_64.whl.metadata (16 kB)
+#8 2.457 Collecting pandas-stubs==3.1.0.261029 (from -r /app/requirements.lock (line 19))
+#8 2.460   Downloading pandas_stubs-3.1.0.261029-py3-none-any.whl.metadata (11 kB)
+#8 2.468 Collecting pathspec==1.1.1 (from -r /app/requirements.lock (line 20))
+#8 2.471   Downloading pathspec-1.1.1-py3-none-any.whl.metadata (14 kB)
+#8 2.484 Collecting pdoc==16.0.0 (from -r /app/requirements.lock (line 21))
+#8 2.487   Downloading pdoc-16.0.0-py3-none-any.whl.metadata (8.6 kB)
+#8 2.501 Collecting platformdirs==4.14.7 (from -r /app/requirements.lock (line 22))
+#8 2.504   Downloading platformdirs-4.14.7-py3-none-any.whl.metadata (5.7 kB)
+#8 2.511 Collecting pluggy==1.7.0 (from -r /app/requirements.lock (line 23))
+#8 2.514   Downloading pluggy-1.7.0-py3-none-any.whl.metadata (5.0 kB)
+#8 2.534 Collecting pre_commit==4.7.0 (from -r /app/requirements.lock (line 24))
+#8 2.537   Downloading pre_commit-4.7.0-py2.py3-none-any.whl.metadata (1.2 kB)
+#8 2.593 Collecting psutil==7.2.2 (from -r /app/requirements.lock (line 25))
+#8 2.596   Downloading psutil-7.2.2-cp36-abi3-manylinux2010_x86_64.manylinux_2_12_x86_64.manylinux_2_28_x86_64.whl.metadata (22 kB)
+#8 2.612 Collecting Pygments==2.21.0 (from -r /app/requirements.lock (line 26))
+#8 2.615   Downloading pygments-2.21.0-py3-none-any.whl.metadata (2.5 kB)
+#8 2.624 Collecting pyperf==2.11.0 (from -r /app/requirements.lock (line 27))
+#8 2.627   Downloading pyperf-2.11.0-py3-none-any.whl.metadata (6.0 kB)
+#8 2.646 Collecting pytest==9.2.0 (from -r /app/requirements.lock (line 28))
+#8 2.649   Downloading pytest-9.2.0-py3-none-any.whl.metadata (7.9 kB)
+#8 2.658 Collecting pytest-timeout==2.4.0 (from -r /app/requirements.lock (line 29))
+#8 2.661   Downloading pytest_timeout-2.4.0-py3-none-any.whl.metadata (20 kB)
+#8 2.672 Collecting pytest-xdist==3.8.0 (from -r /app/requirements.lock (line 30))
+#8 2.675   Downloading pytest_xdist-3.8.0-py3-none-any.whl.metadata (3.0 kB)
+#8 2.683 Collecting python-dateutil==4.0.0 (from -r /app/requirements.lock (line 31))
+#8 2.686   Downloading python_dateutil-4.0.0-py3-none-any.whl.metadata (7.3 kB)
+#8 2.694 Collecting python-discovery==1.9.6 (from -r /app/requirements.lock (line 32))
+#8 2.697   Downloading python_discovery-1.9.6-py3-none-any.whl.metadata (4.2 kB)
+#8 2.724 Collecting pytz==2026.6 (from -r /app/requirements.lock (line 33))
+#8 2.727   Downloading pytz-2026.6-py2.py3-none-any.whl.metadata (22 kB)
+#8 2.759 Collecting PyYAML==6.0.3 (from -r /app/requirements.lock (line 34))
+#8 2.762   Downloading pyyaml-6.0.3-cp313-cp313-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (2.4 kB)
+#8 3.090 Collecting ruff==0.15.6 (from -r /app/requirements.lock (line 35))
+#8 3.093   Downloading ruff-0.15.6-py3-none-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (26 kB)
+#8 3.155 Collecting setuptools==84.2.1 (from -r /app/requirements.lock (line 36))
+#8 3.158   Downloading setuptools-84.2.1-py3-none-any.whl.metadata (6.6 kB)
+#8 3.181 Collecting setuptools-scm==10.3.4 (from -r /app/requirements.lock (line 37))
+#8 3.186   Downloading setuptools_scm-10.3.4-py3-none-any.whl.metadata (6.7 kB)
+#8 3.197 Collecting types-python-dateutil==2.9.0.20261116 (from -r /app/requirements.lock (line 38))
+#8 3.200   Downloading types_python_dateutil-2.9.0.20261116-py3-none-any.whl.metadata (1.9 kB)
+#8 3.210 Collecting types-pytz==2026.6.0.20261031 (from -r /app/requirements.lock (line 39))
+#8 3.213   Downloading types_pytz-2026.6.0.20261031-py3-none-any.whl.metadata (1.8 kB)
+#8 3.223 Collecting typing_extensions==4.16.0 (from -r /app/requirements.lock (line 40))
+#8 3.226   Downloading typing_extensions-4.16.0-py3-none-any.whl.metadata (3.3 kB)
+#8 3.235 Collecting tzdata==2026.6 (from -r /app/requirements.lock (line 41))
+#8 3.238   Downloading tzdata-2026.6-py2.py3-none-any.whl.metadata (1.4 kB)
+#8 3.245 Collecting vcs-versioning==2.6.0 (from -r /app/requirements.lock (line 42))
+#8 3.248   Downloading vcs_versioning-2.6.0-py3-none-any.whl.metadata (1.7 kB)
+#8 3.279 Collecting virtualenv==21.15.9 (from -r /app/requirements.lock (line 43))
+#8 3.282   Downloading virtualenv-21.15.9-py3-none-any.whl.metadata (4.1 kB)
+#8 3.327 Downloading ast_serialize-0.13.1-cp39-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (1.3 MB)
+#8 3.333    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.3/1.3 MB 360.0 MB/s  0:00:00
+#8 3.336 Downloading cfgv-3.5.0-py2.py3-none-any.whl (7.4 kB)
+#8 3.339 Downloading distlib-0.4.4-py2.py3-none-any.whl (472 kB)
+#8 3.343 Downloading duckdb-2.0.0-cp312-abi3-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl (24.4 MB)
+#8 3.385    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 24.4/24.4 MB 609.2 MB/s  0:00:00
+#8 3.390 Downloading execnet-2.1.2-py3-none-any.whl (40 kB)
+#8 3.392 Downloading filelock-4.2.12-py3-none-any.whl (222 kB)
+#8 3.395 Downloading identify-2.6.20-py2.py3-none-any.whl (99 kB)
+#8 3.398 Downloading iniconfig-2.3.1-py3-none-any.whl (7.6 kB)
+#8 3.401 Downloading jinja2-3.1.6-py3-none-any.whl (134 kB)
+#8 3.404 Downloading librt-0.17.0-cp313-cp313-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (622 kB)
+#8 3.407    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 622.8/622.8 kB 715.6 MB/s  0:00:00
+#8 3.410 Downloading markdown2-2.5.5-py3-none-any.whl (56 kB)
+#8 3.413 Downloading markupsafe-3.0.4-cp313-cp313-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (23 kB)
+#8 3.416 Downloading mypy-2.4.1-cp313-cp313-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (15.5 MB)
+#8 3.441    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 15.5/15.5 MB 672.2 MB/s  0:00:00
+#8 3.444 Downloading mypy_extensions-1.2.0-py3-none-any.whl (5.1 kB)
+#8 3.447 Downloading nodeenv-1.12.0-py3-none-any.whl (39 kB)
+#8 3.451 Downloading numpy-2.5.5-cp313-cp313-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl (15.7 MB)
+#8 3.477    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 15.7/15.7 MB 670.6 MB/s  0:00:00
+#8 3.480 Downloading packaging-26.3-py3-none-any.whl (129 kB)
+#8 3.484 Downloading pandas-3.1.1-cp313-cp313-manylinux_2_24_x86_64.manylinux_2_28_x86_64.whl (12.0 MB)
+#8 3.504    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 12.0/12.0 MB 662.5 MB/s  0:00:00
+#8 3.508 Downloading pandas_stubs-3.1.0.261029-py3-none-any.whl (179 kB)
+#8 3.511 Downloading pathspec-1.1.1-py3-none-any.whl (57 kB)
+#8 3.514 Downloading pdoc-16.0.0-py3-none-any.whl (100 kB)
+#8 3.517 Downloading platformdirs-4.14.7-py3-none-any.whl (89 kB)
+#8 3.520 Downloading pluggy-1.7.0-py3-none-any.whl (27 kB)
+#8 3.523 Downloading pre_commit-4.7.0-py2.py3-none-any.whl (226 kB)
+#8 3.527 Downloading psutil-7.2.2-cp36-abi3-manylinux2010_x86_64.manylinux_2_12_x86_64.manylinux_2_28_x86_64.whl (155 kB)
+#8 3.530 Downloading pygments-2.21.0-py3-none-any.whl (1.3 MB)
+#8 3.534    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.3/1.3 MB 819.2 MB/s  0:00:00
+#8 3.537 Downloading pyperf-2.11.0-py3-none-any.whl (149 kB)
+#8 3.540 Downloading pytest-9.2.0-py3-none-any.whl (411 kB)
+#8 3.543 Downloading pytest_timeout-2.4.0-py3-none-any.whl (14 kB)
+#8 3.546 Downloading pytest_xdist-3.8.0-py3-none-any.whl (46 kB)
+#8 3.549 Downloading python_dateutil-4.0.0-py3-none-any.whl (92 kB)
+#8 3.552 Downloading python_discovery-1.9.6-py3-none-any.whl (98 kB)
+#8 3.556 Downloading pytz-2026.6-py2.py3-none-any.whl (506 kB)
+#8 3.559 Downloading pyyaml-6.0.3-cp313-cp313-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (801 kB)
+#8 3.562    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 801.6/801.6 kB 785.7 MB/s  0:00:00
+#8 3.565 Downloading ruff-0.15.6-py3-none-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (11.3 MB)
+#8 3.585    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 11.3/11.3 MB 662.8 MB/s  0:00:00
+#8 3.588 Downloading setuptools-84.2.1-py3-none-any.whl (876 kB)
+#8 3.591    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 876.3/876.3 kB 839.0 MB/s  0:00:00
+#8 3.594 Downloading setuptools_scm-10.3.4-py3-none-any.whl (33 kB)
+#8 3.597 Downloading vcs_versioning-2.6.0-py3-none-any.whl (123 kB)
+#8 3.600 Downloading types_python_dateutil-2.9.0.20261116-py3-none-any.whl (18 kB)
+#8 3.603 Downloading types_pytz-2026.6.0.20261031-py3-none-any.whl (10 kB)
+#8 3.606 Downloading typing_extensions-4.16.0-py3-none-any.whl (45 kB)
+#8 3.609 Downloading tzdata-2026.6-py2.py3-none-any.whl (348 kB)
+#8 3.614 Downloading virtualenv-21.15.9-py3-none-any.whl (5.7 MB)
+#8 3.626    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 5.7/5.7 MB 552.7 MB/s  0:00:00
+#8 3.974 Installing collected packages: pytz, distlib, tzdata, typing_extensions, types-pytz, types-python-dateutil, setuptools, ruff, PyYAML, Pygments, psutil, pluggy, platformdirs, pathspec, packaging, numpy, nodeenv, mypy_extensions, MarkupSafe, markdown2, iniconfig, identify, filelock, execnet, duckdb, cfgv, ast_serialize, vcs-versioning, python-discovery, python-dateutil, pytest, pyperf, pandas-stubs, librt, Jinja2, virtualenv, setuptools-scm, pytest-xdist, pytest-timeout, pdoc, pandas, mypy, pre_commit
+#8 15.37 
+#8 15.38 Successfully installed Jinja2-3.1.6 MarkupSafe-3.0.4 PyYAML-6.0.3 Pygments-2.21.0 ast_serialize-0.13.1 cfgv-3.5.0 distlib-0.4.4 duckdb-2.0.0 execnet-2.1.2 filelock-4.2.12 identify-2.6.20 iniconfig-2.3.1 librt-0.17.0 markdown2-2.5.5 mypy-2.4.1 mypy_extensions-1.2.0 nodeenv-1.12.0 numpy-2.5.5 packaging-26.3 pandas-3.1.1 pandas-stubs-3.1.0.261029 pathspec-1.1.1 pdoc-16.0.0 platformdirs-4.14.7 pluggy-1.7.0 pre_commit-4.7.0 psutil-7.2.2 pyperf-2.11.0 pytest-9.2.0 pytest-timeout-2.4.0 pytest-xdist-3.8.0 python-dateutil-4.0.0 python-discovery-1.9.6 pytz-2026.6 ruff-0.15.6 setuptools-84.2.1 setuptools-scm-10.3.4 types-python-dateutil-2.9.0.20261116 types-pytz-2026.6.0.20261031 typing_extensions-4.16.0 tzdata-2026.6 vcs-versioning-2.6.0 virtualenv-21.15.9
+#8 15.38 WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.
+#8 DONE 16.1s
 
 #9 [4/9] COPY fetch_sqlglot.py /app/br/fetch_sqlglot.py
 #9 DONE 0.1s
 
 #10 [5/9] RUN python /app/br/fetch_sqlglot.py /app/sqlglot
-#10 0.788 sqlglot at /app/sqlglot
-#10 DONE 0.8s
+#10 0.639 sqlglot at /app/sqlglot
+#10 DONE 0.7s
 
 #11 [6/9] COPY . /app/src
 #11 DONE 0.1s
@@ -205,12 +206,12 @@
 #12 DONE 0.2s
 
 #13 [8/9] RUN python -m compileall -q -j 4 /app/sqlglot/sqlglot /app/sqlglot/tests /app/br  && python /app/br/build_map.py /app/sqlglot  && python /app/br/build_index.py /app/br/maps/map.json.gz /app/sqlglot /app/br/index.pkl  && python -m compileall -q -j 4 /app/sqlglot/sqlglot /app/sqlglot/tests  && chmod -R a+rX /app
-#13 0.899 using committed map /app/br/maps/map.json.gz
-#13 0.899 using committed cpu costs /app/br/maps/cpu.json
-#13 6.188 Unable to set __version__, run `pip install -e .` or `python setup.py develop` first.
-#13 6.357 component owners: 112
-#13 6.367 cpu costs for 1621 tests
-#13 6.450 index: 1621 tests, 194 files
+#13 0.854 using committed map /app/br/maps/map.json.gz
+#13 0.854 using committed cpu costs /app/br/maps/cpu.json
+#13 6.220 Unable to set __version__, run `pip install -e .` or `python setup.py develop` first.
+#13 6.388 component owners: 112
+#13 6.399 cpu costs for 1621 tests
+#13 6.477 index: 1621 tests, 194 files
 #13 DONE 7.0s
 
 #14 [9/9] WORKDIR /tmp
@@ -218,13 +219,13 @@
 
 #15 exporting to image
 #15 exporting layers
-#15 exporting layers 12.6s done
-#15 exporting manifest sha256:fea5f8f3d9f47c1cebdf9698703834e7b8d125098f9aaabe5a7c80ac57a945f2 done
-#15 exporting config sha256:f8f833a95656ca274ea8648c4a674c62afc92b5fcf30d76750b59918d1fb153b done
-#15 exporting attestation manifest sha256:72fd824343dfe6372bab1aea5031d5ad4e5bd3b643055b446b40548578072d0a done
-#15 exporting manifest list sha256:971d29cff12a0839856970c629d13ebcf79d2bdea5a373f1191237fccf31c588 done
+#15 exporting layers 12.5s done
+#15 exporting manifest sha256:4d2730bc98c18349c835586c3de1131193025e3ac45496796c42b796dc1ccc8b done
+#15 exporting config sha256:7f1fd5b4450b972466ac9daca885047d0bbf72087361f9b136bcf01c3fb45c89 done
+#15 exporting attestation manifest sha256:9c64348c4d651779b4a2a0712236c35cae7f5c9a56260796b2b78983fde874a2 done
+#15 exporting manifest list sha256:0510c08f40391b3da82602b38b8ab2d9b867ffd9707a8b24135b556a78066859 done
 #15 naming to docker.io/library/blast-radius-entry:latest done
 #15 unpacking to docker.io/library/blast-radius-entry:latest
 #15 unpacking to docker.io/library/blast-radius-entry:latest 3.1s done
-#15 DONE 15.7s
-build seconds: 43
+#15 DONE 15.6s
+build seconds: 42

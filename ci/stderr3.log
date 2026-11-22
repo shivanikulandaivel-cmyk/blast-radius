@@ -1,77 +1,62 @@
 [sel 0.1s] loaded index 1621 tests; unmapped 0
-[sel 0.6s] 2haz cand 4 out 4 run 81 est 7.6s ['func:sqlglot/dialects/dialect.py:1271-1283']
-[sel 0.6s] 2jrq cand 2 out 2 run 26 est 5.6s ['func:sqlglot/optimizer/eliminate_joins.py:62-77']
-[sel 0.8s] 2qn5 cand 6 out 0 run 6 est 0.9s ['func:sqlglot/generators/clickhouse.py:809-813']
-[sel 0.8s] 2vdj cand 1 out 0 run 1 est 0.5s ['data:tests/fixtures/optimizer/pushdown_predicates.sql']
-[sel 0.8s] 3utz cand 5 out 5 run 31 est 7.1s ['func:sqlglot/serde.py:24-74']
-[sel 0.9s] 4d63 cand 3 out 0 run 351 est 5.7s ['class:sqlglot/dialects/snowflake.py:Snowflake.Tokenizer', 'attr-refined']
-[sel 0.9s] 535z cand 7 out 0 run 7 est 1.7s ['class:sqlglot/dialects/tsql.py:TSQL', 'attr-refined']
+[sel 0.6s] 2haz cand 73 out 73 run 12 est 8.7s ['func:sqlglot/dialects/dialect.py:1271-1283']
+[sel 0.6s] 2jrq cand 16 out 16 run 12 est 7.3s ['func:sqlglot/optimizer/eliminate_joins.py:62-77']
+[sel 0.8s] 2qn5 cand 6 out 0 run 6 est 1.9s ['func:sqlglot/generators/clickhouse.py:809-813']
+[sel 0.8s] 2vdj cand 1 out 0 run 1 est 0.8s ['data:tests/fixtures/optimizer/pushdown_predicates.sql']
+[sel 0.8s] 3utz cand 24 out 24 run 12 est 10.5s ['func:sqlglot/serde.py:24-74']
+[sel 0.9s] 4d63 cand 339 out 339 run 12 est 9.4s ['class:sqlglot/dialects/snowflake.py:Snowflake.Tokenizer', 'attr-refined']
+[sel 0.9s] 535z cand 7 out 7 run 0 est 2.9s ['class:sqlglot/dialects/tsql.py:TSQL', 'attr-refined']
 [sel 0.9s] 5y72 cand 3 out 3 run 0 est 2.5s ['func:sqlglot/optimizer/eliminate_subqueries.py:160-179']
-[sel 0.9s] 66ks cand 0 out 0 run 50 est 0.0s ['func:sqlglot/executor/context.py:53-62']
-[sel 0.9s] 6vvp cand 1 out 0 run 1 est 0.4s ['data:tests/fixtures/optimizer/qualify_columns__invalid.sql']
-[sel 0.9s] 6ze8 cand 1 out 0 run 1 est 0.3s ['lambda:sqlglot/parsers/dremio.py:110-115']
+[sel 0.9s] 66ks cand 38 out 38 run 12 est 3.3s ['func:sqlglot/executor/context.py:53-62']
+[sel 0.9s] 6vvp cand 1 out 0 run 1 est 0.6s ['data:tests/fixtures/optimizer/qualify_columns__invalid.sql']
+[sel 0.9s] 6ze8 cand 1 out 0 run 1 est 0.4s ['lambda:sqlglot/parsers/dremio.py:110-115']
 [sel 1.1s] 8y7j cand 0 out 0 run 0 est 0.0s ['func:sqlglot/generators/clickhouse.py:48-63']
-[sel 1.1s] 986c cand 1 out 0 run 1 est 0.8s ['same:sqlglot/dialects/singlestore.py', 'same:sqlglot/typing/snowflake.py', 'data:tests/fixtures/optimizer/unnest_subqueries.sql']
+[sel 1.1s] 986c cand 1 out 0 run 1 est 1.5s ['same:sqlglot/dialects/singlestore.py', 'same:sqlglot/typing/snowflake.py', 'data:tests/fixtures/optimizer/unnest_subqueries.sql']
 [sel 1.2s] 9u5k cand 0 out 0 run 0 est 0.0s ['same:sqlglot/generators/sqlite.py']
-[sel 1.3s] ary6 cand 10 out 0 run 10 est 4.0s ['func:sqlglot/parsers/bigquery.py:464-543']
+[sel 1.3s] ary6 cand 10 out 10 run 0 est 4.4s ['func:sqlglot/parsers/bigquery.py:464-543']
 [sel 1.4s] bap8 cand 0 out 0 run 0 est 0.0s ['same:sqlglot/transforms.py']
-[sel 1.6s] bj7g cand 2 out 0 run 2 est 0.5s ['func:sqlglot/generators/clickhouse.py:785-806']
-[sel 1.6s] bvw2 cand 1 out 0 run 1 est 0.4s ['same:sqlglot/dialects/materialize.py', 'data:tests/fixtures/optimizer/annotate_types.sql']
-[sel 1.6s] egys cand 1 out 0 run 1 est 1.5s ['data:tests/fixtures/optimizer/simplify.sql']
-[sel 1.6s] f4bn cand 1 out 0 run 1 est 0.3s ['data:tests/fixtures/optimizer/pushdown_cte_alias_columns.sql']
-[sel 1.6s] f4xa cand 0 out 0 run 0 est 0.0s ['same:sqlglot/generators/drill.py']
-[sel 1.6s] fryt cand 3 out 0 run 3 est 0.4s ['func:sqlglot/parsers/dremio.py:36-57']
-[sel 1.6s] gbav cand 1 out 0 run 1 est 0.3s ['class:sqlglot/parsers/singlestore.py:SingleStoreParser', 'attr-refined']
-[sel 1.6s] gbhk cand 1 out 0 run 1 est 0.4s ['data:tests/fixtures/optimizer/annotate_types.sql']
-[sel 1.8s] j6uz cand 2 out 0 run 2 est 2.9s ['func:sqlglot/parsers/bigquery.py:645-662']
-[sel 1.9s] ktz3 cand 3 out 0 run 3 est 0.4s ['class:sqlglot/expressions/ddl.py:TriggerProperties', 'attr-refined']
-[sel 1.9s] mthh cand 1 out 0 run 1 est 1.7s ['data:tests/fixtures/optimizer/merge_subqueries.sql']
-[sel 1.9s] nwnx cand 1 out 0 run 1 est 0.6s ['data:tests/fixtures/optimizer/pushdown_projections.sql']
-[sel 1.9s] rszg cand 3 out 0 run 3 est 5.6s ['same:sqlglot/optimizer/scope.py', 'func:sqlglot/typing/snowflake.py:92-108', 'data:tests/fixtures/optimizer/qualify_columns_ddl.sql']
-[sel 1.9s] st8f cand 1 out 0 run 1 est 0.4s ['data:tests/fixtures/optimizer/isolate_table_selects.sql']
-[sel 15.5s] killing 2haz
-[sel 15.5s] killing 2haz
-[sel 15.5s] killing 2haz
-[sel 15.5s] killing 2haz
-[sel 15.6s] killing 2haz
-[sel 15.6s] killing 2haz
-[sel 15.6s] killing 2haz
-[sel 15.6s] killing 2haz
-[sel 15.6s] killing 2haz
-[sel 15.6s] killing 2haz
-[sel 15.6s] killing 2haz
-[sel 15.6s] ran 2haz 81 tests cpu 13.14s failed ?
-[sel 16.4s] ran 2jrq 26 tests cpu 13.98s failed 6
-[sel 16.6s] ran 2qn5 6 tests cpu 0.95s failed 0
-[sel 17.0s] ran 2vdj 1 tests cpu 0.54s failed 1
+[sel 1.5s] bj7g cand 2 out 0 run 2 est 0.9s ['func:sqlglot/generators/clickhouse.py:785-806']
+[sel 1.5s] bvw2 cand 1 out 0 run 1 est 0.6s ['same:sqlglot/dialects/materialize.py', 'data:tests/fixtures/optimizer/annotate_types.sql']
+[sel 1.5s] egys cand 1 out 1 run 0 est 2.6s ['data:tests/fixtures/optimizer/simplify.sql']
+[sel 1.5s] f4bn cand 1 out 0 run 1 est 0.5s ['data:tests/fixtures/optimizer/pushdown_cte_alias_columns.sql']
+[sel 1.5s] f4xa cand 0 out 0 run 0 est 0.0s ['same:sqlglot/generators/drill.py']
+[sel 1.6s] fryt cand 3 out 0 run 3 est 0.6s ['func:sqlglot/parsers/dremio.py:36-57']
+[sel 1.6s] gbav cand 1 out 0 run 1 est 0.4s ['class:sqlglot/parsers/singlestore.py:SingleStoreParser', 'attr-refined']
+[sel 1.6s] gbhk cand 1 out 0 run 1 est 0.6s ['data:tests/fixtures/optimizer/annotate_types.sql']
+[sel 1.8s] j6uz cand 2 out 2 run 0 est 4.4s ['func:sqlglot/parsers/bigquery.py:645-662']
+[sel 1.8s] ktz3 cand 3 out 0 run 3 est 0.6s ['class:sqlglot/expressions/ddl.py:TriggerProperties', 'attr-refined']
+[sel 1.8s] mthh cand 1 out 1 run 0 est 3.0s ['data:tests/fixtures/optimizer/merge_subqueries.sql']
+[sel 1.8s] nwnx cand 1 out 0 run 1 est 1.1s ['data:tests/fixtures/optimizer/pushdown_projections.sql']
+[sel 1.9s] rszg cand 3 out 3 run 0 est 5.8s ['same:sqlglot/optimizer/scope.py', 'func:sqlglot/typing/snowflake.py:92-108', 'data:tests/fixtures/optimizer/qualify_columns_ddl.sql']
+[sel 1.9s] st8f cand 1 out 0 run 1 est 0.5s ['data:tests/fixtures/optimizer/isolate_table_selects.sql']
+[sel 2.8s] ran 2haz 12 tests cpu 0.46s failed 0
+[sel 3.8s] ran 2qn5 6 tests cpu 0.92s failed 0
+[sel 4.4s] ran 2vdj 1 tests cpu 0.54s failed 1
+[sel 5.0s] ran 3utz 12 tests cpu 0.59s failed 12
 Unable to set __version__, run `pip install -e .` or `python setup.py develop` first.
-[sel 22.8s] ran 3utz 31 tests cpu 6.12s failed 31
+[sel 5.4s] ran 4d63 12 tests cpu 0.38s failed 0
 Unable to set __version__, run `pip install -e .` or `python setup.py develop` first.
-[sel 24.8s] ran 535z 6 tests cpu 1.99s failed 1
-[sel 28.3s] ran 66ks 50 tests cpu 3.41s failed 0
-[sel 28.7s] ran 6vvp 1 tests cpu 0.45s failed 1
-[sel 29.0s] ran 6ze8 1 tests cpu 0.28s failed 1
-[sel 29.9s] ran 986c 1 tests cpu 0.87s failed 1
-[sel 31.5s] ran ary6 9 tests cpu 1.56s failed 9
-[sel 32.1s] ran bj7g 2 tests cpu 0.53s failed 1
-[sel 32.7s] ran bvw2 1 tests cpu 0.52s failed 1
-[sel 33.7s] ran 4d63 348 tests cpu 16.65s failed 0
-[sel 34.2s] ran f4bn 1 tests cpu 0.40s failed 1
-[sel 34.4s] ran egys 1 tests cpu 1.69s failed 1
+[sel 5.5s] ran 535z 0 tests cpu 0.07s failed 0
+[sel 7.4s] ran 66ks 12 tests cpu 1.86s failed 0
+[sel 7.6s] ran 2jrq 12 tests cpu 5.15s failed 2
+[sel 7.8s] ran 6vvp 1 tests cpu 0.43s failed 1
+[sel 7.9s] ran 6ze8 1 tests cpu 0.27s failed 1
+[sel 8.4s] ran bj7g 2 tests cpu 0.48s failed 1
+[sel 8.7s] ran 986c 1 tests cpu 0.85s failed 1
+[sel 8.9s] ran bvw2 1 tests cpu 0.49s failed 1
+[sel 9.1s] ran f4bn 1 tests cpu 0.37s failed 1
 Unable to set __version__, run `pip install -e .` or `python setup.py develop` first.
-[sel 34.6s] ran fryt 3 tests cpu 0.45s failed 0
-[sel 34.7s] ran gbav 1 tests cpu 0.29s failed 0
-[sel 35.2s] ran gbhk 1 tests cpu 0.49s failed 1
-[sel 35.2s] ran j6uz 1 tests cpu 0.45s failed 1
+[sel 9.4s] ran fryt 3 tests cpu 0.42s failed 0
+[sel 9.4s] ran gbav 1 tests cpu 0.27s failed 0
 Unable to set __version__, run `pip install -e .` or `python setup.py develop` first.
-[sel 35.7s] ran ktz3 3 tests cpu 0.51s failed 0
-[sel 36.4s] ran nwnx 1 tests cpu 0.65s failed 1
-[sel 36.9s] ran mthh 1 tests cpu 1.71s failed 1
-[sel 37.4s] ran st8f 1 tests cpu 0.39s failed 1
-[sel 37.8s] ran rszg 1 tests cpu 1.36s failed 1
-[sel 37.8s] 4d63 skipping 1 expensive tests: all cheaper ones passed
-[sel 37.8s] 66ks skipping 1 expensive tests: all cheaper ones passed
-[sel 37.8s] done: simulated 122.3s, cpu self 3.4s children 69.4s
+[sel 9.8s] ran gbhk 1 tests cpu 0.46s failed 1
+[sel 9.9s] ran ktz3 3 tests cpu 0.47s failed 0
+[sel 10.3s] ran st8f 1 tests cpu 0.37s failed 1
+[sel 10.5s] ran nwnx 1 tests cpu 0.61s failed 1
+[sel 10.5s] 2haz skipping 1 expensive tests: all cheaper ones passed
+[sel 10.5s] 4d63 skipping 1 expensive tests: all cheaper ones passed
+[sel 10.5s] 66ks skipping 1 expensive tests: all cheaper ones passed
+[sel 10.5s] done: simulated 118.4s, cpu self 3.0s children 15.5s
 nanobind: leaked 27 instances!
 nanobind: leaked 15 types!
  - leaked type "_duckdb._sqltypes.DuckDBPyType"
@@ -86,17 +71,17 @@ nanobind: leaked 15 types!
  - leaked type "PythonUDFType"
  - ... skipped remainder
 nanobind: leaked 111 functions!
- - leaked function "tf"
- - leaked function "torch"
- - leaked function "__getattr__"
- - leaked function ""
- - leaked function "register_filesystem"
- - leaked function "__eq__"
- - leaked function "__exit__"
- - leaked function "_catalog_version"
- - leaked function "query_appender"
+ - leaked function "_register_filelike"
  - leaked function "df"
+ - leaked function "row_type"
+ - leaked function "drain"
+ - leaked function "append"
+ - leaked function "close"
+ - leaked function "_register_source"
+ - leaked function "get_profiling_information"
+ - leaked function "decimal_type"
+ - leaked function "fetchnumpy"
  - ... skipped remainder
 nanobind: this is likely caused by a reference counting issue in the binding code.
-See https://nanobind.readthedocs.io/en/latest/refleaks.htmlcgroup cpu: usage_usec 72882065
-wall: 38.074933356
+See https://nanobind.readthedocs.io/en/latest/refleaks.htmlcgroup cpu: usage_usec 18544753
+wall: 10.751053386
