@@ -1,0 +1,9 @@
+2haz cost 3.0 oracle 0.0
+2jrq cost 25.5 oracle 23.5
+3utz cost 25.5 oracle 23.5
+4d63 cost 9.4 oracle 0.0
+5y72 cost 2.5 oracle 0.0
+66ks cost 3.1 oracle 0.0
+ary6 cost 4.4 oracle 3.4
+rszg cost 5.8 oracle 4.0
+SIMULATED 112.6 MISSES 0
