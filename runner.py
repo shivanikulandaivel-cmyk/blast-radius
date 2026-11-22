@@ -32,7 +32,7 @@ class _Collector:
             self.collect_errors.append(report.nodeid)
 
 
-def run_tests(root, nodeids, out_path, timeout, check_imports=(), collect_all=False, later=()):
+def run_tests(root, nodeids, out_path, timeout, check_imports=(), collect_all=False, later=(), probe=False):
     """Run nodeids; then, only if none of them failed, run the (expensive)
     tests in later. Tests not run are left out of "seen"."""
     os.environ["SKIP_INTEGRATION"] = "0"
@@ -43,6 +43,10 @@ def run_tests(root, nodeids, out_path, timeout, check_imports=(), collect_all=Fa
         sys.path.insert(0, root)
     import importlib
 
+    if probe:
+        import brprobe
+
+        brprobe.install()
     import_errors = []
     if check_imports == "ALL":
         import pkgutil
@@ -122,6 +126,7 @@ def run_tests(root, nodeids, out_path, timeout, check_imports=(), collect_all=Fa
                 "seen": sorted(col.seen),
                 "collect_errors": col.collect_errors,
                 "import_errors": import_errors,
+                "probe": {str(k): v for k, v in __import__("brprobe").STATS.items()} if probe else None,
                 "rc": str(rc),
             },
             f,
