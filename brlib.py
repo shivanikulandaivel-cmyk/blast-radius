@@ -406,7 +406,72 @@ class _Units:
         return "\n".join(_strip_dump(b) for b in body)
 
 
-def ast_changes(old_src, new_src):
+def touched_lines(fd):
+    """Line numbers a patch touches, in the old and in the new file:
+    changed lines plus the lines on both sides of every change."""
+    ot, nt = set(), set()
+    for os_, ol, ns, nl, body in fd.hunks:
+        o = os_ if ol > 0 else os_ + 1
+        n = ns if nl > 0 else ns + 1
+        prev_o, prev_n = o - 1, n - 1
+        for b in body:
+            if b.startswith("\\"):
+                continue
+            tag = b[0]
+            if tag == " ":
+                o += 1
+                n += 1
+            elif tag == "-":
+                ot.update((o - 1, o, o + 1))
+                nt.update((n - 1, n))
+                o += 1
+            elif tag == "+":
+                nt.update((n - 1, n, n + 1))
+                ot.update((o - 1, o))
+                n += 1
+    return ot, nt
+
+
+def _overlaps(node, lines):
+    start = min([d.lineno for d in getattr(node, "decorator_list", [])] + [node.lineno])
+    return any(start <= ln <= node.end_lineno for ln in lines)
+
+
+def _prune(ob, nb, ot, nt):
+    """Blank out the bodies of functions the patch doesn't touch, on both
+    sides alike: their text is the same, so their comparison is a given."""
+    if len(ob) != len(nb):
+        return
+    for a, b in zip(ob, nb):
+        if type(a) is not type(b):
+            continue
+        if isinstance(a, (ast.FunctionDef, ast.AsyncFunctionDef)):
+            if a.name == b.name and not _overlaps(a, ot) and not _overlaps(b, nt):
+                for x in (a, b):
+                    p = ast.Pass()
+                    ast.copy_location(p, x.body[0])
+                    p.end_lineno = x.body[0].lineno
+                    x.body = [p]
+        elif isinstance(a, ast.ClassDef):
+            _prune(a.body, b.body, ot, nt)
+        elif not any(isinstance(getattr(a, f, None), list) for f in ("body", "orelse", "finalbody", "handlers")):
+            # a simple statement the patch doesn't touch: same text both sides
+            if not _overlaps(a, ot) and not _overlaps(b, nt):
+                for i_, (x, lst) in enumerate(((a, ob), (b, nb))):
+                    p = ast.Pass()
+                    ast.copy_location(p, x)
+                    p.end_lineno = x.lineno
+                    lst[lst.index(x)] = p
+        else:
+            for attr in ("body", "orelse", "finalbody"):
+                x, y = getattr(a, attr, None), getattr(b, attr, None)
+                if isinstance(x, list) and isinstance(y, list) and x and isinstance(x[0], ast.stmt):
+                    _prune(x, y, ot, nt)
+            for ha, hb in zip(getattr(a, "handlers", None) or [], getattr(b, "handlers", None) or []):
+                _prune(ha.body, hb.body, ot, nt)
+
+
+def ast_changes(old_src, new_src, fd=None):
     """Return a list of changes between two python sources:
     ("same",) | ("syntax",) | ("func", (s, e), cls) | ("lambda", (s, e), cls)
     | ("class", clspath, (s, e)) | ("module",)"""
@@ -418,6 +483,9 @@ def ast_changes(old_src, new_src):
         new = ast.parse(new_src)
     except (SyntaxError, ValueError):
         return [("syntax",)]
+    if fd is not None and fd.hunks:
+        ot, nt = touched_lines(fd)
+        _prune(old.body, new.body, ot, nt)
     if _strip_dump(old) == _strip_dump(new):
         return [("same",)]
     uo = _Units(old).units

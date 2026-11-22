@@ -160,6 +160,7 @@ def start_job(job):
             runner.run_tests(job.root, job.nodeids, job.out, job.timeout,
                              job.check_imports, job.collect_all, job.later,
                              slices=getattr(job, "slices", None) or {},
+                             stoppable=getattr(job, "stoppable", None) or (),
                              probe=bool(job.probe_sites))
         except BaseException:  # noqa: BLE001
             import traceback
@@ -486,6 +487,7 @@ def main():
         out, run = order[:j], order[j:] + evidence
         plans[cid] = {"out": set(out), "run": run, "gamble": gamble}
         probe_sites = 0
+        ev_stop = []
         if PROBE and ok and out and not NO_RUN and "importlevel" not in flags and "addrm" not in flags \
                 and all(fd.path.startswith("sqlglot/") and fd.path.endswith(".py") for fd in fds):
             probed = {}
@@ -533,6 +535,7 @@ def main():
                     gain = c_with - c_without
                     cost_ev = sum(rc[t] for t in ev_extra) + (0 if [t for t in run if t not in bet] else h)
                     if len(new_run) >= 3 and gain > cost_ev:
+                        ev_stop = list(ev_extra)
                         out, run = sorted(new_out), new_run
                         plans[cid] = {"out": set(out), "run": run, "gamble": [], "bet": bet}
                         changes = dict(changes)
@@ -589,6 +592,10 @@ def main():
             # expensive tests run last, and only if the cheap ones all passed:
             # a cheap failure means the expensive ones likely fail too, and
             # handing them over is cheaper than running them to find out
+            # extra evidence goes last so it can stop early without costing
+            # the tests that were going to run anyway
+            evs = set(ev_stop)
+            run = [t for t in run if t not in evs] + [t for t in run if t in evs]
             first = [ids[t] for t in run if rc[t] < 1000 or NO_LATER]
             later = [ids[t] for t in run if rc[t] >= 1000 and not NO_LATER]
             if not first:
@@ -601,6 +608,7 @@ def main():
                             collect_all=deep or "importcheck" in flags, later=later,
                             probe_sites=probe_sites))
             jobs[-1].slices = {k: v for k, v in slice_f.items() if k in set(first) | set(later)}
+            jobs[-1].stoppable = [ids[t] for t in ev_stop]
             jobs[-1].raw = raw
             jobs[-1].nfiles = nfiles
             jobs[-1].deep = deep

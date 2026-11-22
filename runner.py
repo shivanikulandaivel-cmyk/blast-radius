@@ -21,11 +21,30 @@ class _Collector:
         self.seen = set()
         self.collect_errors = []
 
+    stoppable = frozenset()
+    session = None
+
+    def pytest_sessionstart(self, session):
+        self.session = session
+
     def pytest_runtest_logreport(self, report):
         nid = report.nodeid
         self.seen.add(nid)
         if report.failed:
             self.failed.add(nid)
+        # extra evidence for a bet: once it fails or the probe sees a
+        # difference, the bet is lost and the rest is handed over anyway
+        if nid in self.stoppable and report.when == "teardown" and self.session is not None:
+            lost = bool(self.failed)
+            if not lost:
+                try:
+                    import brprobe
+
+                    lost = any(v[1] for v in brprobe.STATS.values())
+                except Exception:
+                    lost = False
+            if lost:
+                self.session.shouldstop = "evidence lost the bet"
 
     def pytest_collectreport(self, report):
         if report.failed:
@@ -76,7 +95,7 @@ def _make_slicer(pytest, slices):
 
 
 def run_tests(root, nodeids, out_path, timeout, check_imports=(), collect_all=False, later=(), probe=False,
-              slices=None):
+              slices=None, stoppable=()):
     """Run nodeids; then, only if none of them failed, run the (expensive)
     tests in later. Tests not run are left out of "seen"."""
     os.environ["SKIP_INTEGRATION"] = "0"
@@ -114,6 +133,7 @@ def run_tests(root, nodeids, out_path, timeout, check_imports=(), collect_all=Fa
     import pytest
 
     col = _Collector()
+    col.stoppable = frozenset(stoppable or ())
     args = [
         "-q",
         "-p", "no:cacheprovider",
