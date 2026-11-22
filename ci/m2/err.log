@@ -37,7 +37,8 @@
 [sel 3.7s] q_mu06 attrdiff: 66 -> 66 candidates
 [sel 3.7s] q_mu06 cand 66 out 66 run 0 est 7.3s ['class:sqlglot/dialects/redshift.py:Redshift.Tokenizer', 'attr-refined']
 [sel 3.8s] q_mu07 cand 0 out 0 run 0 est 0.0s ['func:sqlglot/parsers/bigquery.py:713-733']
-[sel 3.8s] q_mx00 cand 3 out 3 run 0 est 2.7s ['data:tests/fixtures/identity.sql', 'data:tests/fixtures/optimizer/isolate_table_selects.sql']
+[sel 3.8s] q_mx00 big gamble: 0 tests (2.8s) on 3 evidence
+[sel 3.8s] q_mx00 cand 3 out 0 run 3 est 2.7s ['data:tests/fixtures/identity.sql', 'data:tests/fixtures/optimizer/isolate_table_selects.sql']
 [sel 3.8s] q_mx01 cand 4 out 0 run 4 est 0.5s ['class:sqlglot/dialects/solr.py:Solr', 'attr-refined', 'class:sqlglot/generators/druid.py:DruidGenerator', 'attr-refined']
 [sel 3.8s] q_mx02 cand 1 out 0 run 1 est 0.5s ['data:tests/fixtures/optimizer/eliminate_subqueries.sql', 'func:sqlglot/expressions/builders.py:993-1054']
 [sel 3.8s] q_mx03 cand 2 out 2 run 0 est 0.5s ['data:tests/fixtures/optimizer/qualify_columns__with_invisible.sql', 'data:tests/fixtures/optimizer/isolate_table_selects.sql']
@@ -45,37 +46,38 @@
 [sel 3.8s] q_pc01 cand 0 out 0 run 0 est 0.0s ['same:sqlglot/parsers/exasol.py']
 [sel 3.8s] q_pc02 cand 0 out 0 run 0 est 0.0s ['same:sqlglot/dialects/oracle.py']
 [sel 3.8s] q_pc04 cand 0 out 0 run 0 est 0.0s ['same:sqlglot/executor/python.py']
-[sel 3.9s] q_pc05 cand 0 out 0 run 0 est 0.0s ['same:sqlglot/optimizer/eliminate_joins.py']
-[sel 3.9s] q_pc06 cand 0 out 0 run 0 est 0.0s ['same:sqlglot/generators/druid.py']
-[sel 3.9s] q_pc07 cand 0 out 0 run 0 est 0.0s ['same:sqlglot/dialects/prql.py']
+[sel 3.8s] q_pc05 cand 0 out 0 run 0 est 0.0s ['same:sqlglot/optimizer/eliminate_joins.py']
+[sel 3.8s] q_pc06 cand 0 out 0 run 0 est 0.0s ['same:sqlglot/generators/druid.py']
+[sel 3.8s] q_pc07 cand 0 out 0 run 0 est 0.0s ['same:sqlglot/dialects/prql.py']
 Unable to set __version__, run `pip install -e .` or `python setup.py develop` first.
 [sel 4.3s] ran q_ca00 0 tests cpu 0.07s failed 0 | raw 0.00s files 0 later 0 deep 0
 Unable to set __version__, run `pip install -e .` or `python setup.py develop` first.
-[sel 4.4s] ran q_ca01 0 tests cpu 0.07s failed 0 | raw 0.00s files 0 later 0 deep 0
+[sel 4.4s] ran q_ca01 0 tests cpu 0.08s failed 0 | raw 0.00s files 0 later 0 deep 0
 Unable to set __version__, run `pip install -e .` or `python setup.py develop` first.
 [sel 4.4s] ran q_ca02 0 tests cpu 0.07s failed 0 | raw 0.00s files 0 later 0 deep 0
 Unable to set __version__, run `pip install -e .` or `python setup.py develop` first.
 Unable to set __version__, run `pip install -e .` or `python setup.py develop` first.
-[sel 4.5s] ran q_ca04 0 tests cpu 0.07s failed 0 | raw 0.00s files 0 later 0 deep 0
+[sel 4.6s] ran q_ca04 0 tests cpu 0.07s failed 0 | raw 0.00s files 0 later 0 deep 0
 Unable to set __version__, run `pip install -e .` or `python setup.py develop` first.
-[sel 4.9s] ran q_ca03 4 tests cpu 0.51s failed 1 | raw 0.04s files 4 later 0 deep 0
+[sel 4.9s] ran q_ca03 4 tests cpu 0.50s failed 1 | raw 0.04s files 4 later 0 deep 0
 Unable to set __version__, run `pip install -e .` or `python setup.py develop` first.
 [sel 5.0s] ran q_ca06 0 tests cpu 0.07s failed 0 | raw 0.00s files 0 later 0 deep 0
 Unable to set __version__, run `pip install -e .` or `python setup.py develop` first.
 [sel 5.1s] ran q_ca07 0 tests cpu 0.07s failed 0 | raw 0.00s files 0 later 0 deep 0
 [sel 5.7s] ran q_mu00 6 tests cpu 0.58s failed 4 | raw 2.70s files 2 later 0 deep 0
-[sel 6.1s] ran q_ca05 0 tests cpu 1.50s failed 0 | raw 0.00s files 0 later 0 deep 1
-[sel 6.3s] ran q_mu02 3 tests cpu 0.56s failed 3 | raw 0.22s files 2 later 0 deep 0
-[sel 6.4s] ran q_mu03 1 tests cpu 0.27s failed 1 | raw 0.00s files 1 later 0 deep 0
+[sel 6.1s] ran q_ca05 0 tests cpu 1.47s failed 0 | raw 0.00s files 0 later 0 deep 1
+[sel 6.3s] ran q_mu02 3 tests cpu 0.55s failed 3 | raw 0.22s files 2 later 0 deep 0
+[sel 6.3s] ran q_mu03 1 tests cpu 0.25s failed 1 | raw 0.00s files 1 later 0 deep 0
 Unable to set __version__, run `pip install -e .` or `python setup.py develop` first.
-[sel 6.7s] ran q_mu05 1 tests cpu 0.27s failed 1 | raw 0.04s files 1 later 0 deep 0
+[sel 6.6s] ran q_mu05 1 tests cpu 0.27s failed 1 | raw 0.04s files 1 later 0 deep 0
 Unable to set __version__, run `pip install -e .` or `python setup.py develop` first.
-[sel 6.8s] ran q_mu06 0 tests cpu 0.07s failed 0 | raw 0.00s files 0 later 0 deep 0
-Unable to set __version__, run `pip install -e .` or `python setup.py develop` first.
+[sel 6.7s] ran q_mu06 0 tests cpu 0.07s failed 0 | raw 0.00s files 0 later 0 deep 0
 [sel 6.9s] ran q_mu04 4 tests cpu 0.57s failed 0 | raw 0.14s files 3 later 0 deep 0
-[sel 7.3s] ran q_mx01 4 tests cpu 0.50s failed 1 | raw 0.04s files 4 later 0 deep 0
-[sel 7.4s] ran q_mx02 1 tests cpu 0.39s failed 1 | raw 0.08s files 1 later 0 deep 0
-[sel 7.4s] done: simulated 98.8s, cpu self 1.6s children 8.7s
+Unable to set __version__, run `pip install -e .` or `python setup.py develop` first.
+[sel 7.4s] ran q_mx01 4 tests cpu 0.50s failed 1 | raw 0.04s files 4 later 0 deep 0
+[sel 7.5s] ran q_mx00 2 tests cpu 0.72s failed 1 | raw 0.96s files 3 later 1 deep 0
+[sel 7.8s] ran q_mx02 1 tests cpu 0.39s failed 1 | raw 0.08s files 1 later 0 deep 0
+[sel 7.8s] done: simulated 98.4s, cpu self 1.6s children 9.4s
 nanobind: leaked 27 instances!
 nanobind: leaked 15 types!
  - leaked type "_duckdb._sqltypes.DuckDBPyType"
@@ -90,16 +92,16 @@ nanobind: leaked 15 types!
  - leaked type "PythonUDFType"
  - ... skipped remainder
 nanobind: leaked 111 functions!
- - leaked function "enum_type"
- - leaked function "__repr__"
- - leaked function "execute"
- - leaked function "append"
- - leaked function "sqltype"
- - leaked function ""
- - leaked function "torch"
- - leaked function "_register_values"
+ - leaked function "get_profiling_information"
+ - leaked function "_catalog_version"
  - leaked function "type"
- - leaked function "tf"
+ - leaked function "appender"
+ - leaked function ""
+ - leaked function "register"
+ - leaked function "df"
+ - leaked function "query_appender"
+ - leaked function "fetch_df_chunk"
+ - leaked function "query_progress"
  - ... skipped remainder
 nanobind: this is likely caused by a reference counting issue in the binding code.
-See https://nanobind.readthedocs.io/en/latest/refleaks.htmlcgroup cpu: usage_usec 10402471
+See https://nanobind.readthedocs.io/en/latest/refleaks.htmlcgroup cpu: usage_usec 11080055
