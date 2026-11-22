@@ -36,7 +36,7 @@ MAX_WORKERS = 8
 PARALLEL = int(os.environ.get("BR_PARALLEL", "2"))
 NO_RUN = os.environ.get("BR_NO_RUN") == "1"
 RISK = os.environ.get("BR_RISK", "0") == "1"
-PROBE = os.environ.get("BR_PROBE", "1") == "1"
+PROBE = os.environ.get("BR_PROBE", "0") == "1"
 PROBE_MIN_HITS = int(os.environ.get("BR_PROBE_MIN_HITS", "3"))
 PROBE_MIN_EVIDENCE = int(os.environ.get("BR_PROBE_MIN_EVIDENCE", "3"))
 CPU_FACTOR = float(os.environ.get("BR_CPU_FACTOR", "2.5"))
